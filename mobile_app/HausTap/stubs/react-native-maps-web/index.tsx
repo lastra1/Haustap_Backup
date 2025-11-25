@@ -1,0 +1,1 @@
+export { default as default, Marker } from '../react-native-maps-web';

@@ -1,0 +1,48 @@
+# OS and editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+*.suo
+*.user
+*.rsuser
+
+# Node / Expo
+node_modules/
+.expo/
+.expo-shared/
+*.log
+
+# PHP / Composer
+vendor/
+
+# Build artifacts
+build/
+dist/
+coverage/
+
+# Env and secrets
+.env
+.env.*
+*.env
+**/.env
+**/*.env
+functions/.runtimeconfig.json
+**/service-account.json
+**/google-services.json
+**/*.keystore
+**/*.p12
+**/*.pem
+**/*.crt
+**/*.key
+**/*.sqlite
+**/database.sqlite
+**/storage/app/private/
+**/storage/app/public/*
+
+# Specific sensitive files
+haustap-booking-system-firebase-adminsdk-fbsvc-e1b6e04c85.json
+
+# Git internals
+**/.git
