@@ -1,0 +1,46 @@
+[
+    {
+        "id": 1,
+        "provider_id": 3,
+        "service_name": "Bungalow - Basic Cleaning",
+        "scheduled_date": "2025-11-07",
+        "scheduled_time": "10:00",
+        "address": "Pin: Casanueva, Biga, Tanza, Cavite, Calabarzon, 4108, Philippines",
+        "lat": null,
+        "lng": null,
+        "price": 1000,
+        "notes": "Booked with Lisa Deleon",
+        "status": "cancelled",
+        "created_at": 1762432824541
+    },
+    {
+        "id": 2,
+        "provider_id": 2,
+        "service_name": "Bungalow - Standard Cleaning",
+        "scheduled_date": "2025-11-07",
+        "scheduled_time": "09:00",
+        "address": "Pin: Casanueva, Biga, Tanza, Cavite, Calabarzon, 4108, Philippines",
+        "lat": null,
+        "lng": null,
+        "price": 2000,
+        "notes": "Booked with Maria Lopez",
+        "status": "cancelled",
+        "created_at": 1762436061933,
+        "cancellation_reason": "Service No Longer Needed",
+        "cancelled_at": 1762436645691
+    },
+    {
+        "id": 3,
+        "provider_id": 1,
+        "service_name": "Bungalow - Deep Cleaning",
+        "scheduled_date": "2025-11-11",
+        "scheduled_time": "12:00",
+        "address": "Nebraska Street, Town & Country Southville, Langkiwa, Bi\u00f1an, Laguna, Calabarzon, 4024, Philippines",
+        "lat": 14.30485388385652,
+        "lng": 121.06343304163083,
+        "price": 3000,
+        "notes": "Booked with Ana Santos",
+        "status": "pending",
+        "created_at": 1762523411350
+    }
+]

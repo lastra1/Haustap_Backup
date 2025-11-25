@@ -1,0 +1,178 @@
+/* Cleaning service page styles */
+.cleaning-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Type selector section */
+.type-selector {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.type-selector h2 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.type-selector select {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 1rem;
+    min-width: 200px;
+    cursor: pointer;
+    background-color: white;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+}
+
+/* Cleaning packages */
+.cleaning-packages {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cleaning-package {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cleaning-package:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.package-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.package-header h3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.package-title {
+    flex: 1;
+}
+
+.package-checkbox {
+    width: 20px;
+    height: 20px;
+    margin-left: 1rem;
+    cursor: pointer;
+    accent-color: #00ADB5;
+}
+
+.price {
+    color: #00BFA6;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.package-details p {
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.package-details ul {
+    list-style: none;
+}
+
+.package-details li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.package-details li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #00BFA6;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 2rem 0;
+}
+
+.pagination button {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination button:hover {
+    border-color: #00BFA6;
+    color: #00BFA6;
+}
+
+.pagination button.active {
+    background: #00BFA6;
+    color: white;
+    border-color: #00BFA6;
+}
+
+.action-bar {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 999;
+}
+.proceed-btn {
+    background: #00ADB5;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.total-box {
+    background: #fff;
+    border: 2px solid #00ADB5;
+    color: #111;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-weight: 700;
+}
+
+/* Cleaning note */
+.cleaning-note {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+}

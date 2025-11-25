@@ -1,0 +1,95 @@
+# Render Multi-Service Deployment Configuration
+# This deploys your Laravel API, Web Frontend, and supports Mobile App
+
+services:
+  # Laravel API Backend
+  - type: web
+    name: haustap-api
+    env: docker
+    dockerfilePath: ./backend/api/Dockerfile
+    dockerContext: ./backend/api
+    envVars:
+      - key: APP_NAME
+        value: HausTap API
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        value: https://haustap-api.onrender.com
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: BROADCAST_CONNECTION
+        value: log
+      - key: FILESYSTEM_DISK
+        value: local
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: LOG_LEVEL
+        value: info
+      - key: FRONTEND_URL
+        value: https://haustap-web.onrender.com
+      - key: MOBILE_APP_URL
+        value: https://haustap-mobile.onrender.com
+    buildCommand: |
+      cp .env.example .env
+      php artisan key:generate --ansi
+      php artisan migrate --force
+      chmod -R 755 storage bootstrap/cache
+    startCommand: php artisan serve --host=0.0.0.0 --port=8000
+    healthCheckPath: /api/health
+    autoDeploy: true
+
+  # Web Frontend (PHP Website)
+  - type: web
+    name: haustap-web
+    env: docker
+    dockerfilePath: ./Dockerfile.web
+    dockerContext: ./Haustap_Capstone-Haustap_Connecting
+    envVars:
+      - key: API_BASE_URL
+        value: https://haustap-api.onrender.com
+      - key: APP_ENV
+        value: production
+      - key: PHP_VERSION
+        value: 8.2
+    buildCommand: |
+      # Install dependencies and setup web frontend
+      docker-php-ext-install pdo_mysql mysqli
+      a2enmod rewrite
+      # Set proper permissions
+      chown -R www-data:www-data /var/www/html
+      chmod -R 755 /var/www/html
+    startCommand: apache2-foreground
+    healthCheckPath: /
+    autoDeploy: true
+
+  # Mobile App Support Service (Static files & API proxy)
+  - type: web
+    name: haustap-mobile
+    env: static
+    buildCommand: |
+      # Build mobile app static assets if needed
+      echo "Mobile app support service ready"
+    staticPublishPath: ./mobile-static
+    envVars:
+      - key: API_BASE_URL
+        value: https://haustap-api.onrender.com
+      - key: MOBILE_APP_CONFIG
+        value: production
+    headers:
+      - path: /*
+        name: Access-Control-Allow-Origin
+        value: "*"
+      - path: /*
+        name: Access-Control-Allow-Methods
+        value: "GET, POST, PUT, DELETE, OPTIONS"
+      - path: /*
+        name: Access-Control-Allow-Headers
+        value: "Content-Type, Authorization, X-Requested-With"

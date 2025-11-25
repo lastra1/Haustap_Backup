@@ -1,0 +1,166 @@
+/* Responsive Styles */
+@media (max-width: 900px) {
+    .header, .hero, .category-grid, .promotions-grid, .why-section {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    .hero {
+        flex-direction: column;
+        gap: 24px;
+    }
+    
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .promotions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-img {
+        width: 100%;
+        max-width: 340px;
+        height: 220px;
+    }
+    
+    .why-section {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .why-left {
+        margin-bottom: 24px;
+        text-align: center;
+    }
+    
+    .why-right {
+        grid-template-columns: 1fr;
+        gap: 24px 0;
+    }
+    
+    .cleaning-cards {
+        grid-template-columns: 1fr;
+    }
+    
+  /* ===== FOOTER ===== */
+footer {
+  background: #e6e6e6;
+  padding: 50px 70px 25px;
+  color: #000;
+  min-height: 200px;
+  position: relative;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  min-height: 150px;
+  position: relative;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  flex: 1;
+  min-width: 220px;
+}
+
+/* LEFT SECTION */
+.footer-left h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-left ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-left li {
+  margin-bottom: 5px;
+}
+
+.footer-left a {
+  text-decoration: none;
+  color: #000;
+}
+
+.footer-left a:hover {
+  color: #10bfc9;
+}
+
+/* CENTER SECTION */
+.footer-center {
+  text-align: center;
+}
+
+.footer-center img {
+  width: 100px;
+}
+
+.footer-center p {
+  font-size: 13px;
+}
+
+/* RIGHT SECTION */
+.footer-right {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.footer-right h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-right ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 50px;
+  right: 0;
+}
+
+.footer-right li {
+  margin-bottom: 6px;
+}
+
+.footer-right .contact-info {
+  position: absolute;
+  bottom: -40px;
+  right: 0;
+  margin: 0;
+}
+
+.footer-right .contact-info p {
+  font-size: 13px;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* FOOTER BOTTOM */
+.footer-bottom {
+  text-align: center;
+  font-weight: 600;
+  margin-top: 25px;
+  border-top: 1px solid #d1d1d1;
+  padding-top: 10px;
+  font-size: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .booking-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .map-container {
+    height: 200px;
+  }
+}
+}

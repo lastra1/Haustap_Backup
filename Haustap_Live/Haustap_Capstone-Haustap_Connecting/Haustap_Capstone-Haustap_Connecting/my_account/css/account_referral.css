@@ -1,0 +1,145 @@
+
+.account-referral {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 0;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  background-color: #f9f9f9;
+}
+
+.referral-box {
+  background-color: #fff;
+  width: 90%;
+  max-width: 700px;
+  padding: 30px 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.referral-box h2 {
+  font-size: 22px;
+  color: #000;
+  margin-bottom: 8px;
+}
+
+.referral-box hr {
+  border: none;
+  height: 2px;
+  background-color: #dadada;
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+/* --- Your Code text --- */
+.your-code {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+/* --- Cyan box --- */
+.code-box {
+  background-color: #00b3b3;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: #333333 0px 4px 4px;
+  display: flex;
+  flex-direction: column; 
+  margin-left: 110px;
+  margin-right: 110px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.inner-box {
+  background-color: #fff;
+  border: #636363 solid 1px;
+  box-shadow: #666666 0px 4px 4px;
+  padding: 25px 130px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.referral-code {
+  font-size: 28px;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+}
+
+/* --- Copy Button --- */
+.copy-btn {
+  background-color: #fff;
+  color: #050505;
+  border: 2px solid #333333;
+  box-shadow: #333333 0px 4px 4px;
+  font-weight: bold;
+  padding: 8px 70px;
+  font-size: 13px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.copy-btn:hover {
+  background-color: #00a0a0;
+  color: #fff;
+}
+
+/* --- White box for entering referral code --- */
+.add-code-box {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: #6e6e6e 0px 4px 4px;
+  margin-top: 10px;
+  margin-left: 110px;
+  margin-right: 110px;
+}
+
+.add-code-box p {
+  font-size: 14px;
+  color: #000000;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.add-code-box input {
+  width: 100%;
+  max-width: 300px;
+  padding: 8px;
+  border: 1px solid #2e2d2d;
+  border-radius: 5px;
+  font-size: 14px;
+  display: block;
+  margin: 0 auto 15px auto;
+}
+
+.submit-btn {
+  background-color: #3dc1c6;
+  font-weight: bold;
+  padding: 8px 70px;
+  font-size: 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+  display: block;
+  margin: 0 auto;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.submit-btn:hover {
+  background-color: #3dc1c6;
+  color: black;
+  transform: scale3d(1.05, 1.05, 1);
+}
+/* Sidebar compact overrides */
+.sidebar-nav-group li { margin-bottom: 6px; }
+.sidebar-secondary li { margin: 6px 0; font-size: 14px; cursor: pointer; color: #333; display: flex; align-items: center; min-height: 32px; }
+.sidebar-secondary i { margin-right: 8px; width: 18px; text-align: center; font-size: 16px; }
+.sidebar-nav-group ul li a, .sidebar-secondary li a { display: flex; align-items: center; gap: 6px; padding: 6px 8px; font-size: 14px; line-height: 1.25; min-height: 32px; border-radius: 6px; text-decoration: none; color: #555; }
+.sidebar-nav-group ul li a:hover, .sidebar-secondary li a:hover { background-color: #f0f7f7; color: #009999; }
+.sidebar-nav-group ul li a.active, .sidebar-secondary li a.active { font-weight: bold; color: #3dbfc3; }

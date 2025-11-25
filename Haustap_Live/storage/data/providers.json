@@ -1,0 +1,7 @@
+[
+  {"id":1,"name":"Jenn Bornilla","skills":"Home Cleaning","rating":"4.5","hired_at":"2024-01-07","status":"active","email":"jenn.sp@example.com","phone":"09171111001"},
+  {"id":2,"name":"Pagod Na","skills":"Plumbing","rating":"4.2","hired_at":"2024-01-24","status":"inactive","email":"pagod.sp@example.com","phone":"09171111002"},
+  {"id":3,"name":"Chris Ramos","skills":"Electrical","rating":"4.0","hired_at":"2024-02-01","status":"suspend","email":"chris.sp@example.com","phone":"09171111003"},
+  {"id":4,"name":"Mary Jane","skills":"Gardening","rating":"4.8","hired_at":"2024-02-12","status":"active","email":"mj.sp@example.com","phone":"09171111004"},
+  {"id":5,"name":"Kyle Tan","skills":"AC Repair","rating":"4.3","hired_at":"2024-03-05","status":"active","email":"kyle.sp@example.com","phone":"09171111005"}
+]

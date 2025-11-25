@@ -1,0 +1,33 @@
+{
+  "services": [
+    {
+      "name": "Cleaning",
+      "category": "Home",
+      "subcategories": [
+        { "name": "Deep Cleaning", "price": 1200, "duration_minutes": 120, "description": "Intensive cleaning" },
+        { "name": "Move-out Cleaning", "price": 1500, "duration_minutes": 150, "description": "Post-tenancy cleaning" },
+        { "name": "Window Cleaning", "price": 500, "duration_minutes": 60, "description": "Windows" },
+        { "name": "Bathroom Sanitizing", "price": 600, "duration_minutes": 60, "description": "Bathrooms" }
+      ]
+    },
+    {
+      "name": "Gardening",
+      "category": "Outdoor",
+      "subcategories": [
+        { "name": "Grass Cutting", "price": 600, "duration_minutes": 60, "description": "Lawn mowing" },
+        { "name": "Hedge Trimming", "price": 800, "duration_minutes": 90, "description": "Hedge maintenance" },
+        { "name": "Landscape Design", "price": 2000, "duration_minutes": 120, "description": "Consultation" },
+        { "name": "Monthly Maintenance", "price": 2000, "duration_minutes": 120, "description": "Contract" }
+      ]
+    },
+    {
+      "name": "Laundry",
+      "category": "Home",
+      "subcategories": [
+        { "name": "Wash & Fold", "price": 350, "duration_minutes": 60, "description": "Standard" },
+        { "name": "Steam Iron", "price": 250, "duration_minutes": 45, "description": "Ironing" },
+        { "name": "Dry Cleaning", "price": 500, "duration_minutes": 90, "description": "Delicates" }
+      ]
+    }
+  ]
+}

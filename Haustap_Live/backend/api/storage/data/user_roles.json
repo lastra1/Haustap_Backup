@@ -1,0 +1,10 @@
+{
+    "test@example.com": [
+        "client",
+        "provider"
+    ],
+    "dbuser@haustap.local": [
+        "client",
+        "provider"
+    ]
+}

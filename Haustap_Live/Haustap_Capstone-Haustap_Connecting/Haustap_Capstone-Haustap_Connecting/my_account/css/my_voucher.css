@@ -1,0 +1,573 @@
+body {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  background: #f7f7f7;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+/* ===== HEADER ===== */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 40px 60px;
+  box-sizing: border-box;
+}
+
+.logo-img {
+  height: 100px;
+  width: auto;
+  display: block;
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+  margin-left: 24px;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: color 0.2s;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.nav a.active {
+  color: #3dbfc3;
+  border-bottom: 2px solid #3dbfc3;
+}
+
+.nav a:hover {
+  color: #009999;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #222;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.icon-button i {
+  font-size: 25px;
+  color: #131313;
+  transition: transform 0.3s, color 0.3s;
+}
+
+.icon-button:hover i,
+.icon-button:hover span {
+  color: cyan;
+}
+
+.icon-button:hover i {
+  transform: scale(1.15);
+}
+
+.account-link {
+  text-decoration: none;
+}
+
+.account-link i {
+  font-size: 25px;
+}
+
+.notification-box {
+  margin: 0;
+}
+/* ===== MAIN ACCOUNT PAGE ===== */
+.account-page {
+  font-family: 'Roboto', sans-serif;
+  background-color: #fff;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.account-container {
+  display: flex;
+  gap: 40px;
+  width: 90%;
+  max-width: 1200px;
+}
+
+/* ===== LEFT SIDEBAR ===== */
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+}
+
+.profile-card {
+  background-color: #f8f8f8;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.profile-header-side {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.profile-header-side i {
+  color: #333;
+}
+
+.profile-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.profile-name {
+  font-weight: 700;
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.edit-profile-btn {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  margin-top: 4px;
+  transition: color 0.3s;
+}
+
+.edit-profile-btn i {
+  font-size: 12px;
+}
+
+.edit-profile-btn:hover {
+  color: #00a6a6;
+}
+
+/* ===== SIDEBAR NAVIGATION ===== */
+.sidebar-nav-group {
+  margin-bottom: 25px;
+}
+
+.sidebar-nav-group h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 15px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-nav-group ul {
+  list-style: none;
+  padding-left: 28px;
+  margin: 0;
+}
+
+.sidebar-nav-group li {
+  margin-bottom: 6px;
+}
+
+.sidebar-nav-group li a {
+  text-decoration: none;
+  color: #555;
+  transition: color 0.2s;
+}
+
+.sidebar-nav-group li a:hover {
+  color: #009999;
+}
+
+.sidebar-nav-group li a.active {
+  font-weight: bold;
+  color: #000000;
+}
+
+
+.sidebar-secondary {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.sidebar-secondary li {
+  margin: 6px 0;
+  font-size: 14px;
+  cursor: pointer;
+  color: #333;
+  display: flex;
+  align-items: center;
+  min-height: 32px;
+}
+
+.sidebar-secondary i {
+  margin-right: 8px;
+  width: 18px;
+  text-align: center;
+  font-size: 16px;
+}
+
+/* Consistent sizing for sidebar links */
+.sidebar-nav-group ul li a,
+.sidebar-secondary li a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  font-size: 14px;
+  line-height: 1.25;
+  min-height: 32px;
+  border-radius: 6px;
+}
+
+.sidebar-nav-group ul li a:hover,
+.sidebar-secondary li a:hover {
+  background-color: #f0f7f7;
+}
+
+.logout-btn {
+  background-color: #e00000;
+  color: #fff;
+  border: none;
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.2s;
+}
+
+.logout-btn:hover {
+  background-color: #c00000;
+}
+
+/* Main Voucher Section */
+.voucher-box {
+  min-height: 720px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.voucher-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 3px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.voucher-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.view-history {
+  color: #00bcd4;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.view-history:hover {
+  text-decoration: underline;
+}
+
+/* Loyalty Section */
+.loyalty-section {
+  margin-left: 15px; /* ✅ indent text */
+}
+
+.loyalty-section h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  margin-top: -10px; /* ✅ reduce top margin */
+}
+
+.loyalty-section p {
+  font-size: 14px;
+  color: #444;
+  margin-left: 10px; /* ✅ indent paragraph text */
+}
+
+/* ===== LOYALTY PROGRESS SECTION ===== */
+.progress-container {
+  position: relative;
+  background: #f8f8f8;
+  border-radius: 15px;
+  padding: -20px 5px 0px;
+  margin: 5px 0;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
+/* Title “Complete 10 bookings” aligned to the left */
+.progress-title {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: left;
+}
+
+/* Circles perfectly centered */
+.progress-circles {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 15px;
+}
+
+.circle {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  transition: background 0.3s;
+}
+.circle.final {
+  text-align: center;
+}
+
+.circle.filled {
+  background: #00bcd4;
+}
+
+.circle:last-child {
+  width: 70px; /* biggest circle */
+  height: 70px;
+  border-radius: 50%;
+  background: #00bcd4;
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 0 0 8px rgba(0, 188, 212, 0.4);
+}
+
+/* “Complete within 3 months” bottom-right aligned */
+.progress-sub {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+  text-align: right;
+}
+.progress-note {
+  text-align: center;
+}
+
+/* Note text below with divider */
+.progress-note {
+  font-size: 14px;
+  color: #333;
+  text-align: center; /* changed from left to center */
+  margin-top: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Indent loyalty section headings and text */
+.loyalty-section h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-left: 15px;
+  margin-bottom: 8px;
+}
+
+.loyalty-section p {
+  font-size: 14px;
+  color: #444;
+  margin-left: 15px;
+  margin-bottom: 15px;
+}
+
+
+/* Exclusive Section */
+.exclusive-section {
+  margin-top: 20px;
+}
+
+.exclusive-section h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+/* Two-column grid layout */
+.voucher-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns per row */
+  gap: 20px 25px; /* vertical and horizontal spacing */
+}
+
+@media (max-width: 768px) {
+  .voucher-grid {
+    grid-template-columns: 1fr; /* stack to 1 column on smaller screens */
+  }
+}
+
+.voucher-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.voucher-card:hover {
+  transform: translateY(-3px);
+}
+
+.voucher-card h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.voucher-card p {
+  font-size: 14px;
+  color: #444;
+  margin: 6px 0;
+}
+
+.condition {
+  color: #777;
+  font-size: 13px;
+  margin-top: 10px;
+  font-style: italic;
+}
+/* ===== FOOTER ===== */
+footer {
+  background: #e6e6e6;
+  padding: 50px 70px 25px;
+  color: #000;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  flex: 1;
+  min-width: 220px;
+}
+
+/* LEFT SECTION */
+.footer-left h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-left ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-left li {
+  margin-bottom: 5px;
+}
+
+.footer-left a {
+  text-decoration: none;
+  color: #000;
+}
+
+.footer-left a:hover {
+  color: #10bfc9;
+}
+
+/* CENTER SECTION */
+.footer-center {
+  text-align: center;
+}
+
+.footer-center img {
+  width: 100px;
+}
+
+.footer-center p {
+  font-size: 13px;
+}
+
+/* RIGHT SECTION */
+.footer-right {
+  text-align: right;
+}
+
+.footer-right h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-right ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-right li {
+  margin-bottom: 6px;
+}
+
+.footer-right .contact-info p {
+  font-size: 13px;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* FOOTER BOTTOM */
+.footer-bottom {
+  text-align: center;
+  font-weight: 600;
+  margin-top: -10px;
+  border-top: 1px solid #d1d1d1;
+  padding-top: 10px;
+  font-size: 14px;
+}
+
+/* Sidebar anchor styles: force black text and no underline */
+.sidebar-secondary li a { text-decoration: none; color: #333; display: flex; align-items: center; }
+.sidebar-secondary li a:hover { color: #009999; }

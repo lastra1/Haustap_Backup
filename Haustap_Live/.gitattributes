@@ -1,0 +1,14 @@
+* text=auto
+
+# Binary assets
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary
+*.pdf binary
+*.phar binary
+
+# SVG treated as text (diffs are useful)
+*.svg text

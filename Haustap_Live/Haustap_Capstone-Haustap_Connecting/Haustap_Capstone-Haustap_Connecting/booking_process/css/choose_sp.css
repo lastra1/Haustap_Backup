@@ -1,0 +1,178 @@
+body {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  background: #f7f7f7;
+  margin: 0;
+  color: #222;
+}
+
+.choose-provider-page {
+  max-width: 450px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.page-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+/* ===== PROVIDER BOXES ===== */
+.providers-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.provider-box {
+  display: flex;
+  align-items: center;
+  background: #e6e6e6;
+  padding: 15px;
+  border-radius: 10px;
+  border: #a1a1a1 2px ridge;
+  gap: 15px;
+}
+
+.profile-icon {
+  width: 70px;
+  height: 70px;
+  background: #ffffff;
+  border-radius: 5px;
+  border: #222 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #555;
+  cursor: pointer;
+}
+
+.provider-info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.provider-info p {
+  margin: 3px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Star and icons */
+.provider-info i.fa-star {
+  color: #FFD700; /* Yellow star */
+}
+
+.provider-info i.fa-location-dot {
+  color: #009999;
+  margin-right: 5px;
+}
+
+/* ===== FILTER BOX ===== */
+.filter-box {
+  background: #e6e6e6;
+  padding: 15px 20px;
+  border-radius: 10px;
+  border: #a1a1a1 2px ridge;
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.filter-header p {
+  margin: 0 0 10px 0;
+  font-weight: 500;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+}
+
+.filter-options {
+  display: flex;
+  justify-content: center; /* centers the radio buttons */
+  align-items: center;
+  gap: 30px;
+  margin-top: 35px; /* adds space below header text */
+}
+
+.filter-options label {
+  font-size: 0.95rem;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.cancel-btn, .book-btn {
+  padding: 8px 20px;
+  border: #222 1px solid;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.cancel-btn {
+  background: #ccc;
+}
+
+.cancel-btn:hover {
+  background: #ccc;
+  transform: scale(1.05);
+}
+
+.book-btn {
+  background: cyan;
+  color: rgb(5, 5, 5);
+}
+
+.book-btn:hover {
+  background: cyan;
+  transform: scale(1.05);
+}
+
+/* ===== PROVIDER DETAILS OVERLAY ===== */
+.sp-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.sp-overlay.show { display: flex; }
+
+.sp-overlay-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+}
+
+.sp-overlay-content {
+  position: relative;
+  z-index: 1;
+}
+
+.sp-overlay-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #666;
+  cursor: pointer;
+}

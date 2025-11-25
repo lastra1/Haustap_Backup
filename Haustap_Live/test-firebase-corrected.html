@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Test - Corrected Configuration</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .status {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .success { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
+    .error { background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+    .warning { background-color: #fff3cd; border-color: #ffeaa7; color: #856404; }
+    .info { background-color: #d1ecf1; border-color: #bee5eb; color: #0c5460; }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+    button:hover { background-color: #0056b3; }
+    button:disabled { background-color: #ccc; cursor: not-allowed; }
+    .test-results {
+      max-height: 300px;
+      overflow-y: auto;
+      background-color: #f8f9fa;
+      padding: 10px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+    }
+    .config-display {
+      background-color: #f8f9fa;
+      padding: 10px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔥 Firebase Test - Corrected Configuration</h1>
+    <p>Testing Firebase with proper SDK v9 configuration for HausTap Booking System</p>
+    
+    <div id="firebase-status" class="status info">
+      <strong>Firebase Status:</strong> <span id="firebase-status-text">Initializing...</span>
+    </div>
+    
+    <div id="config-display" class="config-display">
+      Loading Firebase configuration...
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>🔐 Authentication Test</h2>
+    <div>
+      <input type="email" id="test-email" placeholder="Enter test email" value="markjoshuapunzalan2@gmail.com">
+      <input type="password" id="test-password" placeholder="Enter test password" value="demo123">
+    </div>
+    <div>
+      <button onclick="testAuthentication()">Test Login</button>
+      <button onclick="testRegistration()">Test Registration</button>
+      <button onclick="testPasswordReset()">Test Password Reset</button>
+      <button onclick="testCurrentUser()">Check Current User</button>
+      <button onclick="logout()">Logout</button>
+    </div>
+    
+    <div id="auth-results" class="test-results">
+      Authentication test results will appear here...
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>📊 Firestore Test</h2>
+    <div>
+      <button onclick="testFirestoreConnection()" id="firestore-btn" disabled>Test Firestore Connection</button>
+      <button onclick="testUserDocument()" id="user-doc-btn" disabled>Test User Document</button>
+      <button onclick="testBookingDocument()" id="booking-btn" disabled>Test Booking Document</button>
+    </div>
+    
+    <div id="firestore-results" class="test-results">
+      Firestore test results will appear here...
+    </div>
+  </div>
+
+  <!-- Firebase SDK v9 (Modular) -->
+  <script type="module">
+    // Firebase configuration for haustap-booking-system
+    const firebaseConfig = {
+      apiKey: "AIzaSyCfhR1vIh8_z4TAmdaQRESHB459CsVqJ9M",
+      authDomain: "haustap-booking-system.firebaseapp.com",
+      projectId: "haustap-booking-system",
+      storageBucket: "haustap-booking-system.firebasestorage.app",
+      messagingSenderId: "515769404711",
+      appId: "1:515769404711:web:ddf0b32df0498eb18aad02",
+      measurementId: "G-DLBL1HFP27"
+    };
+
+    // Import Firebase modules
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+    import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+    let app, auth, db;
+
+    // Initialize Firebase
+    function initializeFirebase() {
+      try {
+        console.log('Initializing Firebase with config:', firebaseConfig);
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+        
+        updateStatus('firebase-status', 'success', 'Firebase initialized successfully');
+        document.getElementById('config-display').textContent = JSON.stringify(firebaseConfig, null, 2);
+        
+        // Enable Firestore buttons
+        document.getElementById('firestore-btn').disabled = false;
+        
+        // Listen for auth state changes
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            logMessage('auth-results', `✅ User logged in: ${user.email} (${user.uid})`);
+            document.getElementById('user-doc-btn').disabled = false;
+            document.getElementById('booking-btn').disabled = false;
+          } else {
+            logMessage('auth-results', 'ℹ️ No user logged in');
+            document.getElementById('user-doc-btn').disabled = true;
+            document.getElementById('booking-btn').disabled = true;
+          }
+        });
+        
+        logDebug('Firebase initialization completed successfully');
+        
+      } catch (error) {
+        updateStatus('firebase-status', 'error', `Firebase initialization failed: ${error.message}`);
+        console.error('Firebase initialization error:', error);
+      }
+    }
+
+    // Update status display
+    function updateStatus(elementId, status, message) {
+      const element = document.getElementById(elementId);
+      element.className = `status ${status}`;
+      element.querySelector('span').textContent = message;
+    }
+
+    // Log message to results
+    function logMessage(elementId, message) {
+      const element = document.getElementById(elementId);
+      const timestamp = new Date().toLocaleTimeString();
+      element.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+      element.scrollTop = element.scrollHeight;
+    }
+
+    // Test authentication
+    window.testAuthentication = async function() {
+      const email = document.getElementById('test-email').value;
+      const password = document.getElementById('test-password').value;
+      
+      logMessage('auth-results', `🔍 Testing login with email: ${email}`);
+      
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        logMessage('auth-results', `✅ Login successful! User: ${userCredential.user.email} (${userCredential.user.uid})`);
+      } catch (error) {
+        logMessage('auth-results', `❌ Login failed: ${error.code} - ${error.message}`);
+        
+        // Provide specific guidance based on error
+        if (error.code === 'auth/invalid-credential') {
+          logMessage('auth-results', '💡 Suggestion: The password might be incorrect. Try using the password reset function.', 'warning');
+        } else if (error.code === 'auth/user-not-found') {
+          logMessage('auth-results', '💡 Suggestion: User not found. Try registering a new account.', 'warning');
+        } else if (error.code === 'auth/invalid-email') {
+          logMessage('auth-results', '💡 Suggestion: Invalid email format. Please check the email address.', 'warning');
+        }
+      }
+    };
+
+    // Test registration
+    window.testRegistration = async function() {
+      const email = document.getElementById('test-email').value;
+      const password = document.getElementById('test-password').value;
+      
+      logMessage('auth-results', `🔍 Testing registration with email: ${email}`);
+      
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        
+        logMessage('auth-results', `✅ Registration successful! User: ${user.email} (${user.uid})`);
+        
+        // Try to create user document
+        try {
+          await setDoc(doc(db, 'users', user.uid), {
+            uid: user.uid,
+            email: user.email,
+            displayName: '',
+            phoneNumber: '',
+            role: 'client',
+            roles: ['client'],
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+            isActive: true
+          });
+          logMessage('auth-results', '✅ User document created successfully in Firestore');
+        } catch (firestoreError) {
+          logMessage('auth-results', `⚠️ User document creation failed: ${firestoreError.message}`, 'warning');
+        }
+        
+      } catch (error) {
+        logMessage('auth-results', `❌ Registration failed: ${error.code} - ${error.message}`);
+      }
+    };
+
+    // Test password reset
+    window.testPasswordReset = async function() {
+      const email = document.getElementById('test-email').value;
+      
+      logMessage('auth-results', `🔍 Sending password reset email to: ${email}`);
+      
+      try {
+        await sendPasswordResetEmail(auth, email);
+        logMessage('auth-results', `✅ Password reset email sent successfully to ${email}`);
+      } catch (error) {
+        logMessage('auth-results', `❌ Password reset failed: ${error.code} - ${error.message}`);
+      }
+    };
+
+    // Test current user
+    window.testCurrentUser = function() {
+      const user = auth.currentUser;
+      if (user) {
+        logMessage('auth-results', `✅ Current user: ${user.email} (${user.uid})`);
+      } else {
+        logMessage('auth-results', 'ℹ️ No user currently logged in');
+      }
+    };
+
+    // Logout
+    window.logout = async function() {
+      logMessage('auth-results', '🔍 Logging out...');
+      
+      try {
+        await signOut(auth);
+        logMessage('auth-results', '✅ Logout successful');
+      } catch (error) {
+        logMessage('auth-results', `❌ Logout failed: ${error.message}`);
+      }
+    };
+
+    // Test Firestore connection
+    window.testFirestoreConnection = async function() {
+      logMessage('firestore-results', '🔍 Testing Firestore connection...');
+      
+      try {
+        // Test basic Firestore connectivity
+        const testDocRef = doc(db, '_test', 'connection');
+        await setDoc(testDocRef, {
+          timestamp: serverTimestamp(),
+          message: 'Connection test'
+        });
+        
+        const docSnap = await getDoc(testDocRef);
+        if (docSnap.exists()) {
+          logMessage('firestore-results', '✅ Firestore connection successful!');
+        } else {
+          logMessage('firestore-results', '❌ Firestore connection failed - document not found', 'error');
+        }
+      } catch (error) {
+        logMessage('firestore-results', `❌ Firestore connection failed: ${error.code} - ${error.message}`);
+        
+        if (error.code === 'permission-denied') {
+          logMessage('firestore-results', '💡 Suggestion: Firestore security rules may be blocking access. Check your security rules.', 'warning');
+        }
+      }
+    };
+
+    // Test user document operations
+    window.testUserDocument = async function() {
+      const user = auth.currentUser;
+      if (!user) {
+        logMessage('firestore-results', '❌ No user logged in. Please login first.', 'error');
+        return;
+      }
+      
+      logMessage('firestore-results', `🔍 Testing user document operations for UID: ${user.uid}`);
+      
+      try {
+        // Test reading user document
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDocSnap = await getDoc(userDocRef);
+        
+        if (userDocSnap.exists()) {
+          logMessage('firestore-results', `✅ User document found: ${JSON.stringify(userDocSnap.data())}`);
+        } else {
+          logMessage('firestore-results', 'ℹ️ User document not found. Creating new user document...');
+          
+          // Create user document
+          await setDoc(userDocRef, {
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName || '',
+            phoneNumber: user.phoneNumber || '',
+            role: 'client',
+            roles: ['client'],
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+            isActive: true
+          });
+          
+          logMessage('firestore-results', '✅ User document created successfully');
+        }
+      } catch (error) {
+        logMessage('firestore-results', `❌ User document operation failed: ${error.code} - ${error.message}`);
+      }
+    };
+
+    // Test booking document operations
+    window.testBookingDocument = async function() {
+      const user = auth.currentUser;
+      if (!user) {
+        logMessage('firestore-results', '❌ No user logged in. Please login first.', 'error');
+        return;
+      }
+      
+      logMessage('firestore-results', `🔍 Testing booking document operations for user: ${user.email}`);
+      
+      try {
+        // Create a test booking
+        const bookingRef = doc(collection(db, 'bookings'));
+        const bookingData = {
+          id: bookingRef.id,
+          clientId: user.uid,
+          clientUid: user.uid,
+          serviceType: 'test-service',
+          serviceDetails: { test: true },
+          location: {
+            address: 'Test Address',
+            latitude: 0,
+            longitude: 0
+          },
+          schedule: {
+            date: new Date(),
+            time: '12:00 PM'
+          },
+          status: 'pending',
+          pricing: {
+            basePrice: 100,
+            additionalCharges: 0,
+            discount: 0,
+            totalPrice: 100
+          },
+          paymentStatus: 'pending',
+          notes: 'Test booking',
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        };
+        
+        await setDoc(bookingRef, bookingData);
+        logMessage('firestore-results', `✅ Test booking created: ${bookingRef.id}`);
+        
+        // Test reading the booking
+        const bookingDocSnap = await getDoc(bookingRef);
+        if (bookingDocSnap.exists()) {
+          logMessage('firestore-results', `✅ Test booking retrieved: ${JSON.stringify(bookingDocSnap.data())}`);
+        }
+        
+        // Test querying bookings for the user
+        const bookingsQuery = query(
+          collection(db, 'bookings'),
+          where('clientUid', '==', user.uid),
+          where('serviceType', '==', 'test-service')
+        );
+        const querySnapshot = await getDocs(bookingsQuery);
+        
+        logMessage('firestore-results', `✅ Found ${querySnapshot.docs.length} test bookings for user`);
+        
+      } catch (error) {
+        logMessage('firestore-results', `❌ Booking operation failed: ${error.code} - ${error.message}`);
+      }
+    };
+
+    // Initialize on page load
+    window.addEventListener('load', initializeFirebase);
+  </script>
+</body>
+</html>

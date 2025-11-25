@@ -1,0 +1,59 @@
+{
+    "records": [
+        {
+            "email": "otp.test+web@example.com",
+            "code": "678170",
+            "expires": 1762554352533
+        },
+        {
+            "email": "new.user+otp@local.test",
+            "code": "794700",
+            "expires": 1762554420001
+        },
+        {
+            "email": "qa.otp.email+dev@example.com",
+            "code": "209440",
+            "expires": 1762554677095
+        },
+        {
+            "email": "markjoshupunzalan2@gmail.com",
+            "code": "543725",
+            "expires": 1762562262635
+        },
+        {
+            "email": "markjoshuapunzalan2@gmail.com",
+            "code": "134964",
+            "expires": 1762570466838
+        },
+        {
+            "email": "dean@cdsp.edu.ph",
+            "code": "184202",
+            "expires": 1762577116001
+        },
+        {
+            "email": "milkylorejo@gmail.com",
+            "code": "517106",
+            "expires": 1762577289580
+        },
+        {
+            "email": "dbuser@haustap.local",
+            "code": "773966",
+            "expires": 1762784447901
+        },
+        {
+            "email": "devtest@example.com",
+            "code": "517325",
+            "expires": 1762891236931
+        },
+        {
+            "email": "haustap4024@gmail.com",
+            "code": "475056",
+            "expires": 1762893929732
+        },
+        {
+            "email": "joshua.punzalan@cdsp.edu.ph",
+            "code": "832073",
+            "expires": 1762894977008
+        }
+    ]
+}

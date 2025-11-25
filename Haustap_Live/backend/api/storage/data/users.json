@@ -1,0 +1,40 @@
+{
+    "users": [
+        {
+            "name": "Mark Joshua Punzalan",
+            "email": "markjoshuapunzalan2@gmail.com",
+            "password_hash": "$2y$12$FEwRLejg6caiEqQccQms9OIEUogvUxECGvh19dvCbQj0mpfxCNmY6",
+            "role": "client"
+        },
+        {
+            "name": "QA User",
+            "email": "new.user+otp@local.test",
+            "password_hash": "$2y$12$Qr50FozH6yBa9FLNV\/Pgqu39uxHXcwNPmFnBXJco81M2cfmHirUAO",
+            "role": "client"
+        },
+        {
+            "name": "Mc Organo",
+            "email": "carleslie.organo@cdsp.edu.ph",
+            "password_hash": "$2y$12$DbOT2wHjeaacdNImCkr\/iunxXXBWAT8NlK3n4hWOOba0N.jGP\/tlO",
+            "role": "client"
+        },
+        {
+            "name": "Client Client",
+            "email": "dean@cdsp.edu.ph",
+            "password_hash": "$2y$12$04cwfcOz2WMC.i\/KPNFF1.YoBXhx4Qkn7.LOlcUqqCIBrnArwepTS",
+            "role": "client"
+        },
+        {
+            "name": "Client Client",
+            "email": "milkylorejo@gmail.com",
+            "password_hash": "$2y$12$PyS0MnLup.EMK65iJp6oo.25P3B0aDQsTBGoiKP5d4NJFzknzdTxm",
+            "role": "client"
+        },
+        {
+            "name": "Demo User",
+            "email": "demo@haustap.local",
+            "password_hash": "$2y$12$5bC6yrJYgHqRdOsL8QE2x.vl8hjJy9KRlE\/ihnrFDPVm42\/ZwhTBC",
+            "role": "client"
+        }
+    ]
+}

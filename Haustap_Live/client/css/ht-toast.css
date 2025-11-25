@@ -1,0 +1,114 @@
+/* Haustap-themed toast notifications */
+.ht-toast-container {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.ht-toast {
+  min-width: 280px;
+  max-width: 420px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  border-radius: 10px;
+  overflow: hidden;
+  color: #1e1e1e;
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: opacity 160ms ease, transform 160ms ease;
+  pointer-events: auto;
+}
+
+.ht-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ht-toast__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex: 0 0 28px;
+  color: #fff;
+}
+
+.ht-toast__content {
+  flex: 1 1 auto;
+}
+
+.ht-toast__title {
+  font-weight: 700;
+  font-size: 14px;
+  margin: 0 0 2px 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.ht-toast__body {
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.4;
+  color: #4a4a4a;
+}
+
+.ht-toast__close {
+  border: none;
+  background: transparent;
+  color: #666;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px;
+}
+
+/* Variants (aligned with Haustap palette) */
+.ht-toast--success .ht-toast__icon {
+  background: #2FB576; /* Haustap green */
+}
+.ht-toast--info .ht-toast__icon {
+  background: #3A7FD5; /* Calm blue */
+}
+.ht-toast--error .ht-toast__icon {
+  background: #E74C3C; /* Red */
+}
+.ht-toast--warning .ht-toast__icon {
+  background: #F39C12; /* Orange */
+}
+
+.ht-toast--success {
+  border-color: rgba(47, 181, 118, 0.25);
+}
+.ht-toast--error {
+  border-color: rgba(231, 76, 60, 0.25);
+}
+.ht-toast--info {
+  border-color: rgba(58, 127, 213, 0.25);
+}
+.ht-toast--warning {
+  border-color: rgba(243, 156, 18, 0.25);
+}
+
+@media (max-width: 540px) {
+  .ht-toast-container {
+    left: 12px;
+    right: 12px;
+    top: 12px;
+  }
+  .ht-toast {
+    min-width: auto;
+    width: 100%;
+  }
+}
+

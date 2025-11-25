@@ -1,0 +1,318 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #fff;
+  color: #333;
+}
+
+        .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 40px 60px;
+  box-sizing: border-box;
+}
+
+.logo-img {
+  height: 100px;
+  width: auto;
+  display: block;
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+  margin-left: 24px;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+
+.nav a.active {
+  color: #3dbfc3;
+  border-bottom: 2px solid #3dbfc3;
+}
+
+.nav a:hover {
+  color: #009999;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 30px;
+  padding: 4px 12px;
+  box-shadow: 7px 5px rgba(0,0,0,0.15);
+}
+
+.search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 15px;
+  padding: 6px 0;
+  width: 120px;
+}
+
+.search-box i {
+  font-size: 18px;
+  color: #888;
+}
+
+.signup-link a,
+.login-link a {
+  color: black;          
+  text-decoration: none; 
+  font-weight: 500;      
+  font-family: inherit;   
+}
+
+.signup-link a:hover,
+.login-link a:hover {
+  color: rgb(28, 228, 228);      
+  text-decoration: underline; 
+}
+
+
+/* ABOUT SECTION */
+.about {
+  text-align: center;
+  padding: 60px 80px;
+}
+
+.about h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.about .subtitle {
+  color: #555;
+  font-size: 16px;
+  margin-bottom: 25px;
+}
+
+.about .description {
+  font-size: 15px;
+  max-width: 800px;
+  margin: 0 auto 50px;
+  line-height: 1.6;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  padding: 25px 20px;
+  max-width: 300px;
+}
+
+.card h3 {
+  margin-bottom: 10px;
+  color: #00a5b4;
+}
+
+.card ul {
+  list-style: none;
+}
+
+.card ul li {
+  margin: 6px 0;
+}
+
+/* WHY CHOOSE */
+.why-choose {
+  text-align: center;
+  padding: 50px 70px;
+}
+
+.why-choose h3 {
+  font-size: 22px;
+  margin-bottom: 40px;
+}
+
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.feature {
+  max-width: 230px;
+}
+
+.feature h4 {
+  color: #00a5b4;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.feature p {
+  font-size: 14px;
+}
+
+.bottom-line {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.read-more {
+  color: #00a5b4;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: #e6e6e6;
+  padding: 50px 70px 25px;
+  color: #000;
+  min-height: 200px;
+  position: relative;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  min-height: 150px;
+  position: relative;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  flex: 1;
+  min-width: 220px;
+}
+
+/* LEFT SECTION */
+.footer-left h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-left ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-left li {
+  margin-bottom: 5px;
+}
+
+.footer-left a {
+  text-decoration: none;
+  color: #000;
+}
+
+.footer-left a:hover {
+  color: #10bfc9;
+}
+
+/* CENTER SECTION */
+.footer-center {
+  text-align: center;
+}
+
+.footer-center img {
+  width: 100px;
+}
+
+.footer-center p {
+  font-size: 13px;
+}
+
+/* RIGHT SECTION */
+.footer-right {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.footer-right h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-right ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 50px;
+  right: 0;
+}
+
+.footer-right li {
+  margin-bottom: 6px;
+}
+
+.footer-right .contact-info {
+  position: absolute;
+  bottom: -40px;
+  right: 0;
+  margin: 0;
+}
+
+.footer-right .contact-info p {
+  font-size: 13px;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* FOOTER BOTTOM */
+.footer-bottom {
+  text-align: center;
+  font-weight: 600;
+  margin-top: 40px;
+  border-top: 1px solid #d1d1d1;
+  padding-top: 10px;
+  font-size: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .booking-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .map-container {
+    height: 200px;
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}

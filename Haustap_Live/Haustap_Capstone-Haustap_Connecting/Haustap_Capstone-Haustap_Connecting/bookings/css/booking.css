@@ -1,0 +1,600 @@
+      body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+      background: #f7fafc; /* subtle gray background to match modern app style */
+    }
+      .mytabs {
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 1000px;
+      margin: 24px auto 48px auto;
+      padding: 12px;
+    }
+    .mytabs input[type="radio"] {
+      display: none;
+    }
+    .mytabs label {
+    flex: 1; /* equal width */
+    text-align: center;
+    padding: 10px 0;
+    margin: 6px;
+    background: #f8fafc;
+    color: #334155;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #e5e7eb;
+    border-radius: 9999px; /* pill */
+    transition: all 0.2s ease;
+    }
+    .mytabs label:last-of-type {
+    border-right: none;
+    }
+    .mytabs .tab {
+      border: none;
+      width : 100%;
+      padding: 8px 8px 16px;
+      background: transparent;
+      order: 1;
+      display: none;      
+    }
+    
+    .mytabs input[type='radio']:checked + label + .tab {
+      display: block;
+    }
+    .mytabs input[type="radio"]:checked + label {
+      background: #10bfc9; /* HausTap teal */
+      border-color: #10bfc9;
+      color: #fff;
+      box-shadow: 0 8px 16px rgba(16,191,201,0.25);
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 48px 16px 48px;
+      border-bottom: 1px solid #eee;
+    }
+    .logo-img {
+      height: 80px;
+      width: auto;
+    }
+    .nav {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+    .nav a {
+      text-decoration: none;
+      color: #222;
+      font-weight: 500;
+      font-size: 16px;
+      padding-bottom: 2px;
+    }
+    .nav a.active {
+      color: #3dbfc3;
+      border-bottom: 2px solid #3dbfc3;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #f5f5f5;
+      border-radius: 30px;
+      padding: 4px 12px;
+      box-shadow:  7px 5px rgba(0, 0, 0, 0.15);
+    }
+    .search-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 15px;
+      padding: 6px 0;
+      width: 120px;
+    }
+    .search-icon {
+      font-size: 18px;
+      color: #888;
+    }
+    .icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #222;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.icon-button i {
+  font-size: 25px;
+  color: #131313;
+  transition: transform 0.3s, color 0.3s;
+}
+
+.icon-button:hover i,
+.icon-button:hover span {
+  color: rgb(30, 228, 228);
+}
+
+.icon-button:hover i {
+  transform: scale(1.15);
+}
+
+.account-link {
+  text-decoration: none;
+}
+
+.account-link i {
+  font-size: 25px;
+}
+
+/* Header */
+  .booking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  
+  .booking-header h2 {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  .booking-header p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+  }
+
+  .booking-status {
+    text-align: right;
+    font-size: 12px;
+  }
+
+  .booking-status .status {
+    color: #1a9fd6;
+    font-weight: bold;
+    margin-left: 5px;
+  }
+
+/* Details (like a table layout) */
+  .booking-details {
+    display: flex;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    margin: 10px 0;
+  }
+
+  /* remove separators for specific blocks, like Pending total area */
+  .booking-details.no-border {
+    border-top: none;
+    border-bottom: none;
+  }
+
+  .detail {
+    flex: 1;
+    padding: 10px;
+    border-right: 1px solid #ddd;
+  }
+
+  .detail:last-child {
+    border-right: none;
+  }
+
+  .detail strong {
+    display: block;
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 5px;
+  }
+
+  .detail p {
+    margin: 0;
+    font-size: 14px;
+  }
+
+/* booking card */
+  .booking_tables {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin: 12px 0;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+  }
+
+/* booking-footer */
+  .booking-footer, .service-provider, .provider-info, .provider-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* keep everything aligned from top */
+  margin-top: 10px;
+}
+
+/* push action buttons to the right side of the footer */
+.booking-footer .actions {
+  margin-left: auto;           /* take remaining space on the left */
+  display: flex;               /* keep buttons in a row */
+  justify-content: flex-end;   /* align items to the right inside actions */
+  align-items: center;
+  gap: 8px;                    /* spacing between buttons */
+}
+
+/* add separation line below the footer actions */
+  .booking-footer {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 12px; /* space after the line */
+}
+
+  .booking-footer-total-strong {
+    font-size: 16px;
+  }
+  /* Table total row */
+  .booking-details {
+  display: flex;        /* already used, kept for safety */
+  flex-wrap: wrap;      /* allow children to wrap to new lines */
+  align-items: flex-start;
+  gap: 0;
+}
+
+/* the full-width total row: span label + price aligned to the right */
+.booking-details .detail.full-width {
+  flex: 1 1 100%;           /* occupy entire row */
+  display: flex;
+  justify-content: flex-end;/* keep label + price on the right */
+  align-items: center;
+  gap: 8px;
+  padding: 10px;            /* keep consistent spacing */
+  box-sizing: border-box;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* Status pills */
+.status-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.status-pill.pending { background: #fef3c7; color: #b45309; }
+.status-pill.ongoing { background: #e0f2fe; color: #1e3a8a; }
+.status-pill.completed { background: #dcfce7; color: #065f46; }
+.status-pill.cancelled { background: #fee2e2; color: #991b1b; }
+
+/* ensure the two spans don't wrap */
+.booking-details .detail.full-width span {
+  white-space: nowrap;
+}
+
+/* subtle styling for label vs price (optional tweak) */
+.booking-details .detail.full-width span:first-child {
+  opacity: 0.9;
+  font-weight: 600;
+}
+.booking-details .detail.full-width span:last-child {
+  color: #000;
+  font-weight: 800;
+}
+
+/* the note: force it to full width and center it below the total */
+.booking-details .payment-note {
+  flex: 1 1 100%;         /* occupy full row under the total */
+  order: 2;               /* ensure it appears after the total row */
+  margin: 8px 0 18px 0;   /* space between total and footer */
+  text-align: center;
+  font-size: 10px;
+  font-style: italic;
+  font-weight: bold;
+  color: #666;
+  line-height: 1.35;
+  box-sizing: border-box;
+}
+
+.payment-note {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #666;
+  text-align: center;   /* center the note under the box */
+}
+  .actions .proceed {
+    background: #fff;
+    color: #0f172a;
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border: 1px solid #e5e7eb;
+    transition: transform 0.2s ease, background 0.3s ease;
+  }
+  .actions .proceed:hover {
+    background: #f8fafc;
+    transform: translateY(-1px);
+  }
+  .actions .rate {
+    background: #10bfc9;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border: 1px solid #10bfc9;
+    transition: transform 0.2s ease, background 0.3s ease;
+  }
+  .actions .rate:hover {
+    background: #0fb0b9;
+    transform: translateY(-1px);
+  }
+  .dropdown-menu a:hover {
+      background: #b3b3b3;
+    }
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+.completed {
+  color: green;   /* finished */
+}
+
+.pending {
+  color: gray;    /* not yet started */
+}
+
+  
+.account-icon {
+  font-size: 15px;
+  color: cyan;
+}
+
+.request-return {
+  width: 350px;            /* wider dropdown */
+  border: 1px solid #b3b3b3;  /* light border like modal */
+  border-radius: 6px;      /* rounded corners */
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  top: 100%;               /* position below button */
+}
+
+.request-return h6 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.request-return .form-check {
+  background: #fff;
+  transition: background 0.2s ease;
+}
+
+.request-return .form-check:hover {
+  background: #ffff;
+}
+
+.request-return .form-check-input {
+  margin-top: 0.35rem;
+}
+
+.request-return small {
+  font-size: 12px;
+  color: #ffff;
+}
+
+.request-return .btn-close {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.request-return .btn-close:hover {
+  opacity: 1;
+}
+
+.service-provider {
+  display: flex;
+  flex-direction: column; /* stack name & rating */
+  gap: 4px;
+}
+
+.service-provider-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.service-provider-top .account-icon {
+  font-size: 18px;
+  color: #10bfc9;
+}
+
+.service-provider-top .message-icon {
+  font-size: 16px;
+  cursor: pointer;
+}
+.service-provider .rating {
+  font-size: 14px;
+  color: #555;
+  margin-left: 24px; /* indent under name */
+}
+.mytabs {
+  margin-bottom: 80px;
+  margin-top: 60px; /* increase/decrease to taste */
+}
+
+.tab {
+  position: relative; /* make positioning possible inside tab */
+}
+
+.after-bookings {
+  position: absolute;
+  bottom: -50px;   /* push it outside the tab box */
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 15px;
+  color: #444;
+  font-style: italic;
+}
+
+.rate-actions {
+  display: flex;
+  justify-content: flex-end; /* ✅ keeps buttons at right */
+  gap: 8px;
+  margin-bottom: 8px;        /* ✅ gives space for the text */
+}
+
+.return-reminder {
+  font-size: 9px;
+  font-style: italic;
+  text-align: right;
+  margin-top: 5px;
+  line-height: 1.4;
+}
+.cancellation_details {
+  font-size: 12px;
+  text-decoration: underline;
+  font-style: italic;
+  text-align: left;
+  margin-top: 5px;
+  line-height: 1.4;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: #e6e6e6;
+  padding: 50px 70px 25px;
+  color: #000;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  flex: 1;
+  min-width: 220px;
+}
+
+/* LEFT SECTION */
+.footer-left h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-left ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-left li {
+  margin-bottom: 5px;
+}
+
+.footer-left a {
+  text-decoration: none;
+  color: #000;
+}
+
+.footer-left a:hover {
+  color: #10bfc9;
+}
+
+/* CENTER SECTION */
+.footer-center {
+  text-align: center;
+}
+
+.footer-center img {
+  width: 100px;
+}
+
+.footer-center p {
+  font-size: 13px;
+}
+
+/* RIGHT SECTION */
+.footer-right {
+  text-align: right;
+}
+
+.footer-right h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-right ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-right li {
+  margin-bottom: 6px;
+}
+
+.footer-right .contact-info p {
+  font-size: 13px;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* FOOTER BOTTOM */
+.footer-bottom {
+  text-align: center;
+  font-weight: 600;
+  margin-top: 25px;
+  border-top: 1px solid #d1d1d1;
+  padding-top: 10px;
+  font-size: 14px;
+}
+
+/* HausTap button variants (used in dynamic actions) */
+.btn-ht {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.btn-ht-primary {
+  background: #10bfc9;
+  color: #fff;
+  border: 1px solid #10bfc9;
+  box-shadow: 0 2px 8px rgba(16, 191, 201, 0.25);
+}
+.btn-ht-primary:hover { background: #0fb0b9; transform: translateY(-1px); }
+.btn-ht-outline {
+  background: #fff;
+  color: #0f172a;
+  border: 1px solid #e5e7eb;
+}
+.btn-ht-outline:hover { background: #f8fafc; transform: translateY(-1px); }
+/* Disabled state */
+.btn-ht:disabled,
+.btn-ht.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+    

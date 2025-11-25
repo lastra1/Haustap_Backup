@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Firestore Connection</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div style="max-width: 800px; margin: 0 auto; padding: 20px;">
+        <h1>Test Firestore Connection</h1>
+        
+        <div id="status" style="padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px;">
+            <strong>Status:</strong> <span id="status-text">Initializing...</span>
+        </div>
+
+        <div id="auth-section" style="display: none;">
+            <h2>Authentication</h2>
+            <input type="email" id="email" placeholder="Email" style="display: block; margin: 10px 0; padding: 8px; width: 300px;">
+            <input type="password" id="password" placeholder="Password" style="display: block; margin: 10px 0; padding: 8px; width: 300px;">
+            <button onclick="login()" style="padding: 10px 20px; margin: 5px;">Login</button>
+            <button onclick="register()" style="padding: 10px 20px; margin: 5px;">Register</button>
+            <button onclick="logout()" style="padding: 10px 20px; margin: 5px;">Logout</button>
+        </div>
+
+        <div id="firestore-section" style="display: none;">
+            <h2>Firestore Tests</h2>
+            <button onclick="testUserWrite()" style="padding: 10px 20px; margin: 5px;">Test User Write</button>
+            <button onclick="testBookingWrite()" style="padding: 10px 20px; margin: 5px;">Test Booking Write</button>
+            <button onclick="testUserRead()" style="padding: 10px 20px; margin: 5px;">Test User Read</button>
+            <button onclick="testBookingRead()" style="padding: 10px 20px; margin: 5px;">Test Booking Read</button>
+        </div>
+
+        <div id="results" style="margin-top: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;">
+            <h3>Test Results:</h3>
+            <div id="results-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCfhR1vIh8_z4TAmdaQRESHB459CsVqJ9M",
+            authDomain: "haustap-booking-system.firebaseapp.com",
+            projectId: "haustap-booking-system",
+            storageBucket: "haustap-booking-system.firebasestorage.app",
+            messagingSenderId: "515769404711",
+            appId: "1:515769404711:web:ddf0b32df0498eb18aad02"
+        };
+
+        // Initialize Firebase
+        let app;
+        let auth;
+        let db;
+
+        function updateStatus(message, isError = false) {
+            const statusElement = document.getElementById('status-text');
+            statusElement.textContent = message;
+            statusElement.style.color = isError ? 'red' : 'green';
+            addResult(`Status: ${message}`);
+        }
+
+        function addResult(message) {
+            const resultsElement = document.getElementById('results-content');
+            const timestamp = new Date().toLocaleTimeString();
+            resultsElement.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            resultsElement.scrollTop = resultsElement.scrollHeight;
+        }
+
+        try {
+            app = firebase.initializeApp(firebaseConfig);
+            auth = firebase.auth();
+            db = firebase.firestore();
+            
+            updateStatus('Firebase initialized successfully');
+            document.getElementById('auth-section').style.display = 'block';
+            
+            // Listen for auth state changes
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    updateStatus(`User logged in: ${user.email}`);
+                    document.getElementById('firestore-section').style.display = 'block';
+                } else {
+                    updateStatus('No user logged in');
+                    document.getElementById('firestore-section').style.display = 'none';
+                }
+            });
+            
+        } catch (error) {
+            updateStatus(`Firebase initialization error: ${error.message}`, true);
+            console.error('Firebase initialization error:', error);
+        }
+
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                addResult(`Login successful: ${userCredential.user.email}`);
+            } catch (error) {
+                addResult(`Login error: ${error.message}`, true);
+                console.error('Login error:', error);
+            }
+        }
+
+        async function register() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Create user document in Firestore
+                try {
+                    await db.collection('users').doc(user.uid).set({
+                        uid: user.uid,
+                        email: user.email,
+                        displayName: '',
+                        phoneNumber: '',
+                        role: 'client',
+                        roles: ['client'],
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        isActive: true
+                    });
+                    addResult(`User document created successfully`);
+                } catch (firestoreError) {
+                    addResult(`User document creation failed: ${firestoreError.message}`, true);
+                    console.error('User document creation error:', firestoreError);
+                }
+                
+                addResult(`Registration successful: ${user.email}`);
+            } catch (error) {
+                addResult(`Registration error: ${error.message}`, true);
+                console.error('Registration error:', error);
+            }
+        }
+
+        async function logout() {
+            try {
+                await auth.signOut();
+                addResult('Logout successful');
+            } catch (error) {
+                addResult(`Logout error: ${error.message}`, true);
+                console.error('Logout error:', error);
+            }
+        }
+
+        async function testUserWrite() {
+            const user = auth.currentUser;
+            if (!user) {
+                addResult('No user logged in', true);
+                return;
+            }
+            
+            try {
+                await db.collection('users').doc(user.uid).update({
+                    lastTest: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                addResult('User write test successful');
+            } catch (error) {
+                addResult(`User write test failed: ${error.message}`, true);
+                console.error('User write test error:', error);
+            }
+        }
+
+        async function testBookingWrite() {
+            const user = auth.currentUser;
+            if (!user) {
+                addResult('No user logged in', true);
+                return;
+            }
+            
+            try {
+                const bookingRef = db.collection('bookings').doc();
+                await bookingRef.set({
+                    id: bookingRef.id,
+                    clientId: user.uid,
+                    clientUid: user.uid,
+                    serviceType: 'test-service',
+                    serviceDetails: { test: true },
+                    location: {
+                        address: 'Test Address',
+                        latitude: 0,
+                        longitude: 0
+                    },
+                    schedule: {
+                        date: new Date(),
+                        time: '12:00 PM'
+                    },
+                    status: 'pending',
+                    pricing: {
+                        basePrice: 100,
+                        additionalCharges: 0,
+                        discount: 0,
+                        totalPrice: 100
+                    },
+                    paymentStatus: 'pending',
+                    notes: 'Test booking',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                addResult(`Booking write test successful: ${bookingRef.id}`);
+            } catch (error) {
+                addResult(`Booking write test failed: ${error.message}`, true);
+                console.error('Booking write test error:', error);
+            }
+        }
+
+        async function testUserRead() {
+            const user = auth.currentUser;
+            if (!user) {
+                addResult('No user logged in', true);
+                return;
+            }
+            
+            try {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (userDoc.exists) {
+                    addResult(`User read test successful: ${JSON.stringify(userDoc.data())}`);
+                } else {
+                    addResult('User document not found', true);
+                }
+            } catch (error) {
+                addResult(`User read test failed: ${error.message}`, true);
+                console.error('User read test error:', error);
+            }
+        }
+
+        async function testBookingRead() {
+            const user = auth.currentUser;
+            if (!user) {
+                addResult('No user logged in', true);
+                return;
+            }
+            
+            try {
+                const bookingsSnapshot = await db.collection('bookings')
+                    .where('clientUid', '==', user.uid)
+                    .limit(5)
+                    .get();
+                
+                addResult(`Booking read test successful: Found ${bookingsSnapshot.docs.length} bookings`);
+                bookingsSnapshot.docs.forEach(doc => {
+                    addResult(`Booking: ${doc.id} - ${JSON.stringify(doc.data())}`);
+                });
+            } catch (error) {
+                addResult(`Booking read test failed: ${error.message}`, true);
+                console.error('Booking read test error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

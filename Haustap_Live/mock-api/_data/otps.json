@@ -1,0 +1,50 @@
+{
+    "mock-otp-b0770ade": {
+        "id": "mock-otp-b0770ade",
+        "code": "062606",
+        "email": "carleslie.organo@cdsp.edu.ph",
+        "mobile": "09931779617",
+        "created_at": 1762429856,
+        "expires_at": 1762430156
+    },
+    "mock-otp-32f3671c": {
+        "id": "mock-otp-32f3671c",
+        "code": "412783",
+        "email": "carleslie.organo@cdsp.edu.ph",
+        "mobile": "09931779617",
+        "created_at": 1762429861,
+        "expires_at": 1762430161
+    },
+    "mock-otp-30296911": {
+        "id": "mock-otp-30296911",
+        "code": "179664",
+        "email": "joshua.punzalan@cdsp.edu.ph",
+        "mobile": "0941779617",
+        "created_at": 1762431860,
+        "expires_at": 1762432160
+    },
+    "mock-otp-23fa338c": {
+        "id": "mock-otp-23fa338c",
+        "code": "922357",
+        "email": "markjoshuapunzalan2@gmail.con",
+        "mobile": null,
+        "created_at": 1762439759,
+        "expires_at": 1762440059
+    },
+    "mock-otp-96584f12": {
+        "id": "mock-otp-96584f12",
+        "code": "153161",
+        "email": "joshua.punzalan@cdsp.edu.ph",
+        "mobile": null,
+        "created_at": 1762439797,
+        "expires_at": 1762440097
+    },
+    "mock-otp-95d5b7b0": {
+        "id": "mock-otp-95d5b7b0",
+        "code": "123401",
+        "email": "joshua.punzalan@cdsp.edu.ph",
+        "mobile": null,
+        "created_at": 1762890137,
+        "expires_at": 1762890437
+    }
+}

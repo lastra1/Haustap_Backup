@@ -1,0 +1,13 @@
+{
+    "dbuser@haustap.local": {
+        "email": "dbuser@haustap.local",
+        "name": "DB User",
+        "phone": "+63 900 000 0000",
+        "experience": "3 years",
+        "services": [
+            "Cleaning"
+        ],
+        "status": "pending",
+        "submitted_at": "2025-11-10T14:16:08+00:00"
+    }
+}

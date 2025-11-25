@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Connection Test</title>
+</head>
+<body>
+    <h1>Firebase Connection Test</h1>
+    <div id="status">Testing connection...</div>
+    <div id="result"></div>
+
+    <script>
+        async function testFirebaseConnection() {
+            const statusEl = document.getElementById('status');
+            const resultEl = document.getElementById('result');
+            
+            try {
+                // Test the API endpoint
+                statusEl.textContent = 'Testing API connection...';
+                const response = await fetch('http://localhost:3001/api/firebase/firebase-config');
+                const data = await response.json();
+                
+                if (data.success && data.config) {
+                    resultEl.innerHTML = '<h3>✅ API Connection Successful!</h3>';
+                    resultEl.innerHTML += '<p>Firebase config received:</p>';
+                    resultEl.innerHTML += '<pre>' + JSON.stringify(data.config, null, 2) + '</pre>';
+                    
+                    // Test Firebase initialization
+                    statusEl.textContent = 'Testing Firebase initialization...';
+                    
+                    // Import Firebase
+                    const script = document.createElement('script');
+                    script.src = 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js';
+                    document.head.appendChild(script);
+                    
+                    script.onload = () => {
+                        try {
+                            firebase.initializeApp(data.config);
+                            resultEl.innerHTML += '<h3>✅ Firebase Initialized Successfully!</h3>';
+                            statusEl.textContent = 'All tests passed! Firebase connection is working.';
+                        } catch (error) {
+                            resultEl.innerHTML += '<h3>❌ Firebase Initialization Failed:</h3>';
+                            resultEl.innerHTML += '<p>' + error.message + '</p>';
+                            statusEl.textContent = 'Firebase initialization failed.';
+                        }
+                    };
+                } else {
+                    resultEl.innerHTML = '<h3>❌ API Connection Failed:</h3>';
+                    resultEl.innerHTML += '<p>Invalid response format</p>';
+                    statusEl.textContent = 'API test failed.';
+                }
+            } catch (error) {
+                resultEl.innerHTML = '<h3>❌ Connection Error:</h3>';
+                resultEl.innerHTML += '<p>' + error.message + '</p>';
+                statusEl.textContent = 'Connection test failed.';
+            }
+        }
+        
+        // Run test when page loads
+        testFirebaseConnection();
+    </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+    "conversations": [
+        {
+            "id": "booking_2",
+            "booking_id": 2,
+            "client_id": 1,
+            "provider_id": 1,
+            "opened_at": 1762784104571
+        }
+    ],
+    "messages": [],
+    "next_msg_id": 1
+}

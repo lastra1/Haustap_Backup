@@ -1,0 +1,20 @@
+[
+  {
+    "email": "example@haustap.local",
+    "voucher_id": "WELCOME-50",
+    "title": "Welcome Voucher",
+    "amount": 50,
+    "currency": "PHP",
+    "status": "redeemed",
+    "redeemed_at": 1762442000000
+  },
+  {
+    "email": "example@haustap.local",
+    "voucher_id": "LOYALTY-50",
+    "title": "Loyalty Bonus",
+    "amount": 50,
+    "currency": "PHP",
+    "status": "expired",
+    "expired_at": 1762441000000
+  }
+]

@@ -1,0 +1,165 @@
+
+export const homeCleaningCategories: ServiceCategory[] = [
+  {
+    title: "Studio",
+    size: "Up to 500 sqft",
+    desc: "Basic cleaning for small studio apartments",
+    price: "₱100"
+  },
+  {
+    title: "1 Bedroom",
+    size: "500-1000 sqft",
+    desc: "Complete cleaning for 1 bedroom apartments",
+    price: "₱150"
+  },
+  {
+    title: "2 Bedroom",
+    size: "1000-1500 sqft",
+    desc: "Thorough cleaning for 2 bedroom apartments",
+    price: "₱200"
+  },
+  {
+    title: "3+ Bedroom",
+    size: "1500+ sqft",
+    desc: "Deep cleaning for large apartments",
+    price: "₱250+"
+  }
+];
+
+export const acCleaningCategories: ServiceCategory[] = [
+  {
+    title: "Split AC Unit",
+    desc: "Regular cleaning and maintenance for split AC units",
+    price: "₱80"
+  },
+  {
+    title: "Window AC Unit",
+    desc: "Complete cleaning service for window AC units",
+    price: "₱70"
+  },
+  {
+    title: "Central AC",
+    desc: "Professional cleaning for central AC systems",
+    price: "₱150+"
+  }
+];
+
+export const acDeepCleaningCategories: ServiceCategory[] = [
+  {
+    title: "Split AC Deep Clean",
+    desc: "Chemical cleaning for split AC units",
+    price: "₱150"
+  },
+  {
+    title: "Window AC Deep Clean",
+    desc: "Chemical cleaning for window AC units",
+    price: "₱130"
+  },
+  {
+    title: "Central AC Deep Clean",
+    desc: "Chemical cleaning for central AC systems",
+    price: "₱250+"
+  }
+];
+// Type definitions
+interface ServiceCategory {
+  title: string;
+  desc: string;
+  price: string;
+  size?: string;
+}
+
+export const indoorServicesCategories: Record<string, ServiceCategory[]> = {
+  Handyman: [
+    { title: "Inspection Fee", price: "₱300", desc: "Applies if service did not proceed\nInclusions:\nOn-site visit by a handyman, Assessment of repair/service needs, Basic recommendation, No actual repair or installation included" },
+    { title: "Furniture Assembly - Small Items", price: "₱350 per unit", desc: "Inclusions:\nChair, stool, side table, shelves, Complete furniture assembly, Tightening of screws, bolts, and fittings, Alignment and stability check, Minor adjustments for proper function" },
+    { title: "Furniture Assembly - Medium Items", price: "₱500 per unit", desc: "Inclusions:\nOffice table, study table, small cabinet, Complete furniture assembly, Tightening of screws, bolts, and fittings, Alignment and stability check, Minor adjustments for proper function" },
+    { title: "Furniture Assembly - Large Items", price: "₱800 per unit", desc: "Inclusions:\nBed frame, wardrobe, big cabinet, Complete furniture assembly, Tightening of screws, bolts, and fittings, Alignment and stability check, Minor adjustments for proper function" },
+    { title: "Door knob / Lock replacement", price: "₱400 per unit", desc: "Inclusions:\nRemoval of old hardware, Installation/replacement of knob, lock, or hinge, Proper alignment and door function test, Lubrication of moving parts (if needed)" },
+    { title: "Door hinge replacement", price: "₱300 per unit", desc: "Inclusions:\nRemoval of old hardware, Installation/replacement of knob, lock, or hinge, Proper alignment and door function test, Lubrication of moving parts (if needed)" },
+    { title: "Sliding door / Closet adjustment", price: "₱350 per unit", desc: "Inclusions:\nAdjustment or minor repairs to sliding doors or closet mechanisms, Alignment and function check, Lubrication of moving tracks or rollers" }
+  ],
+  Plumbing: [
+    { title: "Inspection Fee", price: "₱300", desc: "Applies if service did not proceed\nInclusions:\nOn-site visit by a plumber, Assessment of repair/service needs, Basic recommendation, No actual repair or installation included" },
+    { title: "Faucet leak repair", price: "₱350 per repair", desc: "Inclusions:\nDiagnosis of faucet leak (washer, cartridge, or seal issue), Minor tightening / washer replacement, Leak test after repair, Replacement faucet not included" },
+    { title: "Pipe leak repair", price: "₱600 per repair", desc: "Inclusions:\nLocate and assess pipe leak, Apply sealing, patch, or minor joint repair, Pressure test after repair, Replacement pipe parts not included" }
+  ],
+  Electrical: [
+    { title: "Inspection Fee", price: "₱300", desc: "Applies if service did not proceed\nInclusions:\nOn-site visit by an electrician, Assessment of electrical issues, Basic recommendation, No actual repair or installation included" },
+    { title: "Light fixture installation", price: "₱300 per unit", desc: "Inclusions:\nRemoval of old fixture (if needed), Installation of new light fixture, Connection to existing wiring, Testing of new fixture" },
+    { title: "Switch/outlet replacement", price: "₱250 per unit", desc: "Inclusions:\nRemoval of old switch/outlet, Installation of new switch/outlet, Connection to existing wiring, Testing of new installation" }
+  ],
+  "Appliance Repair": [
+    { title: "Inspection Fee", price: "₱300", desc: "Applies if service did not proceed\nInclusions:\nOn-site visit by a technician, Assessment of appliance issues, Basic recommendation, No actual repair included" },
+    { title: "Basic Repair - Small Appliance", price: "₱400+", desc: "Inclusions:\nDiagnosis of issue, Basic repairs and adjustments, Testing after repair, Parts not included" },
+    { title: "Basic Repair - Large Appliance", price: "₱600+", desc: "Inclusions:\nDiagnosis of issue, Basic repairs and adjustments, Testing after repair, Parts not included" }
+  ],
+  "Pest Control": [
+    { title: "Inspection Fee", price: "₱300", desc: "Applies if service did not proceed\nInclusions:\nOn-site inspection by a pest control specialist, Assessment of pest issues, Basic recommendation, No actual treatment included" },
+    { title: "Basic Treatment", price: "₱800+", desc: "Inclusions:\nGeneral pest control treatment, Spraying of affected areas, Basic preventive measures" },
+    { title: "Advanced Treatment", price: "₱1500+", desc: "Inclusions:\nComprehensive pest control treatment, Multiple treatment methods, Extended protection plan" }
+  ]
+};
+
+export const homeCleaningCategories: ServiceCategory[] = [
+  {
+    title: "Studio",
+    size: "Up to 500 sqft",
+    desc: "Basic cleaning for small studio apartments",
+    price: "₱100"
+  },
+  {
+    title: "1 Bedroom",
+    size: "500-1000 sqft",
+    desc: "Complete cleaning for 1 bedroom apartments",
+    price: "₱150"
+  },
+  {
+    title: "2 Bedroom",
+    size: "1000-1500 sqft",
+    desc: "Thorough cleaning for 2 bedroom apartments",
+    price: "₱200"
+  },
+  {
+    title: "3+ Bedroom",
+    size: "1500+ sqft",
+    desc: "Deep cleaning for large apartments",
+    price: "₱250+"
+  }
+];
+
+export const acCleaningCategories: ServiceCategory[] = [
+  {
+    title: "Split AC Unit",
+    desc: "Regular cleaning and maintenance for split AC units",
+    price: "₱80"
+  },
+  {
+    title: "Window AC Unit",
+    desc: "Complete cleaning service for window AC units",
+    price: "₱70"
+  },
+  {
+    title: "Central AC",
+    desc: "Professional cleaning for central AC systems",
+    price: "₱150+"
+  }
+];
+
+export const acDeepCleaningCategories: ServiceCategory[] = [
+  {
+    title: "Split AC Deep Clean",
+    desc: "Chemical cleaning for split AC units",
+    price: "₱150"
+  },
+  {
+    title: "Window AC Deep Clean",
+    desc: "Chemical cleaning for window AC units",
+    price: "₱130"
+  },
+  {
+    title: "Central AC Deep Clean",
+    desc: "Chemical cleaning for central AC systems",
+    price: "₱250+"
+  }
+];

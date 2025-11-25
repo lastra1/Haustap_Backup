@@ -1,0 +1,324 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background-color: #f8f9fa;
+}
+
+/* Layout */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 300px;
+  background-color: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  padding: 20px 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.logo img {
+  width: 120px;
+  margin-bottom: -30px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar ul li {
+  padding: 12px 20px;
+  cursor: pointer;
+  color: #333;
+}
+
+.sidebar ul li.active,
+.sidebar ul li:hover {
+  background-color: #e0f7fa;
+  color: #007b8f;
+  border-left: 4px solid #00bcd4;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+}
+
+/* Topbar */
+.topbar {
+  background-color: #a8f1ff;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #d8f2f8;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+}
+
+.notif-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.user-dropdown-btn {
+  background: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.user-dropdown {
+  display: none;
+  position: absolute;
+  top: 55px;
+  right: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 180px;
+  z-index: 10;
+}
+
+.user-dropdown a {
+  display: block;
+  padding: 8px;
+  color: black;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.user-dropdown a:hover {
+  background-color: #f1f1f1;
+}
+
+.user-dropdown .logout {
+  color: red;
+}
+
+.user-dropdown.show {
+  display: block;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  background: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 20px 20px 10px;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 10px 0;
+  border: none;
+  background: #e0e0e0;
+  font-weight: 600;
+  cursor: pointer;
+  border-right: 1px solid #d0d0d0;
+}
+
+.tabs button.active {
+  background: #7df1ff;
+  color: #000;
+}
+
+/* Search and Filter */
+.search-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 15px 20px;
+  position: relative;
+}
+
+.search-filter input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 250px;
+}
+
+/* Filter Dropdown */
+.filter-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.filter-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 5px;
+}
+
+/* updated dropdown: better padding, box-sizing, and constrained width */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 35px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  padding: 6px 8px;       /* increased padding for touch area */
+  width: 200px;
+  box-sizing: border-box;
+  z-index: 999;
+  overflow: hidden;
+}
+
+/* show on hover / when toggled */
+.filter-dropdown:hover .dropdown-content,
+.filter-dropdown .dropdown-content.show {
+  display: block;
+}
+
+.dropdown-content p.filter-title {
+  font-size: 13px;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  padding-bottom: 4px;
+}
+
+/* align checkbox to the left and tighten spacing to label text */
+.dropdown-content label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* left align row */
+  gap: 8px;                     /* small space between checkbox and text */
+  font-size: 13px;
+  margin: 0;
+  padding: 6px 4px;             /* clickable row area */
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dropdown-content input[type="checkbox"] {
+  margin: 0;                    /* remove native margin */
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  accent-color: #007b8f;        /* modern browsers: colored checkbox */
+}
+
+/* subtle hover to indicate row is interactive */
+.dropdown-content label:hover {
+  background: #f6f6f6;
+  border-radius: 4px;
+}
+
+.apply-btn {
+  margin-top: 8px;
+  background: #fff;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 6px 20px;
+  font-size: 13px;
+  display: inline-block;
+}
+
+/* Table */
+.table-container {
+  background: #fff;
+  margin: 0 20px 20px;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+thead {
+  background: #f3f3f3;
+}
+
+th, td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85em;
+  font-weight: 500;
+}
+
+.status.completed {
+  background: #b3f0b3;
+  color: #036d03;
+}
+
+.status.cancelled {
+  background: #ffb3b3;
+  color: #c70000;
+}
+
+.status.pending {
+  background: #d9d9d9;
+  color: #333;
+}
+
+.status.ongoing {
+  background: #a8f0f2;
+  color: #007a80;
+}
+
+.status.return {
+  background: #ffd580;
+  color: #8a5a00;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  font-size: 0.9em;
+}
+
+.pagination button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}

@@ -1,0 +1,125 @@
+{
+  "info": {
+    "name": "HausTap Emulator API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://127.0.0.1:5001/demo-no-project/us-central1/api" },
+    { "key": "token", "value": "uid:client1" },
+    { "key": "bookingId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/api/health", "host": ["{{baseUrl}}"], "path": ["api","health"] }
+      }
+    },
+    {
+      "name": "Update Booking Status (ongoing)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"status\": \"ongoing\"\n}" },
+        "url": { "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/status", "host": ["{{baseUrl}}"], "path": ["api","bookings","{{bookingId}}","status"] }
+      }
+    },
+    {
+      "name": "Cancel Booking",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/cancel", "host": ["{{baseUrl}}"], "path": ["api","bookings","{{bookingId}}","cancel"] }
+      }
+    },
+    {
+      "name": "Rate Booking",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"rating\": 5,\n  \"notes\": \"great job\"\n}" },
+        "url": { "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/rate", "host": ["{{baseUrl}}"], "path": ["api","bookings","{{bookingId}}","rate"] }
+      }
+    },
+    {
+      "name": "DB Test",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/api/test-db", "host": ["{{baseUrl}}"], "path": ["api","test-db"] }
+      }
+    },
+    {
+      "name": "Dev Seed",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/api/dev/seed", "host": ["{{baseUrl}}"], "path": ["api","dev","seed"] }
+      }
+    },
+    {
+      "name": "Dev Booking",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"providerId\": \"1\",\n  \"scheduledDate\": \"2025-12-01T10:00:00Z\",\n  \"address\": \"123 Main St\",\n  \"notes\": \"dev\"\n}" },
+        "url": { "raw": "{{baseUrl}}/api/dev/bookings", "host": ["{{baseUrl}}"], "path": ["api","dev","bookings"] }
+      }
+    },
+    {
+      "name": "Create Booking",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"providerId\": \"1\",\n  \"serviceName\": \"Cleaning\",\n  \"scheduledDate\": \"2025-12-01T10:00:00Z\",\n  \"scheduledTime\": \"10:00\",\n  \"address\": \"123 Main St\",\n  \"total\": 150\n}" },
+        "url": { "raw": "{{baseUrl}}/api/bookings", "host": ["{{baseUrl}}"], "path": ["api","bookings"] }
+      }
+    },
+    {
+      "name": "Open Chat",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"bookingId\": \"{{bookingId}}\"\n}" },
+        "url": { "raw": "{{baseUrl}}/api/chat/open", "host": ["{{baseUrl}}"], "path": ["api","chat","open"] }
+      }
+    },
+    {
+      "name": "List Chat Messages",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": { "raw": "{{baseUrl}}/api/chat/{{bookingId}}/messages", "host": ["{{baseUrl}}"], "path": ["api","chat","{{bookingId}}","messages"] }
+      }
+    },
+    {
+      "name": "Send Chat Message",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"text\": \"Hello!\"\n}" },
+        "url": { "raw": "{{baseUrl}}/api/chat/{{bookingId}}/messages", "host": ["{{baseUrl}}"], "path": ["api","chat","{{bookingId}}","messages"] }
+      }
+    }
+  ]
+}

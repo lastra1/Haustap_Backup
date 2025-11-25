@@ -1,0 +1,246 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #fff;
+  color: #333;
+}
+
+/* Header Logo */
+header {
+  text-align: left;
+  padding: 20px 40px;
+}
+
+.logo {
+  width: 90px;
+}
+
+/* Tablet Section */
+.tablet-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0 20px 0;
+ 
+}
+
+.tablet {
+  background: #dee1e0;
+  padding: 50px;
+  border-radius: 15px;
+  box-shadow: #d9d9d9 10px 10px 6px;
+}
+
+.tablet-screen {
+  background: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  width: 420px;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+.tablet-screen h2 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.tablet-screen p {
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+/* Verification Form */
+.verify-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.verify-form label {
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+  color: #000;
+}
+
+.verify-form input {
+  padding: 8px;
+  border: 1px solid #999;
+  border-radius: 3px;
+  outline: none;
+  font-size: 13px;
+}
+
+.verify-form .resend {
+  text-align: right;
+  font-size: 11px;
+  color: #333;
+  text-decoration: none;
+}
+
+.verify-btn {
+  background-color: #4fd1c5;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.verify-btn:hover {
+  background-color: #38b2ac;
+}
+
+/* Pagination */
+.pagination {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 50px;
+}
+
+.pagination button {
+  background: white;
+  border: 1px solid #ccc;
+  margin: 0 4px;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination .active {
+  background: cyan;
+  color: rgb(10, 10, 10);
+  border-color: #009999;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: #e6e6e6;
+  padding: 50px 70px 25px;
+  color: #000;
+  min-height: 200px;
+  position: relative;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  min-height: 150px;
+  position: relative;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  flex: 1;
+  min-width: 220px;
+}
+
+/* LEFT SECTION */
+.footer-left h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-left ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-left li {
+  margin-bottom: 5px;
+}
+
+.footer-left a {
+  text-decoration: none;
+  color: #000;
+}
+
+.footer-left a:hover {
+  color: #10bfc9;
+}
+
+/* CENTER SECTION */
+.footer-center {
+  text-align: center;
+}
+
+.footer-center img {
+  width: 100px;
+}
+
+.footer-center p {
+  font-size: 13px;
+}
+
+/* RIGHT SECTION */
+.footer-right {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.footer-right h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-right ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 50px;
+  right: 0;
+}
+
+.footer-right li {
+  margin-bottom: 6px;
+}
+
+.footer-right .contact-info {
+  position: absolute;
+  bottom: -40px;
+  right: 0;
+  margin: 0;
+}
+
+.footer-right .contact-info p {
+  font-size: 13px;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* FOOTER BOTTOM */
+.footer-bottom {
+  text-align: center;
+  font-weight: 600;
+  margin-top: 40px;
+  border-top: 1px solid #d1d1d1;
+  padding-top: 10px;
+  font-size: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .booking-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .map-container {
+    height: 200px;
+  }
+}

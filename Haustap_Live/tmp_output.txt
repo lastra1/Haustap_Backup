@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Bookings</title>
+  <link rel="stylesheet" href="css/manage_booking.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<script src="js/lazy-images.js" defer></script>
+<script src="js/app.js" defer></script>
+</head>
+<body>
+   <div class="dashboard-container">
+    <!-- Sidebar -->
+    <style>
+  .sidebar nav ul { list-style: none; padding: 0; margin: 0; }
+  .sidebar nav ul li a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+  .sidebar nav ul li a:visited { color: inherit; }
+  .sidebar nav ul li a:hover { text-decoration: none; }
+  .sidebar .logo a { text-decoration: none; }
+</style>
+<aside class="sidebar">
+  <div class="logo">
+    <a href="dashboard.php" title="Dashboard"><img src="images/logo.png" alt="logo" /></a>
+    <span>Admin Dashboard</span>
+  </div>
+  <nav>
+    <ul>
+      <li class=""><a href="dashboard.php">Dashboard Overview</a></li>
+      <li class=""><a href="manage_applicant.php">Manage Applicants</a></li>
+      <li class=""><a href="manage_client.php">Manage Clients</a></li>
+      <li class=""><a href="manage_provider.php">Manage Providers</a></li>
+      <li class="active"><a href="manage_booking.php">Manage Bookings</a></li>
+      <li class=""><a href="job_status_monitor.php">Job Status Monitor</a></li>
+      <li class=""><a href="analytics_report.php">Analytics & Report</a></li>
+      <li class=""><a href="subscription_management.php">Subscription Management</a></li>
+      <li class=""><a href="feedback_reviews.php">Feedback & Reviews</a></li>
+      <li class=""><a href="system_settings.php">System Settings</a></li>
+      <li class=""><a href="filament_redirect.php">Backend Admin</a></li>
+    </ul>
+  </nav>
+</aside>
+<script>
+  // Default socket URL for notifications/chat if not set elsewhere
+  window.SOCKET_URL = window.SOCKET_URL || 'http://localhost:3000';
+</script>
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<!-- Removed cross-root client script references to avoid 404s on admin dev server -->
+<!-- Admin-specific UI injection to add dropdown markup and count bubble -->
+<script src="js/notify-admin.js" defer></script>
+<!-- UI binding that renders dropdown and handles unread count -->
+<!-- If shared client UI binding is needed later, serve it under admin/js to keep paths consistent -->
+<!-- Make the topbar Log out link functional -->
+<script src="js/logout-admin.js" defer></script>
+<script>
+  // Normalize user dropdown links across pages to real endpoints
+  document.addEventListener('DOMContentLoaded', function(){
+    try {
+      var dd = document.getElementById('userDropdown');
+      if (!dd) return;
+      var links = dd.querySelectorAll('a');
+      links.forEach(function(link){
+        var t = (link.textContent || '').trim().toLowerCase();
+        if (t === 'view profile') link.setAttribute('href', 'admin_profile.php');
+        else if (t === 'change password') link.setAttribute('href', 'change_password.php');
+        else if (t === 'activity logs') link.setAttribute('href', 'activity_logs.php');
+      });
+    } catch(e){}
+  });
+</script>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <h3>Manage of Bookings</h3>
+        <div class="user">
+          <button class="notif-btn">??</button>
+          <div class="user-menu">
+            <button id="userDropdownBtn" class="user-dropdown-btn">Admin ?</button>
+            <div class="user-dropdown" id="userDropdown">
+              <a href="#">View Profile</a>
+              <a href="#">Change Password</a>
+              <a href="#">Activity Logs</a>
+              <a href="#" class="logout">Log out</a>
+            </div>
+          </div>
+        </div>
+      </header>
+        <!-- Tabs -->
+      <div class="tabs">
+        <button class="active">All</button>
+        <button>Pending</button>
+        <button>Ongoing</button>
+        <button>Completed</button>
+        <button>Cancelled</button>
+        <button>Return</button>
+      </div>
+
+       <!-- Search and Filter -->
+<div class="search-filter">
+  <input id="searchInput" type="text" placeholder="Search">
+
+  <div class="filter-dropdown">
+<button class="filter-btn"><i class="fa-solid fa-sliders"></i> Filter ?</button>
+    <div class="dropdown-content">
+            <p class="filter-title">Filter by Status</p>
+            <label><input type="checkbox" value="pending"> Pending</label>
+            <label><input type="checkbox" value="ongoing"> Ongoing</label>
+            <label><input type="checkbox" value="complete"> Completed</label>
+            <label><input type="checkbox" value="cancelled"> Cancelled</label>
+            <label><input type="checkbox" value="return"> Return</label>
+            <button class="apply-btn">Apply</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Client</th>
+              <th>Provider</th>
+              <th>Service</th>
+              <th>Date & Time</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="bookingTableBody">
+            <tr>
+              <td colspan="7" style="text-align:center">Loading bookings…</td>
+            </tr>
+          </tbody>
+        </table>
+       <div class="pagination">
+          <button id="prevPage">? Prev</button>
+          <span id="paginationInfo"></span>
+          <button id="nextPage">Next ?</button>
+        </div>
+      </div>
+      </div>
+    </main>
+  </div>
+
+    <script>
+    const dropdownBtn = document.getElementById("userDropdownBtn");
+    const dropdown = document.getElementById("userDropdown");
+
+    dropdownBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle("show");
+    });
+
+    window.addEventListener("click", (e) => {
+      if (!dropdown.contains(e.target)) dropdown.classList.remove("show");
+    });
+
+    // Filter dropdown toggle
+    (function(){
+      const filterBtn = document.querySelector('.filter-btn');
+      const dropdownContent = document.querySelector('.dropdown-content');
+      if (!filterBtn || !dropdownContent) return;
+      filterBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdownContent.classList.toggle('show');
+        filterBtn.innerHTML = dropdownContent.classList.contains('show')
+          ? '<i class="fa-solid fa-sliders"></i> Filter ?'
+          : '<i class="fa-solid fa-sliders"></i> Filter ?';
+      });
+      window.addEventListener('click', () => {
+        dropdownContent.classList.remove('show');
+        filterBtn.innerHTML = '<i class="fa-solid fa-sliders"></i> Filter ?';
+      });
+    })();
+
+    // Status filter: show rows matching selected statuses
+    (function(){
+      const dropdownContent = document.querySelector('.dropdown-content');
+      if (!dropdownContent) return;
+      const checkboxes = dropdownContent.querySelectorAll('input[type="checkbox"]');
+      const applyBtn = dropdownContent.querySelector('.apply-btn');
+
+      function rowStatus(badge){
+        if (!badge) return '';
+        const cls = badge.classList;
+        if (cls.contains('complete')) return 'complete';
+        if (cls.contains('completed')) return 'completed';
+        if (cls.contains('ongoing')) return 'ongoing';
+        if (cls.contains('pending')) return 'pending';
+        if (cls.contains('cancelled')) return 'cancelled';
+        if (cls.contains('return')) return 'return';
+        return '';
+      }
+
+      function applyFilter(){
+        const selected = new Set(Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value));
+        const rows = document.querySelectorAll('.table-container tbody tr');
+        rows.forEach(row => {
+          const badge = row.querySelector('.status');
+          const s = rowStatus(badge);
+          row.style.display = (selected.size === 0 || selected.has(s)) ? '' : 'none';
+        });
+      }
+
+      checkboxes.forEach(cb => cb.addEventListener('change', applyFilter));
+      if (applyBtn) applyBtn.addEventListener('click', (e) => { e.preventDefault(); applyFilter(); });
+    })();
+  </script>
+  <script src="js/app.js"></script>
+</body>
+</html>
+
+
+
+

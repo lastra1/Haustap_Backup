@@ -1,0 +1,263 @@
+body {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  background: #fff;
+}
+
+     /* ---------- Page Layout ---------- */
+.request-return-page {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 16px;
+  font-family: Arial, sans-serif;
+  color: #222;
+}
+
+.request-return-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #000;
+  text-align: center;
+}
+
+/* ---------- Box Style ---------- */
+.request-box {
+  background: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* ---------- Help Section ---------- */
+.help-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.help-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.booking-ref {
+  font-size: 13px;
+  color: #666;
+}
+
+.help-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.free-return {
+  color: #00a8a8;
+  font-weight: 700;
+  font-size: 12px;
+  border: 1px solid #00a8a8;
+  border-radius: 20px;
+  padding: 4px 10px;
+  text-transform: uppercase;
+}
+
+/* ---------- Product Section ---------- */
+.product-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.product-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.product-sub {
+  font-size: 13px;
+  color: #666;
+  margin: 4px 0 0 0;
+}
+
+/* ---------- Reason Section ---------- */
+.reason-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+#reason {
+  color: gray;
+  background-color: #f9f9f9;
+}
+
+/* When a real option is chosen, text turns black */
+#reason:valid {
+  color: #000;
+}
+
+/* Hide the placeholder from dropdown list */
+#reason option[disabled] {
+  display: none;
+}
+
+.reason-row,
+.description-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.reason-row label,
+.description-row label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.reason-row select,
+.description-row textarea {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.description-row textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* ---------- Buttons ---------- */
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.cancel-btn,
+.submit-btn {
+  border: 1px solid #000;
+  background: #fff;
+  color: #000;
+  padding: 8px 20px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #ddd;
+}
+
+.submit-btn {
+  background: #00a8a8;
+  color: #fff;
+  border: none;
+}
+
+.submit-btn:hover {
+  background: #009191;
+}
+
+
+
+ /* ===== FOOTER ===== */
+footer {
+  background: #e6e6e6;
+  padding: 50px 70px 25px;
+  color: #000;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  flex: 1;
+  min-width: 220px;
+}
+
+/* LEFT SECTION */
+.footer-left h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-left ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-left li {
+  margin-bottom: 5px;
+}
+
+.footer-left a {
+  text-decoration: none;
+  color: #000;
+}
+
+.footer-left a:hover {
+  color: #10bfc9;
+}
+
+/* CENTER SECTION */
+.footer-center {
+  text-align: center;
+}
+
+.footer-center img {
+  width: 100px;
+}
+
+.footer-center p {
+  font-size: 13px;
+}
+
+/* RIGHT SECTION */
+.footer-right {
+  text-align: right;
+}
+
+.footer-right h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-right ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-right li {
+  margin-bottom: 6px;
+}
+
+.footer-right .contact-info p {
+  font-size: 13px;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* FOOTER BOTTOM */
+.footer-bottom {
+  text-align: center;
+  font-weight: 600;
+  margin-top: 25px;
+  border-top: 1px solid #d1d1d1;
+  padding-top: 10px;
+  font-size: 14px;
+}

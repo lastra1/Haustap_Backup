@@ -1,0 +1,186 @@
+/* Global site-wide font baseline: single, consistent serif font */
+html, body,
+h1, h2, h3, h4, h5, h6,
+p, span, a, li, label,
+button, input, textarea, select,
+div {
+  font-family: Georgia, 'Times New Roman', Times, serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Global header alignment baseline: match standard spacing used across pages */
+.header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 40px 60px !important;
+  background: #ffffff !important;
+  border-bottom: none !important;
+  box-sizing: border-box !important;
+}
+
+.logo-img {
+  height: 100px !important;
+  width: auto !important;
+  object-fit: contain !important;
+}
+
+/* Remove forced container sizing so the logo renders uniformly like other pages */
+/* (The logo image itself controls its size via .logo-img above) */
+/* .header .logo-link specific sizing removed to avoid inconsistencies */
+
+.nav {
+  display: flex !important;
+  gap: 32px !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  margin-left: 24px !important;
+  flex: 0 0 auto !important;
+}
+
+.nav a {
+  text-decoration: none !important;
+  color: #222 !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  padding-bottom: 2px !important;
+  text-align: center !important;
+}
+
+.nav a.active {
+  color: #3dbfc3 !important;
+  border-bottom: 2px solid #3dbfc3 !important;
+}
+
+.header-right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 24px !important;
+}
+
+.search-box {
+  display: flex !important;
+  align-items: center !important;
+  background: #f5f5f5 !important;
+  border-radius: 30px !important;
+  padding: 4px 12px !important;
+  height: auto !important;
+  box-shadow: 7px 5px rgba(0, 0, 0, 0.15) !important;
+}
+
+.search-box input {
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  font-size: 15px !important;
+  width: 120px !important;
+  height: auto !important;
+}
+
+.search-btn {
+  border: none !important;
+  background: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 28px !important;
+  width: 28px !important;
+  cursor: pointer !important;
+}
+
+/* Utility: hide elements when toggling dropdowns/modals */
+.hidden { display: none !important; }
+
+/* ===== Footer (shared) ===== */
+footer { background: #e6e6e6; padding: 50px 70px 25px; color: #000; margin: 0; }
+.footer-content {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+  min-height: 150px;
+}
+.footer-left, .footer-center, .footer-right { min-width: 220px; }
+.footer-left h4 { font-weight: 700; margin-bottom: 10px; }
+.footer-left ul { list-style: none; padding: 0; }
+.footer-left li { margin-bottom: 5px; }
+.footer-left a { text-decoration: none; color: #000; }
+.footer-left a:hover { color: #10bfc9; }
+.footer-center { text-align: center; justify-self: center; }
+.footer-center img { width: 100px; display: block; margin: 0 auto; }
+.footer-center p { font-size: 13px; }
+.footer-right { text-align: right; }
+.footer-right h4 { font-weight: 700; margin-bottom: 10px; }
+.footer-right ul { list-style: none; padding: 0; margin: 0; }
+.footer-right li { margin-bottom: 6px; }
+.footer-right .contact-info { margin: 10px 0 0; }
+.footer-right .contact-info p { font-size: 13px; margin-top: 10px; line-height: 1.5; }
+.footer-bottom { text-align: center; font-weight: 600; margin-top: 0; border-top: 1px solid #d1d1d1; padding-top: 10px; font-size: 14px; }
+
+/* Auth links (Sign up | Login) layout for guests */
+.auth-links {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  white-space: nowrap !important;
+  font-size: 16px !important;
+}
+.auth-links a { color: #222 !important; text-decoration: none !important; font-weight: 500 !important; }
+.auth-links a:hover { color: #3dbfc3 !important; }
+.auth-links span { color: #888 !important; }
+/* --- Skeleton Loading Styles (HausTap) --- */
+@keyframes ht-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: #e9ecef;
+  display: none;
+  padding: 24px 16px;
+}
+
+.loading .skeleton-overlay { display: block; }
+.loading .page-content { visibility: hidden; }
+
+.skeleton-line {
+  height: 14px;
+  border-radius: 6px;
+  background: #e0e0e0;
+  margin-bottom: 12px;
+}
+
+.skeleton-line.shimmer {
+  background: linear-gradient(90deg, #e0e0e0 0, #f5f5f5 50%, #e0e0e0 100%);
+  background-size: 200% 100%;
+  animation: ht-shimmer 1.4s linear infinite;
+}
+
+.skeleton-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  margin-right: 12px;
+}
+
+.skeleton-block {
+  height: 24px;
+  width: 60%;
+  background: #e0e0e0;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.skeleton-grid { display: grid; gap: 12px; max-width: 960px; margin: 0 auto; }
+.skeleton-row { display: flex; align-items: center; gap: 12px; }
+
+.spinner {
+  width: 24px; height: 24px; border: 3px solid #cfd8dc; border-top-color: #212529; border-radius: 50%;
+  animation: ht-spin .8s linear infinite;
+}
+@keyframes ht-spin { to { transform: rotate(1turn); } }

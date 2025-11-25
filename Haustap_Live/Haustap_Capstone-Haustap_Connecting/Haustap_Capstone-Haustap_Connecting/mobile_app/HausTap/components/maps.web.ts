@@ -1,0 +1,1 @@
+export { default as MapView, Marker } from '../stubs/react-native-maps-web';

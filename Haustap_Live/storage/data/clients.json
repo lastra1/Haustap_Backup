@@ -1,0 +1,12 @@
+[
+  {"id":1,"name":"Jenn Bornilla","email":"jenn@example.com","phone":"09170000001","joined_at":"2024-01-07","status":"active"},
+  {"id":2,"name":"Pagod Na","email":"pagod@example.com","phone":"09170000002","joined_at":"2024-01-24","status":"inactive"},
+  {"id":3,"name":"Chris Ramos","email":"chris@example.com","phone":"09170000003","joined_at":"2024-02-01","status":"suspended"},
+  {"id":4,"name":"Mary Jane","email":"mj@example.com","phone":"09170000004","joined_at":"2024-02-12","status":"active"},
+  {"id":5,"name":"Kyle Tan","email":"kyle@example.com","phone":"09170000005","joined_at":"2024-03-05","status":"inactive"},
+  {"id":6,"name":"Ana Cruz","email":"ana@example.com","phone":"09170000006","joined_at":"2024-03-09","status":"active"},
+  {"id":7,"name":"Leo Garcia","email":"leo@example.com","phone":"09170000007","joined_at":"2024-03-12","status":"suspended"},
+  {"id":8,"name":"Nina Flores","email":"nina@example.com","phone":"09170000008","joined_at":"2024-03-18","status":"inactive"},
+  {"id":9,"name":"Art Dela Torre","email":"art@example.com","phone":"09170000009","joined_at":"2024-03-21","status":"active"},
+  {"id":10,"name":"Carlos Reyes","email":"carlos@example.com","phone":"09170000010","joined_at":"2024-03-29","status":"suspended"}
+]

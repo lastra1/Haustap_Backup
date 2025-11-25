@@ -1,0 +1,113 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: haustap_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: haustap_db
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_PASSWORD: haustap_password
+      MYSQL_USER: haustap_user
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./backend/sql:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    networks:
+      - haustap_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: haustap_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - haustap_network
+
+  # Node.js Backend API
+  backend-api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: haustap_backend_api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 8001
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: haustap_db
+      DB_USER: haustap_user
+      DB_PASSWORD: haustap_password
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      FIREBASE_PROJECT_ID: haustap-booking-system
+      FIREBASE_CREDENTIALS_PATH: /app/storage/app/firebase/service-account.json
+      FIREBASE_DATABASE_URL: https://haustap-booking-system-default-rtdb.asia-southeast1.firebasedatabase.app
+    volumes:
+      - ./backend:/app
+      - ./backend/config:/app/config
+    ports:
+      - "8001:8001"
+      - "9229:9229" # Debug port
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - haustap_network
+
+  # PHPMyAdmin for Database Management
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: haustap_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: haustap_user
+      PMA_PASSWORD: haustap_password
+      PMA_ARBITRARY: 1
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+    networks:
+      - haustap_network
+
+  # Nginx Web Server
+  nginx:
+    image: nginx:alpine
+    container_name: haustap_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./backend/nginx:/etc/nginx/conf.d
+      - ./backend/ssl:/etc/nginx/ssl
+    depends_on:
+      - backend-api
+    networks:
+      - haustap_network
+
+networks:
+  haustap_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local

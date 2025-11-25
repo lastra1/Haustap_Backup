@@ -1,0 +1,12 @@
+[
+  {"id":1,"name":"Juan Ewan Dela Cruz","email":"juan@example.com","phone":"09171234567","applied_at":"2025-01-07","status":"hired"},
+  {"id":2,"name":"Ramon Ang","email":"ramon@example.com","phone":"09179876543","applied_at":"2025-01-24","status":"pending_review"},
+  {"id":3,"name":"Juan Ewan Dela Cruz","email":"juan2@example.com","phone":"09170001122","applied_at":"2025-01-07","status":"scheduled"},
+  {"id":4,"name":"Ramon Ang","email":"ramon2@example.com","phone":"09173334455","applied_at":"2025-01-07","status":"rejected"},
+  {"id":5,"name":"Maria Santos","email":"maria@example.com","phone":"09176667788","applied_at":"2025-01-10","status":"pending_review"},
+  {"id":6,"name":"Leo Garcia","email":"leo@example.com","phone":"09179990000","applied_at":"2025-01-15","status":"scheduled"},
+  {"id":7,"name":"Ana Cruz","email":"ana@example.com","phone":"09171239876","applied_at":"2025-01-18","status":"hired"},
+  {"id":8,"name":"Carlos Reyes","email":"carlos@example.com","phone":"09174561239","applied_at":"2025-01-20","status":"rejected"},
+  {"id":9,"name":"Nina Flores","email":"nina@example.com","phone":"09175553322","applied_at":"2025-01-22","status":"pending_review"},
+  {"id":10,"name":"Art Dela Torre","email":"art@example.com","phone":"09176661234","applied_at":"2025-01-25","status":"scheduled"}
+]

@@ -1,0 +1,496 @@
+/* ===== GENERAL STYLES ===== */
+body {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  background: #f7f7f7;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+/* ===== HEADER ===== */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 40px 60px;
+  box-sizing: border-box;
+}
+
+.logo-img {
+  height: 100px;
+  width: auto;
+  display: block;
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+  margin-left: 24px;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+
+.nav a.active {
+  color: #3dbfc3;
+  border-bottom: 2px solid #3dbfc3;
+}
+
+.nav a:hover {
+  color: #009999;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 30px;
+  padding: 4px 12px;
+  box-shadow: 7px 5px rgba(0,0,0,0.15);
+}
+
+.search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 15px;
+  padding: 6px 0;
+  width: 120px;
+}
+
+.search-box i {
+  font-size: 18px;
+  color: #888;
+}
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #222;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.icon-button i {
+  font-size: 25px;
+  color: #131313;
+  transition: transform 0.3s, color 0.3s;
+}
+
+.icon-button:hover i,
+.icon-button:hover span {
+  color: rgb(30, 228, 228);
+}
+
+.icon-button:hover i {
+  transform: scale(1.15);
+}
+
+.account-link {
+  text-decoration: none;
+}
+
+.account-link i {
+  font-size: 25px;
+}
+
+/* ===== MAIN TITLE ===== */
+.main-title {
+  text-align: center;
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-top: 32px;
+}
+
+.subcategory-btn {
+  display: block;
+  margin: 20px auto 10px auto;
+  padding: 6px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 1px solid #222;
+  border-radius: 15px;
+  background: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.subcategory-btn:hover {
+  background: cyan;
+  color: #000000;
+  transform: scale(1.05);
+}
+
+/* ===== MAIN LAYOUT ===== */
+.booking-location-page {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.booking-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Pin Location and House Type Boxes */
+.pin-box, .house-type-box {
+  background: white;
+  border-radius: 10px;
+  padding: 15px 20px;
+  box-shadow: 2px 4px 8px rgba(0,0,0,0.1);
+}
+
+.pin-box label,
+.house-type-box label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.pin-box input {
+  width: 95%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.house-type-box input {
+  width: 95%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Map Container */
+.map-container {
+  background: white;
+  border-radius: 10px;
+  height: 350px;
+  box-shadow: 2px 4px 8px rgba(0,0,0,0.1);
+  /* Ensure Leaflet takes full box space */
+  display: block;
+  position: relative;
+  border: 1px solid #ddd; /* helps visually confirm container */
+}
+
+/* Make sure Leaflet fills the container */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* Person marker (DivIcon) */
+.person-marker {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #2e7dff; /* primary marker color */
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  border: 2px solid #fff;
+  position: relative;
+}
+.person-marker::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid #2e7dff; /* tail same color as marker */
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
+}
+.person-marker i {
+  line-height: 1;
+}
+
+/* Human marker (inline SVG silhouette, professional style) */
+.human-marker {
+  --marker-color: #2563eb; /* primary brand blue */
+  --ring-color: #ffffff;   /* outer ring color */
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--marker-color);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.24);
+  border: 2px solid var(--ring-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.human-marker::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 14px solid var(--marker-color);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.22));
+}
+.human-marker svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+  fill: #fff;
+}
+
+/* Human figure marker (SVG only, no circle background) */
+.human-figure-marker {
+  --marker-color: #2563eb;
+  width: 44px;
+  height: 64px; /* includes tail area */
+  display: block;
+  position: relative;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.25));
+}
+.human-figure-marker svg {
+  width: 44px;
+  height: 64px;
+  display: block;
+}
+.human-figure-marker .figure {
+  fill: var(--marker-color);
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+.human-figure-marker .tail {
+  fill: var(--marker-color);
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+/* Address Boxes */
+.address-box {
+  background: white;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 2px 4px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.address-header {
+  background: #e5e5e5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+}
+
+.address-header .header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.address-header h3 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.address-header .icon {
+  color: #009999;
+  font-size: 1.1rem;
+}
+
+.address-body {
+  padding: 16px;
+}
+
+.address-body p {
+  margin: 0 0 10px;
+  line-height: 1.4;
+}
+
+.edit-btn {
+  background: #009999;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Pagination */
+.pagination {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.pagination button {
+  background: white;
+  border: 1px solid #ccc;
+  margin: 0 4px;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination .active {
+  background: cyan;
+  color: rgb(10, 10, 10);
+  border-color: #009999;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: #e6e6e6;
+  padding: 50px 70px 25px;
+  color: #000;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  flex: 1;
+  min-width: 220px;
+}
+
+/* LEFT SECTION */
+.footer-left h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-left ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-left li {
+  margin-bottom: 5px;
+}
+
+.footer-left a {
+  text-decoration: none;
+  color: #000;
+}
+
+.footer-left a:hover {
+  color: #10bfc9;
+}
+
+/* CENTER SECTION */
+.footer-center {
+  text-align: center;
+}
+
+.footer-center img {
+  width: 100px;
+}
+
+.footer-center p {
+  font-size: 13px;
+}
+
+/* RIGHT SECTION */
+.footer-right {
+  text-align: right;
+}
+
+.footer-right h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-right ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-right li {
+  margin-bottom: 6px;
+}
+
+.footer-right .contact-info p {
+  font-size: 13px;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* FOOTER BOTTOM */
+.footer-bottom {
+  text-align: center;
+  font-weight: 600;
+  margin-top: 25px;
+  border-top: 1px solid #d1d1d1;
+  padding-top: 10px;
+  font-size: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .booking-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .map-container {
+    height: 200px;
+  }
+}
+.human-pin-pro {
+  width: 64px;
+  height: 90px; /* includes tail and base */
+  display: block;
+  position: relative;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.25));
+}
+.human-pin-pro svg {
+  width: 64px;
+  height: 90px;
+  display: block;
+}
+.human-pin-pro .grad-stop-1 { stop-color: #19b0ff; }
+.human-pin-pro .grad-stop-2 { stop-color: #0a5edc; }
+.human-pin-pro .ring { stroke: #19b0ff; }
+.human-pin-pro .pin-outline { stroke: #0a5edc; }
+.human-pin-pro .figure { fill: #ffffff; }
+.human-pin-pro .arcs { stroke: #19b0ff; opacity: 0.7; }
+.human-pin-pro .base { stroke: #19b0ff; }

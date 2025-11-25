@@ -1,0 +1,3 @@
+<?php
+header('Content-Type: image/png');
+readfile(__DIR__ . '/../../../admin_haustap/admin_haustap/images/logo.png');

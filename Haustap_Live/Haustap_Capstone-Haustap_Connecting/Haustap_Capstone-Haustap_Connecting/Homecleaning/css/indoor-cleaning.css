@@ -1,0 +1,457 @@
+body {
+  font-family: 'Montserrat', Arial, sans-serif;
+  background: #f7f7f7;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 24px 36px 0 36px;
+  background: #fff;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  min-width: 120px;
+}
+.logo a {
+  display: flex;
+  align-items: center;
+  height: 52px;
+}
+.logo img {
+  height: 100px;
+  width: auto;
+  display: block;
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+  margin-left: 24px;
+}
+.nav a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+.nav a:hover {
+  color: #009999;
+}
+
+.header-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+.search-box {
+      display: flex;
+      align-items: center;
+      background: #f5f5f5;
+      border-radius: 30px;
+      padding: 4px 12px;
+      box-shadow:  7px 5px rgba(0, 0, 0, 0.15);
+    }
+    .search-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 15px;
+      padding: 6px 0;
+      width: 120px;
+    }
+    .search-icon {
+      font-size: 18px;
+      color: #888;
+    }
+    .account-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #222;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .account-icon {
+      font-size: 20px;
+      color: cyan;
+    }
+
+
+
+.main-title {
+  text-align: center;
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-top: 32px;
+}
+
+.cleaning-type-btn {
+  display: block;
+  margin: 24px auto 18px auto;
+  padding: 6px 38px;
+  font-size: 1.02rem;
+  font-weight: 500;
+  border: 1px solid #222;
+  border-radius: 22px;
+  background: #fff;
+  cursor: pointer;
+  text-align: center;
+}
+
+.cleaning-cards-container {
+  max-width: 970px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cleaning-cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 22px;
+}
+
+.cleaning-card {
+  background: #e2e3e2;
+  box-shadow: 2px 4px 8px rgba(0,0,0,0.08);
+  border-radius: 10px;
+  padding: 18px 24px 18px 24px;
+  width: 380px;
+  box-sizing: border-box;
+  position: relative;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  min-height: 192px;
+}
+.cleaning-card.wide {
+  width: 800px;
+}
+
+.cleaning-radio {
+  position: absolute;
+  top: 18px;
+  right: 24px;
+  accent-color: #009999;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+.radio-label {
+  position: absolute;
+  top: 18px;
+  right: 24px;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.cleaning-title {
+  font-size: 1.08rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  padding-right: 28px;
+}
+.cleaning-price {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+.cleaning-inclusions-title {
+  font-size: 1.02rem;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.cleaning-inclusions {
+  margin: 0 0 0 18px;
+  padding-left: 0;
+  font-size: 0.97rem;
+}
+
+.cleaning-note {
+  margin: 18px 0 10px 0;
+  font-size: 0.95rem;
+  color: #888;
+  text-align: center;
+}
+
+.pagination {
+  margin: 18px auto 0 auto;
+  text-align: center;
+}
+.pagination ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  display: inline-flex;
+  gap: 4px;
+}
+.pagination li a {
+  display: block;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 28px;
+  color: #222;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: background 0.2s, color 0.2s;
+}
+.pagination li a:hover {
+  background: #009999;
+  color: #fff;
+  border-color: #009999;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: #e6e6e6;
+  padding: 50px 70px 25px;
+  color: #000;
+  min-height: 200px;
+  position: relative;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  min-height: 150px;
+  position: relative;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  flex: 1;
+  min-width: 220px;
+}
+
+/* LEFT SECTION */
+.footer-left h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-left ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-left li {
+  margin-bottom: 5px;
+}
+
+.footer-left a {
+  text-decoration: none;
+  color: #000;
+}
+/* ===== HOUSE TYPES (Cleaning Services landing) ===== */
+/* Page section wrapper */
+.centered-section {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Subcategory button at top */
+.subcategory-btn {
+  display: block;
+  margin: 16px auto 12px auto;
+  padding: 6px 28px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 1px solid #222;
+  border-radius: 22px;
+  background: #fff;
+  cursor: pointer;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  color: #666;
+  font-size: 1.2rem; /* match desired sizing */
+  margin: 8px 0 18px 0;
+}
+.breadcrumbs a {
+  color: #000; /* default black */
+  text-decoration: none;
+  font-weight: 500;
+}
+.breadcrumbs a:hover {
+  color: #009999; /* teal on hover */
+  text-decoration: underline;
+}
+/* Persist highlight for the current page in breadcrumbs */
+.breadcrumbs a[aria-current="page"] {
+  color: #009999; /* teal when active/current */
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+/* Section title */
+.section-title {
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #009999;
+  margin: 8px 0 18px 0;
+}
+
+/* Groups of house cards */
+.house-group h2 {
+  font-size: 1.15rem;
+  margin: 18px 0 10px 0;
+  color: #222;
+}
+.house-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+/* Individual house card */
+.house-card {
+  background: #e2e3e2;
+  box-shadow: 2px 4px 8px rgba(0,0,0,0.08);
+  border-radius: 10px;
+  padding: 16px 20px 16px 20px;
+  width: 340px;
+  box-sizing: border-box;
+  position: relative;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  min-height: 150px;
+}
+
+/* Radio control on each card */
+.house-radio {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  accent-color: #009999;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* Reuse invisible label to make whole area clickable when needed */
+.radio-label {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.house-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  padding-right: 28px;
+}
+
+.house-desc {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.footer-left a:hover {
+  color: #10bfc9;
+}
+
+/* CENTER SECTION */
+.footer-center {
+  text-align: center;
+}
+
+.footer-center img {
+  width: 100px;
+}
+
+.footer-center p {
+  font-size: 13px;
+}
+
+/* RIGHT SECTION */
+.footer-right {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.footer-right h4 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.footer-right ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 50px;
+  right: 0;
+}
+
+.footer-right li {
+  margin-bottom: 6px;
+}
+
+.footer-right .contact-info {
+  position: absolute;
+  bottom: -40px;
+  right: 0;
+  margin: 0;
+}
+
+.footer-right .contact-info p {
+  font-size: 13px;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* FOOTER BOTTOM */
+.footer-bottom {
+  text-align: center;
+  font-weight: 600;
+  margin-top: 25px;
+  border-top: 1px solid #d1d1d1;
+  padding-top: 10px;
+  font-size: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .booking-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .map-container {
+    height: 200px;
+  }
+}
