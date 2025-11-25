@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Bookings - Pending</title>
+  <link rel="stylesheet" href="css/manage_booking_pending.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<script src="js/lazy-images.js" defer></script></head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <?php $active = 'bookings'; include 'includes/sidebar.php'; ?>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <h3>Manage Bookings</h3>
+        <div class="user">
+          <button class="notif-btn">🔔</button>
+          <div class="user-menu">
+            <button id="userDropdownBtn" class="user-dropdown-btn">Mj Punzalan ▼</button>
+            <div class="user-dropdown" id="userDropdown">
+              <a href="admin_profile.php">View Profile</a>
+              <a href="/admin_haustap/admin_haustap/change_password.php">Change Password</a>
+              <a href="logout.php" class="logout">Log out</a>
+            </div>
+          </div>
+        </div>
+      </header>
+        <!-- Tabs -->
+      <div class="tabs">
+        <button>All</button>
+        <button class="active">Pending</button>
+        <button>Ongoing</button>
+        <button>Completed</button>
+        <button>Cancelled</button>
+        <button>Return</button>
+      </div>
+
+      <!-- Search and Filter -->
+      <div class="search-filter">
+        <input id="bookingSearch" type="text" placeholder="Search">
+
+  <div class="filter-dropdown">
+<button class="filter-btn"><i class="fa-solid fa-sliders"></i> Filter</button>
+    <div class="dropdown-content">
+            <p class="filter-title">Filter by Date</p>
+            <div class="date-row">
+              <label for="from-date">From:</label>
+              <input type="date" id="from-date" value="2025-01-01">
+            </div>
+            <div class="date-row">
+              <label for="to-date">To:</label>
+              <input type="date" id="to-date" value="2025-12-31">
+            </div>
+            <button class="apply-btn">Apply</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Client</th>
+              <th>Provider</th>
+              <th>Service</th>
+              <th>Date & Time</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Juan Ewan Dela Cruz</td>
+              <td>Ramon Ang</td>
+              <td>Home Cleaning</td>
+              <td>2025-06-07 14:30</td>
+              <td><span class="status pending">Pending</span></td>
+              <td class="arrow">›</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Ramon Ang</td>
+              <td>Juan Dela Cruz</td>
+              <td>Home Cleaning</td>
+              <td>2025-06-07 14:30</td>
+              <td><span class="status pending">Pending</span></td>
+              <td class="arrow">›</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pagination">
+          <span>[ ◀ Prev ]</span>
+          <span>Showing 2–10 of 120 Clients</span>
+          <span>[ Next ▶ ]</span>
+        </div>
+      </div>
+    </main>
+  </div>
+    <script>
+    // User Dropdown
+    const dropdownBtn = document.getElementById("userDropdownBtn");
+    const dropdown = document.getElementById("userDropdown");
+
+    dropdownBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle("show");
+    });
+
+    // Close user dropdown when clicking outside
+    window.addEventListener("click", (e) => {
+      if (!dropdown.contains(e.target)) dropdown.classList.remove("show");
+    });
+
+    // Filter Dropdown (robust selection + debug)
+    const filterBtn = document.querySelector('.filter-btn');
+    let dropdownContent = null;
+    if (filterBtn) dropdownContent = filterBtn.parentElement && filterBtn.parentElement.querySelector('.dropdown-content') || document.querySelector('.dropdown-content');
+
+    if (!filterBtn || !dropdownContent) {
+      console.debug('Filter UI not found', { filterBtn, dropdownContent });
+    } else {
+      filterBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdownContent.classList.toggle('show');
+        const expanded = dropdownContent.classList.contains('show');
+        filterBtn.innerHTML = expanded
+          ? '<i class="fa-solid fa-sliders"></i> Filter ▲'
+          : '<i class="fa-solid fa-sliders"></i> Filter ▼';
+        filterBtn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        console.debug('filter toggled', { expanded });
+      });
+
+      window.addEventListener('click', (e) => {
+        if (!dropdownContent.contains(e.target) && !filterBtn.contains(e.target)) {
+          dropdownContent.classList.remove('show');
+          filterBtn.innerHTML = '<i class="fa-solid fa-sliders"></i> Filter ▼';
+          filterBtn.setAttribute('aria-expanded','false');
+        }
+      });
+    }
+
+    // Date filter: show rows within selected date range (use dataset flags so it composes with other filters)
+    (function(){
+      const fromInput = document.getElementById('from-date');
+      const toInput = document.getElementById('to-date');
+      // scope apply button to the dropdown content if possible
+      const applyBtn = (typeof dropdownContent !== 'undefined' && dropdownContent) ? dropdownContent.querySelector('.apply-btn') : document.querySelector('.apply-btn');
+
+      function parseRowDate(text){
+        if (!text) return null;
+        // Try extracting YYYY-MM-DD and optional time (accepts separators like - or / and optional time HH:MM)
+        const m = text.match(/(\d{4})\D(\d{2})\D(\d{2})(?:[^\d]*(\d{2}):?(\d{2}))?/);
+        if (m) {
+          const y = m[1], mo = m[2], d = m[3];
+          const hh = m[4] || '00', mm = m[5] || '00';
+          const iso = `${y}-${mo}-${d}T${hh}:${mm}:00`;
+          const dt = new Date(iso);
+          if (!isNaN(dt.getTime())) return dt;
+        }
+        // Fallback to Date.parse for other formats
+        const p = Date.parse(text);
+        if (!isNaN(p)) return new Date(p);
+        return null;
+      }
+
+      function updateRowVisibility(){
+        const rows = document.querySelectorAll('.table-container tbody tr');
+        rows.forEach(row => {
+          const fHidden = row.dataset.filterHidden === 'true';
+          const sHidden = row.dataset.searchHidden === 'true';
+          const tabHidden = row.dataset.tabHidden === 'true';
+          const statusHidden = row.dataset.statusHidden === 'true';
+          row.style.display = (fHidden || sHidden || tabHidden || statusHidden) ? 'none' : '';
+        });
+      }
+
+      function applyDateFilter(){
+        const fromVal = fromInput ? fromInput.value : '';
+        const toVal = toInput ? toInput.value : '';
+        const fromDate = fromVal ? new Date(fromVal) : null;
+        const toDateRaw = toVal ? new Date(toVal) : null;
+        const toDate = toDateRaw ? new Date(toDateRaw.setHours(23,59,59,999)) : null;
+
+        const rows = document.querySelectorAll('.table-container tbody tr');
+        let matched = 0;
+        rows.forEach(row => {
+          const dateCell = row.querySelector('td:nth-child(5)');
+          const rowDate = parseRowDate(dateCell ? dateCell.textContent.trim() : '');
+          if (!rowDate) { row.dataset.filterHidden = ''; return; }
+          const within = (!fromDate || rowDate >= fromDate) && (!toDate || rowDate <= toDate);
+          row.dataset.filterHidden = within ? '' : 'true';
+          if (within) matched++;
+        });
+        updateRowVisibility();
+        console.debug('applyDateFilter', { fromVal, toVal, matched, total: rows.length });
+      }
+
+      // Apply on Apply click (scoped) and on input change for immediate feedback
+      if (applyBtn) applyBtn.addEventListener('click', (e) => { 
+        e.preventDefault();
+        applyDateFilter();
+        if (dropdownContent) dropdownContent.classList.remove('show');
+        if (filterBtn) { filterBtn.innerHTML = '<i class="fa-solid fa-sliders"></i> Filter ▼'; filterBtn.setAttribute('aria-expanded','false'); }
+        console.debug('apply clicked', { from: fromInput ? fromInput.value : null, to: toInput ? toInput.value : null });
+      });
+      if (fromInput) fromInput.addEventListener('change', applyDateFilter);
+      if (toInput) toInput.addEventListener('change', applyDateFilter);
+
+      // Initialize visibility
+      updateRowVisibility();
+    })();
+  </script>
+</body>
+</html>
+
+

@@ -1,0 +1,239 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background-color: #f8f9fa;
+}
+
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 300px;
+  background-color: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  padding: 20px 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  margin-bottom: 20px;
+  font-weight: bold; /* match Manage Applicant sidebar */
+}
+
+.logo img {
+  width: 120px;
+  margin-bottom: -30px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar ul li {
+  padding: 12px 20px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Ensure sidebar links match main UI typography */
+/* sidebar links inherit styles (kept consistent with Manage Applicant) */
+
+.sidebar ul li.active,
+.sidebar ul li:hover {
+  background-color: #e0f7fa;
+  color: #007b8f;
+  border-left: 4px solid #00bcd4;
+} 
+/* Main Content */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+}
+
+/* Topbar */
+.topbar {
+  background-color: #a8f1ff;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-bottom: 1px solid #d8f2f8;
+  position: relative;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.notif-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.user-menu {
+  position: relative;
+}
+
+.user-btn {
+  background-color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+/* Dropdown */
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  width: 200px;
+  z-index: 10;
+}
+
+.dropdown.show {
+  display: block;
+}
+
+.dropdown a {
+  display: block;
+  padding: 12px 20px;
+  color: black;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.dropdown a:hover {
+  background-color: #f2f2f2;
+}
+
+.dropdown a.logout {
+  color: red;
+}
+
+/* Cards */
+.cards {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  flex: 1;
+  min-width: 200px;
+  background-color: #fff;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+  font-size: 24px;
+  color: #333;
+}
+
+.card p {
+  color: #555;
+}
+
+/* Applicants Table */
+.applicants {
+  background-color: #fff;
+  margin: 0 20px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.applicants h2 {
+  margin-bottom: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+a {
+  color: #007b8f;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* View Documents button used in applicants list */
+.view-docs {
+  background: #06b6d4; /* teal */
+  color: #ffffff;
+  border: 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 150ms ease, transform 80ms ease;
+  font-size: 14px;
+}
+.view-docs:hover {
+  background: #0597a0;
+}
+.view-docs:active {
+  transform: translateY(1px);
+}
+.view-docs:focus {
+  outline: 3px solid rgba(6,182,212,0.18);
+  outline-offset: 2px;
+}
+.view-docs[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* System Alert */
+.system-alert {
+  background-color: #fff;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.system-alert h2 {
+  margin-bottom: 10px;
+}
+
+.alert {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  color: #333;
+}
