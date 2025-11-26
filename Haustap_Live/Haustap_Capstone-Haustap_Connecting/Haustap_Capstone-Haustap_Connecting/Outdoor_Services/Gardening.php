@@ -20,11 +20,11 @@
         <h2 class="subtitle">Gardening & Landscaping</h2>
 
         <div class="services-grid">
-            <div class="service-card">
+            <label class="service-card">
                 <div class="service-header">
                     <div>
                         <h3 class="service-title">Inspection Fee</h3>
-                        <p class="service-price">â‚±300</p>
+                        <p class="service-price">₱300</p>
                         <p class="service-note">Additional fee per gardener for inspection</p>
                     </div>
                     <div class="service-icon">
@@ -34,13 +34,13 @@
                 <div class="inclusions">
                     <p class="service-description">Inspection for gardening and landscaping involves assessing the site's soil quality, drainage, and overall layout to ensure it meets healthy plant growth. It also helps identify any preparations or adjustments needed before starting the project for optimal results.</p>
                 </div>
-            </div>
+            </label>
 
-            <div class="service-card">
+            <label class="service-card">
                 <div class="service-header">
                     <div>
         <h3 class="service-title">Basic &ndash; 1 gardener</h3>
-                        <p class="service-price">â‚±500</p>
+                        <p class="service-price">₱500</p>
                     </div>
                     <div class="service-icon">
                         <input type="checkbox" class="service-check" value="basic">
@@ -54,13 +54,13 @@
                         <li>Basic plant watering</li>
                     </ul>
                 </div>
-            </div>
+            </label>
 
-            <div class="service-card">
+            <label class="service-card">
                 <div class="service-header">
                     <div>
         <h3 class="service-title">Standard &ndash; 2 gardeners</h3>
-                        <p class="service-price">â‚±1,000</p>
+                        <p class="service-price">₱1,000</p>
                     </div>
                     <div class="service-icon">
                         <input type="checkbox" class="service-check" value="standard">
@@ -75,13 +75,13 @@
                         <li>Fertilizer application (provided by client)</li>
                     </ul>
                 </div>
-            </div>
+            </label>
 
-            <div class="service-card">
+            <label class="service-card">
                 <div class="service-header">
                     <div>
         <h3 class="service-title">Deep &ndash; 3 gardeners</h3>
-                        <p class="service-price">â‚±1,800</p>
+                        <p class="service-price">₱1,800</p>
                     </div>
                     <div class="service-icon">
                         <input type="checkbox" class="service-check" value="deep">
@@ -97,7 +97,7 @@
                         <li>Decorative plant arrangement</li>
                     </ul>
                 </div>
-            </div>
+            </label>
         </div>
 
         <p class="materials-note">*Materials are provided by the client</p>

@@ -10,7 +10,8 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { sendOtp } from '../../services/auth-api';
+import { auth } from '../../src/lib/firebase';
+import { sendPasswordResetEmail } from 'firebase/auth';
 
 export default function ForgotPasswordScreen() {
   const router = useRouter();
@@ -28,24 +29,11 @@ export default function ForgotPasswordScreen() {
     }
     setLoading(true);
     try {
-      const res = await sendOtp(email);
-      // If backend returns the OTP for debugging/testing, log it to terminal only in dev
-      const otpValue = res?.otp || res?.data?.otp;
-      if (__DEV__ && otpValue) {
-        console.log(`DEV OTP for ${email}:`, otpValue);
-      }
-      // Redact any OTP from logs to avoid exposing it on device
-      const safeRes: any = { ...res };
-      if (safeRes?.otp) delete safeRes.otp;
-      if (safeRes?.data?.otp) delete safeRes.data.otp;
-      console.log('sendOtp response (redacted):', safeRes);
-      // show server message if available (without OTP)
-      const msg = res?.message || res?.data?.message || 'Verification code sent';
-      Alert.alert('Success', String(msg));
-      router.push(`/auth/verification-forgot-password?email=${encodeURIComponent(email)}`);
+      await sendPasswordResetEmail(auth, email);
+      Alert.alert('Success', 'Password reset email sent');
+      router.back();
     } catch (e: any) {
-      console.error('sendOtp error:', e);
-      const msg = e?.message || (e?.error ? JSON.stringify(e.error) : 'Failed to send OTP');
+      const msg = e?.message || 'Failed to send reset email';
       Alert.alert('Error', msg.toString());
     } finally {
       setLoading(false);

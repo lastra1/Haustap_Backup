@@ -105,6 +105,47 @@ $router->get('/api/admin/bookings', fn() => (new \App\Controllers\Admin\Bookings
 $router->get('/api/admin/clients', fn() => (new \App\Controllers\Admin\ClientsController())->index());
 $router->get('/api/admin/providers', fn() => (new \App\Controllers\Admin\ProvidersController())->index());
 
+$router->post('/api/admin/providers/approve', function() {
+    header('Content-Type: application/json');
+    $raw = file_get_contents('php://input');
+    $json = json_decode($raw ?: 'null', true) ?: [];
+    $email = trim((string)($json['email'] ?? ''));
+    if ($email === '') { echo json_encode(['success' => false, 'message' => 'missing email']); return; }
+    require_once ADMIN_APP_PATH . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'db.php';
+    $pdo = get_db();
+    try {
+        $stmt = $pdo->prepare('UPDATE providers SET verified = 1, status = ? WHERE email = ?');
+        $stmt->execute(['verified', $email]);
+        $stmt2 = $pdo->prepare('UPDATE users SET role = ? WHERE email = ?');
+        $stmt2->execute(['provider', $email]);
+        echo json_encode(['success' => true]);
+    } catch (Throwable $e) {
+        echo json_encode(['success' => false, 'message' => 'db_error']);
+    }
+});
+
+$router->post('/api/admin/providers/revoke', function() {
+    header('Content-Type: application/json');
+    $raw = file_get_contents('php://input');
+    $json = json_decode($raw ?: 'null', true) ?: [];
+    $email = trim((string)($json['email'] ?? ''));
+    $removeRole = (bool)($json['remove_role'] ?? false);
+    if ($email === '') { echo json_encode(['success' => false, 'message' => 'missing email']); return; }
+    require_once ADMIN_APP_PATH . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'db.php';
+    $pdo = get_db();
+    try {
+        $stmt = $pdo->prepare('UPDATE providers SET verified = 0, status = ? WHERE email = ?');
+        $stmt->execute(['revoked', $email]);
+        if ($removeRole) {
+            $stmt2 = $pdo->prepare('UPDATE users SET role = NULL WHERE email = ?');
+            $stmt2->execute([$email]);
+        }
+        echo json_encode(['success' => true]);
+    } catch (Throwable $e) {
+        echo json_encode(['success' => false, 'message' => 'db_error']);
+    }
+});
+
 if ($enableMock) {
 $router->get('/mock-api/*', function() {
     $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';

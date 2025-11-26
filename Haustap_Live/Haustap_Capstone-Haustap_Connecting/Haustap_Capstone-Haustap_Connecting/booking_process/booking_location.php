@@ -44,36 +44,38 @@
         </div>
 
         <!-- Map Container -->
-        <div id="map" class="map-container" style="min-height:350px;height:350px"></div>
+        <div id="map" class="map-container" style="min-height:500px;height:500px"></div>
       </div>
 
       <!-- RIGHT SIDE -->
       <div class="right-column">
         <!-- Set Address Box -->
-        <div class="address-box">
+        <div class="address-box" id="setAddressBox">
           <div class="address-header">
             <i class="fa-solid fa-house icon"></i>
             <h3>Set Address</h3>
+            <input type="radio" name="addressChoice" id="setAddressRadio" />
           </div>
           <div class="address-body">
-            <p>Blk 11 Lot 6 Mary St. Saint Joseph Village 10<br>
-              Brgy. Langgam San Pedro City, Laguna</p>
-            <button class="edit-btn">Edit</button>
+            <p id="setAddressText">No address set</p>
+            <div style="display:flex;gap:8px;align-items:center">
+              <button class="edit-btn" id="setAddressEdit">Edit</button>
+            </div>
           </div>
         </div>
 
-        <!-- Saved Address Box -->
-        <div class="address-box">
+        <!-- Saved Address Box (populated from storage if present) -->
+        <div class="address-box" id="savedAddressBox">
           <div class="address-header">
             <div class="header-left">
               <i class="fa-solid fa-floppy-disk icon"></i>
               <h3>Saved Address</h3>
             </div>
-            <input type="radio" name="savedAddress" />
+            <input type="radio" name="addressChoice" id="savedAddressRadio" />
           </div>
           <div class="address-body">
-            <p>Blk 11 Lot 6 Apple St. Saint Joseph Village 10<br>
-              Brgy. Langgam San Pedro City, Laguna</p>
+            <p id="savedAddressText">No saved address yet</p>
+            <button class="edit-btn" id="savedAddressSave">Save Current</button>
           </div>
         </div>
       </div>
@@ -107,16 +109,118 @@
       var houseInput = document.getElementById('houseType');
       var savedRadio = document.querySelector('input[type="radio"][name="savedAddress"]');
       var savedAddressText = '';
-      if (savedRadio) {
-        var savedBox = savedRadio.closest('.address-box');
-        var savedP = savedBox ? savedBox.querySelector('.address-body p') : null;
-        savedAddressText = savedP ? (savedP.textContent || '').trim() : '';
-        savedRadio.addEventListener('change', function(){
-          if (savedRadio.checked && savedAddressText) {
-            try { localStorage.setItem('booking_address', savedAddressText); } catch(e){}
+      // Populate Set Address from storage (only from explicit Set Address, not from previous booking_address)
+      (function(){
+        var setText = document.getElementById('setAddressText');
+        var setEdit = document.getElementById('setAddressEdit');
+        var setRadio = document.getElementById('setAddressRadio');
+        try {
+          var storedAddr = localStorage.getItem('booking_set_address') || '';
+          if (storedAddr) { setText.textContent = storedAddr; }
+        } catch(e){}
+        if (setEdit) {
+          setEdit.addEventListener('click', function(){
+            // Inline editable input fallback (works even if window.prompt is blocked)
+            var current = (setText.textContent || '').trim();
+            var wrap = setText.parentElement;
+            if (!wrap) return;
+            var existing = document.getElementById('setAddressInput');
+            if (existing) { existing.focus(); return; }
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.id = 'setAddressInput';
+            input.placeholder = 'Enter address (street, city, etc.)';
+            input.value = current;
+            input.style.marginTop = '8px';
+            input.style.width = '100%';
+            wrap.insertBefore(input, setEdit);
+            input.focus();
+            function save(val){
+              var v = (val||'').trim();
+              if (!v) return;
+              setText.textContent = v;
+              try { localStorage.setItem('booking_set_address', v); } catch(e){}
+              try { input.remove(); } catch(e){}
+            }
+            input.addEventListener('keydown', function(ev){ if (ev.key === 'Enter') { save(input.value); } });
+            // Also save when input loses focus
+            input.addEventListener('blur', function(){ save(input.value); });
+          });
+        }
+        if (setRadio) {
+          setRadio.addEventListener('change', function(){
+            if (!setRadio.checked) return;
+            var val = (setText && setText.textContent) ? setText.textContent.trim() : '';
+            if (!val || val.toLowerCase() === 'no address set') { alert('Please set an address first.'); setRadio.checked = false; return; }
+            try { localStorage.setItem('booking_address', val); localStorage.setItem('booking_set_address', val); } catch(e){}
+            var savedRadioEl = document.getElementById('savedAddressRadio');
+            if (savedRadioEl) savedRadioEl.checked = false;
+          });
+        }
+      })();
+
+      // Populate Saved Address from storage (if any)
+      (function(){
+        var box = document.getElementById('savedAddressBox');
+        var radio = document.getElementById('savedAddressRadio');
+        var textEl = document.getElementById('savedAddressText');
+        var saveBtn = document.getElementById('savedAddressSave');
+        var sid = localStorage.getItem('session_id');
+        if (!sid) { sid = 'sid_' + Date.now() + '_' + Math.random().toString(36).slice(2); localStorage.setItem('session_id', sid); }
+        function deriveUserKey(){
+          var candidates = [
+            localStorage.getItem('haustap_user_id'),
+            localStorage.getItem('user_id'),
+            localStorage.getItem('haustap_uid'),
+            localStorage.getItem('haustap_email'),
+            localStorage.getItem('user_email'),
+            localStorage.getItem('email'),
+            localStorage.getItem('haustap_token')
+          ];
+          for (var i=0;i<candidates.length;i++){ var v = candidates[i]; if (v && String(v).trim() !== '') return String(v).trim(); }
+          return '';
+        }
+        var userKey = deriveUserKey();
+        try {
+          var saved = localStorage.getItem('booking_saved_address') || '';
+          if (userKey) {
+            var query = 'user_key=' + encodeURIComponent(userKey);
+            fetch('/api/bookings/saved-address?' + query).then(function(r){ return r.ok ? r.json() : Promise.reject(); }).then(function(res){
+              if (box && textEl) {
+                if (res && res.success && res.data && res.data.address) { saved = res.data.address; }
+                textEl.textContent = saved || 'No saved address yet';
+                savedAddressText = saved;
+              }
+            }).catch(function(){ if (box && textEl) { textEl.textContent = saved || 'No saved address yet'; savedAddressText = saved; } });
+          } else {
+            if (box && textEl) { textEl.textContent = saved || 'No saved address yet'; savedAddressText = saved; }
           }
-        });
-      }
+          if (radio) {
+            radio.addEventListener('change', function(){
+              if (radio.checked) {
+                try { localStorage.setItem('booking_address', saved); } catch(e){}
+                var setRadioEl = document.getElementById('setAddressRadio');
+                if (setRadioEl) setRadioEl.checked = false;
+              }
+            });
+          }
+          if (saveBtn) {
+            saveBtn.addEventListener('click', function(){
+              // Prefer pin input, then Set Address content
+              var pinVal = (pinInput && pinInput.value) ? pinInput.value.trim() : '';
+              var setVal = (document.getElementById('setAddressText')?.textContent || '').trim();
+              var val = pinVal || setVal;
+              if (!val) { alert('Set or pin an address first.'); return; }
+              textEl.textContent = val;
+              try { localStorage.setItem('booking_saved_address', val); } catch(e){}
+              // Persist to DB only when logged in (userKey present)
+              if (userKey) {
+                try { fetch('/api/bookings/saved-address', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sid: sid, user_key: userKey, address: val }) }); } catch(e){}
+              }
+            });
+          }
+        } catch(e){}
+      })();
       var subcat = document.querySelector('.subcategory-btn');
 
       // Determine correct service label to show on this page
@@ -151,6 +255,19 @@
             localStorage.setItem('selected_service_price', String(num));
           }
         }
+        // If price still missing, attempt to fetch from DB by service name
+        (async function ensurePrice(){
+          try {
+            var existing = localStorage.getItem('selected_service_price');
+            if (existing && Number(existing)>0) return;
+            var name = localStorage.getItem('selected_service_name')||'';
+            if (!name) return;
+            var category = (name.toLowerCase().indexOf('cleaning')!==-1)?'Cleaning':'';
+            var res = await fetch('/api/system/service-price?name='+encodeURIComponent(name)+(category?('&category='+encodeURIComponent(category)):''));
+            var j = await res.json();
+            if (j && j.success && j.data && j.data.price){ localStorage.setItem('selected_service_price', String(j.data.price)); }
+          } catch(e){}
+        })();
       } catch(e){}
 
       if (back) back.addEventListener('click', function(){
@@ -171,7 +288,7 @@
       function updatePinInput(text){
         if (!text) return;
         if (pinInput) pinInput.value = text;
-        setLS('booking_address', text);
+        setLS('booking_pin_address', text);
       }
 
       function setMarker(latlng){
@@ -351,30 +468,98 @@
           }
         }
 
+        // If user selected Set Address radio, use it directly
+        var setRadioEl = document.getElementById('setAddressRadio');
+        var setAddrNow = (document.getElementById('setAddressText')?.textContent || '').trim();
+        if (setRadioEl && setRadioEl.checked && setAddrNow && setAddrNow.toLowerCase() !== 'no address set') {
+          try { localStorage.setItem('booking_address', setAddrNow); } catch(e){}
+          window.location.href = '/booking/schedule';
+          return;
+        }
+
         // Prefer map pin (lat/lng) if available; otherwise fall back to manual inputs
         var lat = getLS('booking_lat');
         var lng = getLS('booking_lng');
         var pin = (pinInput && pinInput.value) ? pinInput.value.trim() : '';
         var house = (houseInput && houseInput.value) ? houseInput.value.trim() : '';
+        var setAddrEl = document.getElementById('setAddressText');
+        var setAddr = setAddrEl ? (setAddrEl.textContent || '').trim() : '';
+        // Prefer explicitly set address from storage if user saved earlier in this page
+        try { var storedSet = localStorage.getItem('booking_set_address') || ''; if (storedSet) setAddr = storedSet; } catch(e){}
 
         if (lat && lng) {
-          // Ensure a readable address string is stored alongside coordinates
-          if (!pin) { pin = (Number(lat).toFixed(5) + ', ' + Number(lng).toFixed(5)); }
-          setLS('booking_address', pin);
+          var chosen = setAddr && setAddr.toLowerCase() !== 'no address set' ? setAddr : (pin || (Number(lat).toFixed(5) + ', ' + Number(lng).toFixed(5)));
+          setLS('booking_address', chosen);
+          // Guest mode: only persist to DB if logged in
+          try {
+          var token = localStorage.getItem('haustap_token');
+          function deriveUserKey(){
+            var candidates = [
+              localStorage.getItem('haustap_user_id'),
+              localStorage.getItem('user_id'),
+              localStorage.getItem('haustap_uid'),
+              localStorage.getItem('haustap_email'),
+              localStorage.getItem('user_email'),
+              localStorage.getItem('email'),
+              localStorage.getItem('haustap_token')
+            ];
+            for (var i=0;i<candidates.length;i++){ var v=candidates[i]; if (v && String(v).trim()!=='') return String(v).trim(); }
+            return '';
+          }
+          var userKey = deriveUserKey();
+          if (token) {
+            var payload = {
+              address: chosen,
+              lat: lat,
+              lng: lng,
+              house_type: house,
+              service_name: localStorage.getItem('selected_service_name') || '',
+              cleaning_type: localStorage.getItem('selected_cleaning_type') || '',
+              user_key: userKey
+            };
+              fetch('/api/bookings/location', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+              }).then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+               .then(function(res){ if (res && res.success && res.data && res.data.id) { try { localStorage.setItem('booking_location_id', res.data.id); } catch(e){} } })
+               .catch(function(){});
+            }
+          } catch(e){}
           window.location.href = '/booking/schedule';
           return;
         }
 
         // Fallback: require at least a pin or house type
-        if (!pin && !house) {
+        if (!pin && !house && (!setAddr || setAddr.toLowerCase() === 'no address set')) {
           alert('Please set a pin location or house type before proceeding.');
           return;
         }
         var addrParts = [];
         if (house) addrParts.push('House: ' + house);
-        if (pin) addrParts.push('Pin: ' + pin);
+        if (setAddr && setAddr.toLowerCase() !== 'no address set') addrParts.push('Address: ' + setAddr);
+        else if (pin) addrParts.push('Pin: ' + pin);
         var addr = addrParts.join(' | ');
         setLS('booking_address', addr);
+        // Guest mode: only persist to DB if logged in
+        try {
+          var token2 = localStorage.getItem('haustap_token');
+          var userKey2 = userKey;
+          if (token2) {
+            var payload2 = {
+              address: addr,
+              lat: lat || null,
+              lng: lng || null,
+              house_type: house,
+              service_name: localStorage.getItem('selected_service_name') || '',
+              cleaning_type: localStorage.getItem('selected_cleaning_type') || '',
+              user_key: userKey2
+            };
+            fetch('/api/bookings/location', {
+              method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload2)
+            }).then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+              .then(function(res){ if (res && res.success && res.data && res.data.id) { try { localStorage.setItem('booking_location_id', res.data.id); } catch(e){} } })
+              .catch(function(){});
+          }
+        } catch(e){}
         window.location.href = '/booking/schedule';
       });
     });

@@ -1,7 +1,8 @@
 import * as SecureStore from 'expo-secure-store';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { setAuthToken } from '../../services/api-client';
-import { login as apiLogin, register as apiRegister } from '../../services/auth-api';
+import { auth } from '../../src/lib/firebase';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 type Role = 'client' | 'provider';
 type User = any | null;
@@ -63,32 +64,39 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 		}
 	};
 
-	const login = async (email: string, password: string) => {
-		const res = await apiLogin(email, password);
-		// response shape may vary; try common keys
-		const tokenFromRes = res?.token || res?.data?.token || res?.access_token || res?.data?.access_token || res?.meta?.token;
-		const userFromRes = res?.user || res?.data?.user || res?.data || res;
+    const login = async (email: string, password: string) => {
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+        const idToken = await cred.user.getIdToken();
+        const u: any = { uid: cred.user.uid, email: cred.user.email, displayName: cred.user.displayName, role: 'client' };
+        setUser(u);
+        setToken(idToken);
+        setAuthToken(idToken);
+        await persist(u, idToken, 'client');
+        setModeState('client');
+        return u;
+    };
 
-		setUser(userFromRes || null);
-		setToken(tokenFromRes || null);
-		if (tokenFromRes) setAuthToken(tokenFromRes);
-		await persist(userFromRes || null, tokenFromRes || null, (userFromRes && userFromRes.role) || 'client');
-		setModeState((userFromRes && userFromRes.role) || 'client');
-		return userFromRes;
-	};
+    const signup = async (name: string, email: string, phone: string, password: string, confirmPassword: string) => {
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        try { await updateProfile(cred.user, { displayName: name }); } catch {}
+        const idToken = await cred.user.getIdToken();
+        const u: any = { uid: cred.user.uid, email: cred.user.email, displayName: name || cred.user.displayName, role: 'client' };
+        setUser(u);
+        setToken(idToken);
+        setAuthToken(idToken);
+        await persist(u, idToken, 'client');
+        setModeState('client');
+        return u;
+    };
 
-	const signup = async (name: string, email: string, phone: string, password: string, confirmPassword: string) => {
-		const res = await apiRegister(name, email, phone, password, confirmPassword);
-		return res;
-	};
-
-	const logout = async () => {
-		setUser(null);
-		setToken(null);
-		setModeState('client');
-		setAuthToken(null);
-		await persist(null, null, 'client');
-	};
+    const logout = async () => {
+        try { await auth.signOut(); } catch {}
+        setUser(null);
+        setToken(null);
+        setModeState('client');
+        setAuthToken(null);
+        await persist(null, null, 'client');
+    };
 
 	const setPartnerStatus = async (value: boolean) => {
 		if (!user) return;

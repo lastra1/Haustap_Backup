@@ -25,7 +25,16 @@
 
     <section class="schedule-box">
       <h2 class="section-title">DATE</h2>
-      <div class="date-grid"><!-- Dates are generated dynamically via JS --></div>
+      <div class="bigcal-header">
+        <button class="bigcal-nav bigcal-prev"><i class="fa-solid fa-chevron-left"></i></button>
+        <span class="bigcal-title"></span>
+        <button class="bigcal-nav bigcal-next"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      <div class="bigcal-days">
+        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      </div>
+      <div class="bigcal-grid"></div>
+      
 
       <h2 class="section-title">TIME</h2>
       <select class="time-select">
@@ -58,56 +67,9 @@
     (function(){
       var selectedDate = null;
       var selectedTime = null;
-      // Dynamically generate date boxes for the next 14 days
-      var dateGrid = document.querySelector('.date-grid');
-      var DAYS_TO_SHOW = 7; // Show next 7 days
-      var today = new Date();
       var savedDate = null;
-      try { savedDate = localStorage.getItem('selected_date') || null; } catch(e){}
-
-      // Helpers to format dates in Philippines timezone (Asia/Manila)
-      var TZ = 'Asia/Manila';
       function pad2(n){ return String(n).padStart(2,'0'); }
-      function fmtParts(ts){
-        var parts = new Intl.DateTimeFormat('en-US', {
-          timeZone: TZ,
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          weekday: 'long'
-        }).formatToParts(new Date(ts));
-        var out = {};
-        parts.forEach(function(p){ out[p.type] = p.value; });
-        return out; // {year, month, day, weekday}
-      }
-      function monthShort(ts){
-        return new Intl.DateTimeFormat('en-US', { timeZone: TZ, month: 'short' }).format(new Date(ts));
-      }
-
-      for (var i = 0; i < DAYS_TO_SHOW; i++) {
-        var ts = today.getTime() + i * 86400000; // add i days in ms
-        var p = fmtParts(ts);
-        var iso = p.year + '-' + p.month + '-' + p.day; // YYYY-MM-DD in Manila
-        var label = document.createElement('label');
-        label.className = 'date-box' + (i === 0 ? ' today' : '');
-        label.setAttribute('data-date', iso);
-        var input = document.createElement('input');
-        input.type = 'radio';
-        input.name = 'date';
-        var div = document.createElement('div');
-        div.className = 'date-text';
-        var dateLine = '<strong>' + monthShort(ts) + ' ' + pad2(Number(p.day)) + ', ' + p.year + '</strong>';
-        var dayLine = (i === 0) ? (p.weekday + ' - Today') : p.weekday;
-        div.innerHTML = dateLine + '<br>' + dayLine;
-        label.appendChild(input);
-        label.appendChild(div);
-        dateGrid && dateGrid.appendChild(label);
-        if (savedDate && savedDate === iso) {
-          input.checked = true;
-          selectedDate = iso;
-          label.style.outline = '2px solid #009999';
-        }
-      }
+      try { savedDate = localStorage.getItem('selected_date') || null; } catch(e){}
       // Read stored service label and display without overwriting
       var subcat = document.querySelector('.subcategory-btn');
       var storedServiceName = '';
@@ -116,28 +78,67 @@
         subcat.innerHTML = '<b>' + storedServiceName + '</b>';
       }
 
-      var labels = Array.prototype.slice.call(document.querySelectorAll('.date-box'));
-      labels.forEach(function(label){
-        var input = label.querySelector('input[type="radio"]');
-        var iso = label.getAttribute('data-date');
-        if (input) {
-          input.addEventListener('change', function(){
-            selectedDate = iso || null;
-            labels.forEach(function(l){ l.style.outline = 'none'; });
-            label.style.outline = '2px solid #009999';
-          });
-        }
-        // Also allow clicking the label itself
-        label.addEventListener('click', function(){
-          selectedDate = iso || null;
-          labels.forEach(function(l){ l.style.outline = 'none'; });
-          label.style.outline = '2px solid #009999';
-          var inp = label.querySelector('input[type="radio"]');
-          if (inp) inp.checked = true;
-        });
-      });
+      var labels = [];
 
       var timeSelect = document.querySelector('.time-select');
+      var bigGrid = document.querySelector('.bigcal-grid');
+      var bigTitle = document.querySelector('.bigcal-title');
+      var prevBtn = document.querySelector('.bigcal-prev');
+      var nextBtn = document.querySelector('.bigcal-next');
+      var today = new Date(); today.setHours(0,0,0,0);
+      var shownMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+      function ymd(date){ return date.getFullYear()+'-'+pad2(date.getMonth()+1)+'-'+pad2(date.getDate()); }
+      function renderCalendar(){
+        if (!bigGrid || !bigTitle) return;
+        bigTitle.textContent = shownMonth.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+        bigGrid.innerHTML = '';
+        var firstDow = new Date(shownMonth.getFullYear(), shownMonth.getMonth(), 1).getDay();
+        var daysIn = new Date(shownMonth.getFullYear(), shownMonth.getMonth()+1, 0).getDate();
+        for (var i=0;i<firstDow;i++){ var blank=document.createElement('div'); blank.className='bigcal-cell blank'; bigGrid.appendChild(blank); }
+        for (var d=1; d<=daysIn; d++){
+          var date = new Date(shownMonth.getFullYear(), shownMonth.getMonth(), d);
+          var cell = document.createElement('div'); cell.className='bigcal-cell';
+          var past = date < today;
+          var dow = date.getDay();
+          var available = dow !== 0 && dow !== 6;
+          if (past || !available) cell.classList.add('disabled');
+          var num=document.createElement('span'); num.className='bigcal-num'; num.textContent=String(d);
+          cell.appendChild(num);
+          if (!past && available){
+            cell.addEventListener('click', function(dt){ return function(){
+              var iso=ymd(dt);
+              selectedDate = iso;
+              Array.prototype.slice.call(bigGrid.querySelectorAll('.bigcal-cell.selected')).forEach(function(el){ el.classList.remove('selected'); });
+              this.classList.add('selected');
+              fetchAvailabilityAndTimes(iso);
+            };}(date));
+          }
+          if (savedDate && savedDate === ymd(date)) { cell.classList.add('selected'); selectedDate = savedDate; }
+          bigGrid.appendChild(cell);
+        }
+      }
+      renderCalendar();
+      if (prevBtn) prevBtn.addEventListener('click', function(){ shownMonth = new Date(shownMonth.getFullYear(), shownMonth.getMonth()-1, 1); renderCalendar(); });
+      if (nextBtn) nextBtn.addEventListener('click', function(){ shownMonth = new Date(shownMonth.getFullYear(), shownMonth.getMonth()+1, 1); renderCalendar(); });
+      function setTimeSlots(slots){
+        if (!timeSelect) return;
+        timeSelect.innerHTML = '';
+        if (!slots || !slots.length){
+          var opt = document.createElement('option'); opt.textContent = 'No available times'; opt.disabled = true; opt.selected = true; timeSelect.appendChild(opt); return;
+        }
+        var first = document.createElement('option'); first.textContent = 'Select Time'; first.disabled = true; first.selected = true; timeSelect.appendChild(first);
+        slots.forEach(function(s){ var opt=document.createElement('option'); opt.value=s; opt.textContent=s; timeSelect.appendChild(opt); });
+      }
+      function fetchAvailabilityAndTimes(iso){
+        if (!iso) return;
+        try {
+          fetch('/api/bookings/availability?date='+encodeURIComponent(iso))
+            .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+            .then(function(res){ if (res && res.success){ setTimeSlots(res.available ? res.slots: []); } })
+            .catch(function(){ /* keep default slots */ });
+        } catch(_){ }
+      }
       if (timeSelect) {
         // Restore previously saved time if available
         try {
@@ -161,14 +162,21 @@
 
       var nextBtn = document.querySelector('.next-btn');
       if (nextBtn) nextBtn.addEventListener('click', function(){
-        // Default to first labeled date if none explicitly selected
-        if (!selectedDate) {
-          var first = document.querySelector('.date-box');
-          selectedDate = first ? first.getAttribute('data-date') : null;
-        }
+        if (!selectedDate) { alert('Please pick a date from the calendar.'); return; }
         try {
           if (selectedDate) localStorage.setItem('selected_date', selectedDate);
           if (selectedTime) localStorage.setItem('selected_time', selectedTime);
+          var token = localStorage.getItem('haustap_token');
+          var userKey = (function(){
+            var c=[localStorage.getItem('haustap_user_id'),localStorage.getItem('user_id'),localStorage.getItem('haustap_uid'),localStorage.getItem('haustap_email'),localStorage.getItem('user_email'),localStorage.getItem('email'),localStorage.getItem('haustap_token')];
+            for (var i=0;i<c.length;i++){ var v=c[i]; if (v && String(v).trim()!=='') return String(v).trim(); } return ''; })();
+          if (token && userKey && selectedTime){
+            var payload={ user_key:userKey, date:selectedDate, time:selectedTime, service: (localStorage.getItem('selected_service_name')||'') };
+            fetch('/api/bookings/hold', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) })
+              .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+              .then(function(res){ if (res && res.success && res.data && res.data.id) { localStorage.setItem('booking_hold_id', res.data.id); } })
+              .catch(function(){});
+          }
         } catch {}
         window.location.href = '/booking/overview';
       });

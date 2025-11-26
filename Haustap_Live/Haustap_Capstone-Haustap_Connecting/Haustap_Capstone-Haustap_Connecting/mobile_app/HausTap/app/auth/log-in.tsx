@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { login } from '../../services/auth-api';
+import { useAuth } from '../context/AuthContext';
 
 export default function LogInScreen() {
   const router = useRouter();
@@ -18,6 +18,7 @@ export default function LogInScreen() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const { login, mode } = useAuth();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -26,18 +27,11 @@ export default function LogInScreen() {
     }
     try {
       setError('');
-      const userData = await login(email, password);
-      console.log('Login successful:', userData);
-
-      if (userData.user.role === 'client') {
-        router.replace('/client-side');
-        console.log('Login as Client');
-      } else if (userData.user.role === 'service-provider' || userData.user.role === 'provider') {
-        console.log('Login as Service Provider');
+      const u = await login(email, password);
+      if ((u && u.role) === 'provider' || mode === 'provider') {
         router.replace('/service-provider');
       } else {
-        console.log('Login as Client');
-        router.replace('/client-side'); // Default fallback route
+        router.replace('/client-side');
       }
     } catch (err: any) {
       const errorMessage = err?.message || 'An error occurred during login';

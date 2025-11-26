@@ -27,7 +27,7 @@
                         <p class="description">A compact outdoor space for light maintenance.</p>
                     </div>
                     <div class="radio-btn">
-                        <input type="radio" name="garden" value="small">
+                        <input type="checkbox" class="garden-check" value="small">
                     </div>
                 </div>
 
@@ -38,7 +38,7 @@
                         <p class="description">A moderate-sized outdoor area, common in family homes.</p>
                     </div>
                     <div class="radio-btn">
-                        <input type="radio" name="garden" value="medium">
+                        <input type="checkbox" class="garden-check" value="medium">
                     </div>
                 </div>
 
@@ -49,7 +49,7 @@
                         <p class="description">Expansive outdoor areas, often for villas or mansions.</p>
                     </div>
                     <div class="radio-btn">
-                        <input type="radio" name="garden" value="large">
+                        <input type="checkbox" class="garden-check" value="large">
                     </div>
                 </div>
             </div>
@@ -59,18 +59,21 @@
   <?php include dirname(__DIR__) . "/client/includes/footer.php"; ?>
 <script>
 (function(){
-  document.addEventListener('change', function(e){
-    var t = e.target;
-    if (t && t.matches('input[type=\"radio\"][name=\"garden\"]')) {
-      var val = (t.value || '').toLowerCase();
-      var map = {
-        small: '/Outdoor_Services/Gardening.php',
-        medium: '/Outdoor_Services/Gardening-medium.php',
-        large: '/Outdoor_Services/Gardening-large.php'
-      };
-      var next = map[val];
-      if (next) { window.location.href = next; }
-    }
+  var map = {
+    small: '/Outdoor_Services/Gardening.php',
+    medium: '/Outdoor_Services/Gardening-medium.php',
+    large: '/Outdoor_Services/Gardening-large.php'
+  };
+  function go(val){ var next = map[(val||'').toLowerCase()]; if (next) window.location.href = next; }
+  document.addEventListener('click', function(e){
+    var card = e.target.closest('.garden-card');
+    if (!card) return;
+    var input = card.querySelector('input.garden-check');
+    if (!input) return;
+    var checks = Array.prototype.slice.call(document.querySelectorAll('input.garden-check'));
+    checks.forEach(function(c){ if (c !== input) c.checked = false; });
+    if (e.target !== input) input.checked = !input.checked;
+    if (input.checked) go(input.value);
   });
 })();
 </script>

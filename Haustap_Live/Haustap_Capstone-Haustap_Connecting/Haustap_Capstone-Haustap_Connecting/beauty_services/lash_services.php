@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -32,7 +32,7 @@
       <section class="service-section">
         <div class="service-grid">
           <label class="service-card">
-            <input type="radio" name="lashes" checked />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Classic Lash Extensions</h3>
               <p class="price">Starts at â‚±500</p>
@@ -45,7 +45,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="lashes" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Hybrid Lash Extensions</h3>
               <p class="price">Starts at â‚±800</p>
@@ -58,7 +58,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="lashes" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Volume Lash Extensions</h3>
               <p class="price">Starts at â‚±1,000</p>
@@ -71,7 +71,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="lashes" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Mega Volume Lash Extensions</h3>
               <p class="price">Starts at â‚±1,500</p>
@@ -84,7 +84,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="lashes" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Lash Lift + Tint</h3>
               <p class="price">Starts at â‚±500</p>
@@ -97,7 +97,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="lashes" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Lower Lash Extensions</h3>
               <p class="price">Starts at â‚±300</p>
@@ -110,7 +110,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="lashes" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Lash Removal</h3>
               <p class="price">Starts at â‚±500</p>
@@ -123,7 +123,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="lashes" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
             <h3>Lash Retouch / Refill (2&ndash;3 weeks)</h3>
               <p class="price">Starts at â‚±800</p>
@@ -143,7 +143,7 @@
   <?php include dirname(__DIR__) . "/client/includes/footer.php"; ?>
   <script>
     document.addEventListener('DOMContentLoaded', function(){
-      var radios = Array.prototype.slice.call(document.querySelectorAll('.service-card input[type="radio"]'));
+      var checks = Array.prototype.slice.call(document.querySelectorAll('.service-card input.service-check'));
       var activeSubcat = document.querySelector('.subcategory-nav li.active');
       function normalizeLabel(txt){ return String(txt||'').replace(/\s+/g,' ').trim(); }
       function buildLabel(card){
@@ -157,10 +157,22 @@
         try { localStorage.setItem('selected_service_name', label); } catch(e){}
         window.location.href = '/booking_process/booking_location.php?service=' + encodeURIComponent(label);
       }
-      radios.forEach(function(r){
-        r.addEventListener('change', function(){ proceed(r.closest('.service-card')); });
-        r.addEventListener('click', function(){ if (r.checked) proceed(r.closest('.service-card')); });
+      checks.forEach(function(c){
+        c.addEventListener('click', function(){
+          var card = c.closest('.service-card');
+          checks.forEach(function(x){ if (x !== c) x.checked = false; });
+          if (c.checked) proceed(card);
+        });
       });
+      var items = Array.prototype.slice.call(document.querySelectorAll('.subcategory-nav li'));
+      var map = {
+        'Hair Services': '/beauty_services/hair_services.php',
+        'Nail Care': '/beauty_services/nail_services.php',
+        'Make-up': '/beauty_services/makeup_services.php',
+        'Lashes': '/beauty_services/lash_services.php',
+        'Packages': '/beauty_services/packages_services.php'
+      };
+      items.forEach(function(li){ li.addEventListener('click', function(){ var t = String(li.textContent||'').replace(/\s+/g,' ').trim(); var href = map[t] || ''; if (href) window.location.href = href; }); });
     });
   </script>
 </body>

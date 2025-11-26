@@ -305,12 +305,12 @@ body {
   background: white;
   border-radius: 10px;
   margin-bottom: 20px;
-  box-shadow: 2px 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
   overflow: hidden;
 }
 
 .address-header {
-  background: #e5e5e5;
+  background: #d0d0d0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -331,6 +331,28 @@ body {
 .address-header .icon {
   color: #009999;
   font-size: 1.1rem;
+}
+
+.address-header input[type="radio"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #111;
+  border-radius: 50%;
+  background: #e6e6e6;
+  position: relative;
+  cursor: pointer;
+}
+.address-header input[type="radio"]::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: transparent;
+}
+.address-header input[type="radio"]:checked::after {
+  background: #111;
 }
 
 .address-body {

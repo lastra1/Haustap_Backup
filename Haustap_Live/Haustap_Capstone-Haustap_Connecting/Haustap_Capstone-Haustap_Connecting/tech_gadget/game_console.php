@@ -22,10 +22,10 @@
   <!-- Subcategory Navigation -->
   <nav class="subcategory-nav">
     <ul>
-      <li>Mobile Phone</li>
-      <li>Laptop & Desktop PC</li>
-      <li>Tablet & iPad</li>
-      <li class="active">Game & Console</li>
+      <li><a href="/tech_gadget/mobile_phone.php">Mobile Phone</a></li>
+      <li><a href="/tech_gadget/laptop_desktop.php">Laptop & Desktop PC</a></li>
+      <li><a href="/tech_gadget/tablet_ipad.php">Tablet & iPad</a></li>
+      <li class="active"><a href="/tech_gadget/game_console.php">Game & Console</a></li>
     </ul>
   </nav>
 
@@ -33,7 +33,7 @@
     <section class="service-section">
       <div class="service-grid">
         <label class="service-card">
-          <input type="radio" name="tech" checked />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>Controller repair</h3>
             <p class="price">â‚±300 per unit</p>
@@ -47,7 +47,7 @@
         </label>
 
         <label class="service-card">
-          <input type="radio" name="tech" />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>HDMI port repair</h3>
             <p class="price">â‚±700 per unit</p>
@@ -62,7 +62,7 @@
         </label>
 
         <label class="service-card">
-          <input type="radio" name="tech" />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>Disc Drive Repair / Replacement </h3>
             <p class="price">â‚±800 per unit</p>
@@ -77,7 +77,7 @@
         </label>
 
         <label class="service-card">
-          <input type="radio" name="tech" />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>Power Supply Repair / Replacement </h3>
             <p class="price">â‚±900 per unit</p>
@@ -91,7 +91,7 @@
         </label>
 
         <label class="service-card">
-          <input type="radio" name="tech" />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>Software Reinstallation / Update </h3>
             <p class="price">â‚±300 per unit</p>
@@ -105,7 +105,7 @@
         </label>
 
         <label class="service-card">
-          <input type="radio" name="tech" />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>HDMI port repair</h3>
             <p class="price">â‚±600 per unit</p>
@@ -117,50 +117,38 @@
             </p>
           </div>
         </label>
-      </div>
-    </section>
+  </div>
+  </section>
   </div>
 </main>
 
 
   <!-- FOOTER -->
   <?php include dirname(__DIR__) . "/client/includes/footer.php"; ?>
+  <div class="action-bar">
+    <button class="proceed-btn">Proceed</button>
+    <div class="total-box">Total: ₱0.00</div>
+  </div>
   <script>
     document.addEventListener('DOMContentLoaded', function(){
-      var radios = Array.prototype.slice.call(document.querySelectorAll('input[type="radio"][name="tech"]'));
+      var checks = Array.prototype.slice.call(document.querySelectorAll('label.service-card input.service-check'));
       var activeSubcat = document.querySelector('.subcategory-nav li.active');
-      function normalizeLabel(txt){ return String(txt||'').replace(/\s+/g,' ').trim(); }
-      function buildLabel(card){
-        var titleEl = card ? card.querySelector('.service-content h3') : null;
-        var subcat = activeSubcat ? normalizeLabel(activeSubcat.textContent) : 'Tech & Gadget';
-        var serviceTitle = titleEl ? normalizeLabel(titleEl.textContent) : '';
-        return subcat + ' - ' + serviceTitle;
+      var proceedBtn = document.querySelector('.action-bar .proceed-btn');
+      var totalBox = document.querySelector('.action-bar .total-box');
+      function norm(t){ return String(t||'').replace(/\s+/g,' ').trim(); }
+      function priceNum(txt){ var cleaned = String(txt||'').replace(/,/g,''); var m = cleaned.match(/(\d+(?:\.\d+)?)/); return m ? Number(m[1]) : 0; }
+      function labelFor(card){ var titleEl = card ? card.querySelector('.service-content h3') : null; var subcat = activeSubcat ? norm(activeSubcat.textContent) : 'Tech & Gadget'; var t = titleEl ? norm(titleEl.textContent) : ''; return subcat + ' - ' + t; }
+      function formatPHP(v){ return '₱' + Number(v||0).toFixed(2); }
+      function compute(){
+        var names = []; var prices = [];
+        checks.forEach(function(c){ if (c.checked){ var card = c.closest('.service-card'); var name = labelFor(card); var pEl = card ? card.querySelector('.price') : null; var p = priceNum(pEl ? pEl.textContent : ''); if (name) names.push(name); if (!isNaN(p)) prices.push(p); } });
+        var sum = prices.reduce(function(a,b){ return a + (Number(b)||0); }, 0);
+        try { localStorage.setItem('selected_services_names', JSON.stringify(names)); localStorage.setItem('selected_services_prices', JSON.stringify(prices)); localStorage.setItem('selected_service_name', names[0] || ''); localStorage.setItem('selected_service_price', String(sum)); } catch(e){}
+        if (totalBox) totalBox.textContent = 'Total: ' + formatPHP(sum);
       }
-      function parsePriceText(txt){
-        var cleaned = String(txt||'').replace(/,/g,'');
-        var m = cleaned.match(/(\d+(?:\.\d+)?)/);
-        return m ? Number(m[1]) : null;
-      }
-      function proceed(card){
-        var label = buildLabel(card);
-        try {
-          localStorage.setItem('selected_service_name', label);
-          var pEl = card ? card.querySelector('.service-price') : null;
-          var price = pEl ? parsePriceText(pEl.textContent) : null;
-          if (price != null && !isNaN(price)) {
-            localStorage.setItem('selected_service_price', String(price));
-          }
-        } catch(e){}
-        var nextUrl = '/booking_process/booking_location.php?service=' + encodeURIComponent(label);
-        var pEl2 = card ? card.querySelector('.service-price') : null;
-        var price2 = pEl2 ? parsePriceText(pEl2.textContent) : null;
-        if (price2 != null && !isNaN(price2)) { nextUrl += '&price=' + encodeURIComponent(String(price2)); }
-        window.location.href = nextUrl;
-      }
-      radios.forEach(function(r){
-        r.addEventListener('change', function(){ proceed(r.closest('.service-card')); });
-        r.addEventListener('click', function(){ if (r.checked) proceed(r.closest('.service-card')); });
-      });
+      checks.forEach(function(c){ c.addEventListener('change', compute); });
+      if (proceedBtn){ proceedBtn.addEventListener('click', function(){ compute(); window.location.href = '/booking_process/booking_location.php'; }); }
+      compute();
     });
   </script>
 </body>

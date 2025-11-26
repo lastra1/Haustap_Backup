@@ -43,7 +43,7 @@ export default function MultiSelectList({
 
   const handleNext = () => {
     router.push({
-      pathname: '/client-side/booking-summary',
+      pathname: '/client-side/booking-process/booking-location',
       params: {
         mainCategory,
         service: serviceName,

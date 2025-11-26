@@ -102,6 +102,11 @@
     <p class="footer-note">
       Full payment will be collected directly by the service provider upon completion of the service.
     </p>
+
+    <div class="terms-section" style="margin-top:14px;padding-top:8px;border-top:1px solid #e5e5e5;display:flex;align-items:center;gap:8px">
+      <input type="checkbox" id="termsAgree" style="width:18px;height:18px;cursor:pointer" />
+      <label for="termsAgree" style="cursor:pointer">I agree to the <a href="/client/terms.php" target="_blank">Terms and Conditions</a> and <a href="/client/privacy.php" target="_blank">Privacy Policy</a>.</label>
+    </div>
   </section>
 
     <!-- PAGINATION -->
@@ -191,7 +196,19 @@
             }
           }
         } catch(e){}
-        try { var v = localStorage.getItem('selected_service_price'); return v ? Number(v) : 0; } catch(_) { return 0; }
+        try { var v = localStorage.getItem('selected_service_price'); if (v) return Number(v)||0; } catch(_) {}
+        // Fallback mapping based on cleaning type
+        try {
+          var name = localStorage.getItem('selected_service_name') || '';
+          var type = localStorage.getItem('selected_cleaning_type') || '';
+          var base = 0;
+          var t = String(type||name||'').toLowerCase();
+          if (t.indexOf('basic') !== -1) base = 1000;
+          else if (t.indexOf('standard') !== -1) base = 2000;
+          else if (t.indexOf('deep') !== -1) base = 3000;
+          return base;
+        } catch(e){}
+        return 0;
       })();
       var summarySpans = Array.prototype.slice.call(document.querySelectorAll('.summary span'));
       var subtotalEl = summarySpans[0] || null;
@@ -207,8 +224,27 @@
         if (subtotalEl) subtotalEl.textContent = formatPHP(subtotal);
         if (discountEl) discountEl.textContent = formatPHP(discount);
         if (totalEl) totalEl.textContent = formatPHP(total);
+        try { localStorage.setItem('computed_subtotal', String(subtotal)); localStorage.setItem('computed_total', String(total)); } catch(e){}
       }
       updateSummary(price, 0);
+
+      // If price still zero, try to look up from DB services endpoint
+      (async function tryFetchPrice(){
+        if (Number(price||0) > 0) return;
+        var name = localStorage.getItem('selected_service_name') || '';
+        var category = (name && name.toLowerCase().indexOf('cleaning') !== -1) ? 'Cleaning' : '';
+        if (!name) return;
+        try {
+          var res = await fetch('/api/system/service-price?name=' + encodeURIComponent(name) + (category ? ('&category=' + encodeURIComponent(category)) : ''));
+          var j = await res.json();
+          if (j && j.success && j.data && j.data.price){ price = Number(j.data.price)||0; updateSummary(price, Number(localStorage.getItem('selected_voucher_amount')||'0')); return; }
+          // Fallback: attempt auto-seed then retry once
+          try { await fetch('/api/system/auto-seed-from-ui'); } catch(e){}
+          var res2 = await fetch('/api/system/service-price?name=' + encodeURIComponent(name) + (category ? ('&category=' + encodeURIComponent(category)) : ''));
+          var j2 = await res2.json();
+          if (j2 && j2.success && j2.data && j2.data.price){ price = Number(j2.data.price)||0; updateSummary(price, Number(localStorage.getItem('selected_voucher_amount')||'0')); }
+        } catch(e){}
+      })();
 
       // Persist notes typing for use on confirm page
       var notesEl = document.getElementById('notes');
@@ -228,7 +264,16 @@
           var back = btns[0];
           var next = btns[btns.length-1];
           if (back) back.addEventListener('click', function(){ window.location.href = '/booking/schedule'; });
-          if (next) next.addEventListener('click', function(){ window.location.href = '/booking_process/confirm_booking.php'; });
+          var terms = document.getElementById('termsAgree');
+          // Restore terms acceptance
+          try { var agreed = localStorage.getItem('terms_agreed') === '1'; if (terms) terms.checked = agreed; } catch(e){}
+          if (terms) {
+            terms.addEventListener('change', function(){ try { localStorage.setItem('terms_agreed', terms.checked ? '1' : '0'); } catch(e){} });
+          }
+          if (next) next.addEventListener('click', function(){
+            if (!terms || !terms.checked) { alert('Please agree to the Terms and Conditions to proceed.'); return; }
+            window.location.href = '/booking_process/confirm_booking.php';
+          });
         }
       }
 

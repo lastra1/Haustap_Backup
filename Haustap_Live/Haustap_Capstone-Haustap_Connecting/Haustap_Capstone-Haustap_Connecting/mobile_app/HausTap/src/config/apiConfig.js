@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 // -----------------------------
 // API Base URL
 // -----------------------------
-export const DEFAULT_API_URL = 'http://192.168.100.13:8081'; // use your actual API port
+export const DEFAULT_API_URL = 'http://localhost:8001';
 
 export const setBaseUrl = async (url) => {
   global.BASE_URL = url;
@@ -38,13 +38,24 @@ export const getBaseUrl = () => {
 // Auth: Role
 // -----------------------------
 export const getUserRole = async () => {
-  return await SecureStore.getItemAsync('USER_ROLE') || null;
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      return window.localStorage.getItem('USER_ROLE') || null;
+    }
+    return await SecureStore.getItemAsync('USER_ROLE') || null;
+  } catch (e) {
+    return null;
+  }
 }
 
 export const setUserRole = async (role) => {
   try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.setItem('USER_ROLE', role);
+      return;
+    }
     await SecureStore.setItemAsync('USER_ROLE', role);
   } catch (e) {
-    console.warn('Failed to set USER_ROLE in SecureStore', e);
+    console.warn('Failed to set USER_ROLE', e);
   }
 }

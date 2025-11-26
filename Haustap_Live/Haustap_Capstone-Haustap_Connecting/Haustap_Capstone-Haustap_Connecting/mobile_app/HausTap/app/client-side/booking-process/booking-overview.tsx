@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Modal,
   ScrollView,
@@ -12,11 +12,12 @@ import {
   View,
 } from "react-native";
 import { getUserRole } from '../../../src/config/apiConfig';
+import { acCleaningCategories, acDeepCleaningCategories } from '../data/cleaning';
 
 export default function BookingOverview() {
   const router = useRouter();
   const loading = false;
-  const { categoryTitle, categoryPrice, categoryDesc, address, location, date, time, mainCategory, subCategory, voucherCode, voucherValue, selectedItems } = useLocalSearchParams();
+  const { categoryTitle, categoryPrice, categoryDesc, address, location, date, time, mainCategory, subCategory, voucherCode, voucherValue, selectedItems, service } = useLocalSearchParams();
   const [notes, setNotes] = useState("");
   const [agreement, setAgreement] = useState(false);
   const [showAgreementModal, setShowAgreementModal] = useState(false);
@@ -69,7 +70,37 @@ export default function BookingOverview() {
     }
   };
 
-  const subtotal = parsePrice(categoryPrice);
+  const selectedList: string[] = useMemo(() => {
+    try {
+      if (!selectedItems) return [];
+      const arr = JSON.parse(String(selectedItems));
+      return Array.isArray(arr) ? arr.map(String) : [];
+    } catch { return []; }
+  }, [selectedItems]);
+
+  const subtotal = useMemo(() => {
+    // If user selected multiple items, sum their prices from the catalogue
+    if (selectedList.length) {
+      let catalogue: { title: string; price?: string }[] = [];
+      const svc = String(service || '').toLowerCase();
+      if (svc.includes('ac cleaning')) catalogue = acCleaningCategories as any;
+      else if (svc.includes('deep') || svc.includes('ac deep')) catalogue = acDeepCleaningCategories as any;
+
+      if (catalogue.length) {
+        const sum = selectedList.reduce((acc, title) => {
+          const item = catalogue.find((x) => x.title === title);
+          return acc + (item ? parsePrice(item.price) : 0);
+        }, 0);
+        if (sum > 0) return sum;
+      }
+      // fallback: per-item flat price from categoryPrice, if present
+      const perItem = parsePrice(categoryPrice);
+      if (perItem > 0) return perItem * selectedList.length;
+      return 0;
+    }
+    // Single service flow: use categoryPrice
+    return parsePrice(categoryPrice);
+  }, [selectedList, service, categoryPrice]);
   const voucherDiscount = voucherEnabled ? parsedVoucherValue : 0;
   const transpoFee = 100;
   const total = Math.max(0, subtotal + transpoFee - voucherDiscount);

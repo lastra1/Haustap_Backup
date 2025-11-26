@@ -1,7 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as Location from 'expo-location';
+import * as SecureStore from 'expo-secure-store';
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
     ScrollView,
     StyleSheet,
@@ -9,11 +10,15 @@ import {
     TextInput,
     TouchableOpacity,
     View,
+    Pressable,
 } from "react-native";
-import MapView, { Marker } from "../../../stubs/react-native-maps-web";
+import WebMap from "../../../components/WebMap.web";
+import apiClient from "../../../services/api-client";
+import { useAuth } from "../../context/AuthContext";
 
 export default function BookingLocation() {
   const router = useRouter();
+  const { user } = useAuth();
   const { categoryTitle, categoryPrice, categoryDesc, address, mainCategory, subCategory, service, selectedItems } = useLocalSearchParams();
   const [selectedAddress, setSelectedAddress] = useState("saved");
   const [setAddressText, setSetAddressText] = useState(
@@ -21,6 +26,9 @@ export default function BookingLocation() {
   );
   const [pinLocation, setPinLocation] = useState("");
   const [pinAddress, setPinAddress] = useState<string | null>(null);
+  const [savedAddressText, setSavedAddressText] = useState<string>("");
+  const [sid, setSid] = useState<string>("");
+  const lastSavedRef = useRef<string>("");
 
   const [marker, setMarker] = useState({
     latitude: 14.3589,
@@ -33,22 +41,25 @@ export default function BookingLocation() {
     setPinAddress(null);
 
     (async () => {
+      let resolved: string | null = null;
       try {
         const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          return;
-        }
-        const results = await Location.reverseGeocodeAsync({
-          latitude: marker.latitude,
-          longitude: marker.longitude,
-        });
-        if (results && results.length > 0) {
-          const r = results[0];
-          const parts = [r.name, r.street, r.subregion || r.city, r.region, r.postalCode];
-          const addr = parts.filter(Boolean).join(', ');
-          setPinAddress(addr || coordsText);
+        if (status === 'granted') {
+          const results = await Location.reverseGeocodeAsync({ latitude: marker.latitude, longitude: marker.longitude });
+          if (results && results.length > 0) {
+            const r = results[0];
+            const parts = [r.name, r.street, r.subregion || r.city, r.region, r.postalCode];
+            resolved = parts.filter(Boolean).join(', ') || null;
+          }
         }
       } catch (e) {}
+      if (!resolved) {
+        try {
+          const res = await apiClient.get(`/guest/api/geocode/reverse.php?lat=${marker.latitude}&lng=${marker.longitude}`);
+          resolved = res?.data?.data?.address || null;
+        } catch (e) {}
+      }
+      setPinAddress(resolved ?? coordsText);
     })();
   }, [marker]);
 
@@ -57,6 +68,50 @@ export default function BookingLocation() {
       setSetAddressText(String(address));
     }
   }, [address]);
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const existing = await SecureStore.getItemAsync('HT_SID');
+        let sessionId = existing;
+        if (!sessionId) {
+          sessionId = `sid_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+          await SecureStore.setItemAsync('HT_SID', sessionId);
+        }
+        setSid(sessionId || "");
+      } catch {}
+    })();
+  }, []);
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const userKey = (user && (user.id || user.email || user.uuid)) || "";
+        const res = await apiClient.get(`/guest/api/bookings/saved-address.php${userKey ? `?user_key=${encodeURIComponent(String(userKey))}` : sid ? `?sid=${encodeURIComponent(sid)}` : ''}`);
+        const row = res?.data?.data || null;
+        if (row?.address) {
+          setSavedAddressText(String(row.address));
+        }
+      } catch {}
+    })();
+  }, [sid, user]);
+
+  React.useEffect(() => {
+    (async () => {
+      const a = String(setAddressText || "");
+      if (!a || a === lastSavedRef.current) return;
+      lastSavedRef.current = a;
+      try {
+        const userKey = (user && (user.id || user.email || user.uuid)) || "";
+        await apiClient.post('/guest/api/bookings/saved-address.php', {
+          address: a,
+          user_key: userKey || undefined,
+          sid: userKey ? undefined : sid || undefined,
+        });
+        setSavedAddressText(a);
+      } catch {}
+    })();
+  }, [setAddressText, sid, user]);
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -68,27 +123,19 @@ export default function BookingLocation() {
       </View>
 
       <View style={styles.mapContainer}>
-        <MapView
+        <WebMap
           style={styles.map}
-          initialRegion={{
-            latitude: 14.3589,
-            longitude: 121.0583,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          }}
+          initialRegion={{ latitude: 14.3589, longitude: 121.0583, latitudeDelta: 0.01, longitudeDelta: 0.01 }}
+          marker={marker}
           onPress={(e: any) => setMarker(e.nativeEvent.coordinate)}
-        >
-          <Marker coordinate={marker} anchor={{ x: 0.5, y: 0.5 }}>
-            <Ionicons name="person" size={36} color="#3DC1C6" />
-          </Marker>
-        </MapView>
+        />
 
-        <View style={styles.overlayInputs}>
+        <View style={styles.overlayInputs} pointerEvents="box-none">
           <TextInput
             placeholder="Pin Location"
             style={styles.input}
             placeholderTextColor="#666"
-            value={pinAddress ?? pinLocation}
+            value={selectedAddress === 'saved' ? savedAddressText || setAddressText : (pinAddress ?? pinLocation)}
             editable={false}
           />
           <TextInput
@@ -134,10 +181,7 @@ export default function BookingLocation() {
           onPress={() => setSelectedAddress((prev) => (prev === "saved" ? "" : "saved"))}
         >
           <View style={{ flex: 1 }}>
-            <Text style={styles.addressText}>
-              Blk3 Lot1 Apple St. Saint Joseph Village 10{"\n"}
-              Brgy. Laram San Pedro City Laguna
-            </Text>
+            <Text style={styles.addressText}>{savedAddressText || setAddressText}</Text>
           </View>
           <View style={[styles.radioOuter, selectedAddress === "saved" && styles.radioOuterSelected]}>
             <View style={[styles.radioInner, selectedAddress === "saved" && styles.radioInnerVisible]} />
@@ -151,7 +195,7 @@ export default function BookingLocation() {
           pathname: "/client-side/booking-process/schedule-booking",
           params: {
             location: pinLocation,
-            address: selectedAddress === "saved" ? "Blk3 Lot1 Apple St. Saint Joseph Village 10\nBrgy. Laram San Pedro City Laguna" : setAddressText,
+            address: selectedAddress === "saved" ? savedAddressText : setAddressText,
             categoryTitle,
             categoryPrice,
             categoryDesc,

@@ -35,7 +35,7 @@
     <section class="service-section">
       <div class="service-grid">
         <label class="service-card">
-          <input type="radio" name="packages" checked />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>Basic Care Package</h3>
             <p class="price">Starts at â‚±1,000</p>
@@ -48,7 +48,7 @@
         </label>
 
         <label class="service-card">
-          <input type="radio" name="packages" />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>Glam Essentials Package</h3>
             <p class="price">Starts at â‚±2,200</p>
@@ -61,7 +61,7 @@
         </label>
 
         <label class="service-card">
-          <input type="radio" name="packages" />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>Event Ready Package</h3>
             <p class="price">Starts at â‚±3,500</p>
@@ -74,7 +74,7 @@
         </label>
 
         <label class="service-card">
-          <input type="radio" name="packages" />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>Bridal Radiance Package</h3>
             <p class="price">Starts at â‚±8,000</p>
@@ -87,7 +87,7 @@
         </label>
 
         <label class="service-card">
-          <input type="radio" name="packages" />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>Mani + Pedi Combo</h3>
             <p class="price">Starts at â‚±500</p>
@@ -100,7 +100,7 @@
         </label>
 
         <label class="service-card">
-          <input type="radio" name="packages" />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>Gel Mani + Pedi Combo</h3>
             <p class="price">Starts at â‚±1,300</p>
@@ -121,7 +121,7 @@
   <?php include dirname(__DIR__) . "/client/includes/footer.php"; ?>
   <script>
     document.addEventListener('DOMContentLoaded', function(){
-      var radios = Array.prototype.slice.call(document.querySelectorAll('.service-card input[type="radio"]'));
+      var checks = Array.prototype.slice.call(document.querySelectorAll('.service-card input.service-check'));
       var activeSubcat = document.querySelector('.subcategory-nav li.active');
       function normalizeLabel(txt){ return String(txt||'').replace(/\s+/g,' ').trim(); }
       function parsePriceText(txt){
@@ -149,10 +149,24 @@
         if (price != null && !isNaN(price)) { url += '&price=' + encodeURIComponent(String(price)); }
         window.location.href = url;
       }
-      radios.forEach(function(r){
-        r.addEventListener('change', function(){ proceed(r.closest('.service-card')); });
-        r.addEventListener('click', function(){ if (r.checked) proceed(r.closest('.service-card')); });
+      checks.forEach(function(c){
+        c.addEventListener('click', function(){
+          var card = c.closest('.service-card');
+          // mimic cleaning: single-select behavior
+          checks.forEach(function(x){ if (x !== c) x.checked = false; });
+          if (c.checked) proceed(card);
+        });
       });
+      // Subcategory nav routing (no UI change)
+      var items = Array.prototype.slice.call(document.querySelectorAll('.subcategory-nav li'));
+      var map = {
+        'Hair Services': '/beauty_services/hair_services.php',
+        'Nail Care': '/beauty_services/nail_services.php',
+        'Make-up': '/beauty_services/makeup_services.php',
+        'Lashes': '/beauty_services/lash_services.php',
+        'Packages': '/beauty_services/packages_services.php'
+      };
+      items.forEach(function(li){ li.addEventListener('click', function(){ var href = map[normalizeLabel(li.textContent)] || ''; if (href) window.location.href = href; }); });
     });
   </script>
 </body>

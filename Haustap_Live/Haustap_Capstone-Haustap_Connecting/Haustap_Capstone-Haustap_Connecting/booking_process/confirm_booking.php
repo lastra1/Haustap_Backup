@@ -52,6 +52,47 @@
         return;
       }
 
+      // Persist pending location to DB once logged in
+      try {
+        var already = localStorage.getItem('booking_location_saved');
+        if (token && !already) {
+          function deriveUserKey(){
+            var candidates = [
+              localStorage.getItem('haustap_user_id'),
+              localStorage.getItem('user_id'),
+              localStorage.getItem('haustap_uid'),
+              localStorage.getItem('haustap_email'),
+              localStorage.getItem('user_email'),
+              localStorage.getItem('email'),
+              localStorage.getItem('haustap_token')
+            ];
+            for (var i=0;i<candidates.length;i++){ var v=candidates[i]; if (v && String(v).trim()!=='') return String(v).trim(); }
+            return '';
+          }
+          var userKey = deriveUserKey();
+          var payload = {
+            address: localStorage.getItem('booking_address') || '',
+            lat: localStorage.getItem('booking_lat') || null,
+            lng: localStorage.getItem('booking_lng') || null,
+            house_type: localStorage.getItem('houseType') || '',
+            service_name: localStorage.getItem('selected_service_name') || '',
+            cleaning_type: localStorage.getItem('selected_cleaning_type') || '',
+            user_key: userKey
+          };
+          fetch('/api/bookings/location', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+            .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+            .then(function(res){ if (res && res.success) { localStorage.setItem('booking_location_saved', '1'); if (res.data && res.data.id) localStorage.setItem('booking_location_id', res.data.id); } })
+            .catch(function(){});
+          var holdId = localStorage.getItem('booking_hold_id');
+          if (holdId && userKey){
+            fetch('/api/bookings/confirm', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ hold_id: holdId, user_key: userKey }) })
+              .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+              .then(function(res){ if (res && res.success){ localStorage.removeItem('booking_hold_id'); } })
+              .catch(function(){});
+          }
+        }
+      } catch(e){}
+
       // Collect selections from previous steps
       var providerId = parseInt(localStorage.getItem('selected_provider_id') || '0', 10);
       var providerName = localStorage.getItem('selected_provider_name') || '';

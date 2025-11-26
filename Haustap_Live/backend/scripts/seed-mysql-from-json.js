@@ -251,6 +251,13 @@ async function upsertUsers(pool) {
 
 async function upsertServices(pool) {
   const defaultServices = [
+    { name: 'Cleaning Services', category: 'Cleaning', price: 0, duration_minutes: 0, description: 'Top-level category for cleaning' },
+    { name: 'Outdoor Services', category: 'Outdoor', price: 0, duration_minutes: 0, description: 'Top-level category for outdoor' },
+    { name: 'Home Repairs', category: 'Repairs', price: 0, duration_minutes: 0, description: 'Top-level category for home repairs' },
+    { name: 'Beauty Services', category: 'Beauty', price: 0, duration_minutes: 0, description: 'Top-level category for beauty' },
+    { name: 'Wellness Services', category: 'Wellness', price: 0, duration_minutes: 0, description: 'Top-level category for wellness' },
+    { name: 'Tech & Gadget Services', category: 'Tech', price: 0, duration_minutes: 0, description: 'Top-level category for tech & gadgets' },
+    // Legacy base services for compatibility
     { name: 'Cleaning', category: 'Home', price: 500, duration_minutes: 60, description: 'General home cleaning' },
     { name: 'Gardening', category: 'Outdoor', price: 700, duration_minutes: 90, description: 'Garden maintenance' },
     { name: 'Laundry', category: 'Home', price: 300, duration_minutes: 45, description: 'Laundry and folding' }
@@ -273,6 +280,46 @@ async function upsertServices(pool) {
 
 async function upsertSubcategories(pool, serviceNameToId) {
   const subcats = [
+    // Cleaning Services
+    { service: 'Cleaning Services', name: 'Basic Cleaning', price: 1000, duration_minutes: 180, description: 'Basic – 1 cleaner' },
+    { service: 'Cleaning Services', name: 'Standard Cleaning', price: 2000, duration_minutes: 240, description: 'Standard – 2 cleaners' },
+    { service: 'Cleaning Services', name: 'Deep Cleaning', price: 3000, duration_minutes: 300, description: 'Deep – 3 cleaners' },
+    // Outdoor Services
+    { service: 'Outdoor Services', name: 'Gardening - Basic (1 gardener)', price: 500, duration_minutes: 120, description: 'Grass cutting / trimming' },
+    { service: 'Outdoor Services', name: 'Gardening - Standard (2 gardeners)', price: 1000, duration_minutes: 180, description: 'Expanded tasks' },
+    { service: 'Outdoor Services', name: 'Tree Trimming', price: 1200, duration_minutes: 180, description: 'Small to medium trees' },
+    { service: 'Outdoor Services', name: 'Yard Cleanup', price: 900, duration_minutes: 150, description: 'Debris removal' },
+    // Home Repairs
+    { service: 'Home Repairs', name: 'Electrical Repair - Basic Fix', price: 800, duration_minutes: 90, description: 'Outlet/switch repair' },
+    { service: 'Home Repairs', name: 'Plumbing - Leak Fix', price: 900, duration_minutes: 90, description: 'Leak detection/repair' },
+    { service: 'Home Repairs', name: 'Appliance Repair - Diagnosis', price: 700, duration_minutes: 60, description: 'Diagnostic and basic repair' },
+    { service: 'Home Repairs', name: 'Handyman - Minor Repairs', price: 600, duration_minutes: 60, description: 'General minor repairs' },
+    // Beauty Services
+    { service: 'Beauty Services', name: 'Lash Removal', price: 500, duration_minutes: 60, description: 'Safe removal' },
+    { service: 'Beauty Services', name: 'Lash Retouch / Refill (2–3 weeks)', price: 800, duration_minutes: 90, description: 'Fills in gaps' },
+    { service: 'Beauty Services', name: 'Makeup - Natural Day Look', price: 700, duration_minutes: 90, description: 'Light foundation' },
+    { service: 'Beauty Services', name: 'Makeup - Evening/Party', price: 1200, duration_minutes: 120, description: 'Bold eyes' },
+    { service: 'Beauty Services', name: 'Makeup - Bridal (Trial + Wedding Day)', price: 5000, duration_minutes: 300, description: 'Trial + wedding day' },
+    { service: 'Beauty Services', name: 'Manicure', price: 250, duration_minutes: 45, description: 'Standard manicure' },
+    { service: 'Beauty Services', name: 'Pedicure', price: 300, duration_minutes: 50, description: 'Standard pedicure' },
+    { service: 'Beauty Services', name: 'Gel Manicure', price: 700, duration_minutes: 60, description: 'Gel manicure' },
+    { service: 'Beauty Services', name: 'Gel Pedicure', price: 800, duration_minutes: 70, description: 'Gel pedicure' },
+    // Wellness Services
+    { service: 'Wellness Services', name: 'Home Massage - 60 mins', price: 800, duration_minutes: 60, description: 'Relaxation massage' },
+    { service: 'Wellness Services', name: 'Home Massage - 90 mins', price: 1100, duration_minutes: 90, description: 'Extended massage' },
+    { service: 'Wellness Services', name: 'Yoga Session - 60 mins', price: 600, duration_minutes: 60, description: 'Guided yoga session' },
+    { service: 'Wellness Services', name: 'Spa Facial - Basic', price: 900, duration_minutes: 75, description: 'Cleansing, exfoliation' },
+    // Tech & Gadget Services
+    { service: 'Tech & Gadget Services', name: 'Laptop - Fan / Cooling Repair', price: 500, duration_minutes: 60, description: 'Cooling system repair' },
+    { service: 'Tech & Gadget Services', name: 'Laptop - Keyboard Replacement', price: 500, duration_minutes: 60, description: 'Keyboard replacement' },
+    { service: 'Tech & Gadget Services', name: 'Laptop - OS Reformat + Software Installation', price: 700, duration_minutes: 90, description: 'OS reinstall + apps' },
+    { service: 'Tech & Gadget Services', name: 'Desktop PC - Fan / Cooling Repair', price: 500, duration_minutes: 60, description: 'Cooling system repair' },
+    { service: 'Tech & Gadget Services', name: 'Desktop PC - Keyboard Replacement', price: 500, duration_minutes: 60, description: 'Keyboard replacement' },
+    { service: 'Tech & Gadget Services', name: 'Desktop PC - OS Reformat + Software Installation', price: 700, duration_minutes: 90, description: 'OS reinstall + apps' },
+    { service: 'Tech & Gadget Services', name: 'Mobile Phone - Screen Replacement', price: 1500, duration_minutes: 90, description: 'Screen replacement' },
+    { service: 'Tech & Gadget Services', name: 'Tablet & iPad - OS Reinstall', price: 800, duration_minutes: 90, description: 'System reinstall' },
+    { service: 'Tech & Gadget Services', name: 'Game & Console - System Update', price: 300, duration_minutes: 60, description: 'Firmware update' },
+    // Legacy base service-specific subcats for compatibility
     { service: 'Cleaning', name: 'Deep Cleaning', price: 1200, duration_minutes: 120, description: 'Intensive cleaning' },
     { service: 'Cleaning', name: 'Move-out Cleaning', price: 1500, duration_minutes: 150, description: 'Post-tenancy cleaning' },
     { service: 'Gardening', name: 'Grass Cutting', price: 600, duration_minutes: 60, description: 'Lawn mowing' },

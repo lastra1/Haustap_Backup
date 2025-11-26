@@ -4,7 +4,10 @@ declare(strict_types=1);
 // Base paths for the two existing apps
 define('BASE_PATH', __DIR__);
 define('SITE_APP_PATH', BASE_PATH . DIRECTORY_SEPARATOR . 'Haustap_Capstone-Haustap_Connecting' . DIRECTORY_SEPARATOR . 'Haustap_Capstone-Haustap_Connecting');
-define('ADMIN_APP_PATH', BASE_PATH . DIRECTORY_SEPARATOR . 'admin_haustap' . DIRECTORY_SEPARATOR . 'admin_haustap');
+$adminCanonical = BASE_PATH . DIRECTORY_SEPARATOR . 'admin_haustap' . DIRECTORY_SEPARATOR . 'admin_haustap';
+$adminNew = BASE_PATH . DIRECTORY_SEPARATOR . 'admin_haustap' . DIRECTORY_SEPARATOR . 'old_admin';
+$adminLegacy = BASE_PATH . DIRECTORY_SEPARATOR . 'external_admin_cmir';
+define('ADMIN_APP_PATH', is_dir($adminNew) ? $adminNew : (is_dir($adminCanonical) ? $adminCanonical : $adminLegacy));
 
 // Simple PSR-4 style autoloader for Core/ and App/
 spl_autoload_register(function ($class) {

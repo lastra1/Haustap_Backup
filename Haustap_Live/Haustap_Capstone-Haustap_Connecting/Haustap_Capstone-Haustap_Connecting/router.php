@@ -177,6 +177,171 @@ if ($uri === '/api/system/providers') {
   }
 }
 
+if ($uri === '/api/auth/otp/send' && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+  if (!headers_sent()) header('Content-Type: application/json');
+  $raw = file_get_contents('php://input');
+  $json = json_decode($raw ?: 'null', true) ?: [];
+  $email = trim((string)($json['email'] ?? ''));
+  if ($email === '') { echo json_encode(['success' => false]); return true; }
+  $code = (string)random_int(100000, 999999);
+  $store = $projectRoot . DIRECTORY_SEPARATOR . 'backend' . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'otp.json';
+  $dir = dirname($store);
+  if (!is_dir($dir)) @mkdir($dir, 0777, true);
+  $data = [];
+  if (is_file($store)) { $data = json_decode(@file_get_contents($store) ?: '[]', true) ?: []; }
+  $data[$email] = ['code' => $code, 'ts' => time()];
+  @file_put_contents($store, json_encode($data));
+  echo json_encode(['success' => true, 'code' => $code]);
+  return true;
+}
+
+if ($uri === '/api/auth/otp/verify' && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+  if (!headers_sent()) header('Content-Type: application/json');
+  $raw = file_get_contents('php://input');
+  $json = json_decode($raw ?: 'null', true) ?: [];
+  $email = trim((string)($json['email'] ?? ''));
+  $code = trim((string)($json['code'] ?? ''));
+  $store = $projectRoot . DIRECTORY_SEPARATOR . 'backend' . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'otp.json';
+  $data = [];
+  if (is_file($store)) { $data = json_decode(@file_get_contents($store) ?: '[]', true) ?: []; }
+  $ok = isset($data[$email]) && (string)($data[$email]['code'] ?? '') === $code;
+  echo json_encode(['success' => $ok]);
+  return true;
+}
+
+if ($uri === '/api/auth/register' && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+  if (!headers_sent()) header('Content-Type: application/json');
+  $raw = file_get_contents('php://input');
+  $json = json_decode($raw ?: 'null', true) ?: [];
+  $email = trim((string)($json['email'] ?? ''));
+  $password = (string)($json['password'] ?? '');
+  $name = trim((string)($json['name'] ?? ''));
+  if ($email === '' || $password === '') { echo json_encode(['success' => false]); return true; }
+  require_once $ADMIN_APP_PATH . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'db.php';
+  $pdo = get_db();
+  try {
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+    $stmt = $pdo->prepare('INSERT INTO users (name, email, password, role, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())');
+    $stmt->execute([$name !== '' ? $name : $email, $email, $hash, 'client']);
+    echo json_encode(['success' => true]);
+  } catch (Throwable $e) { echo json_encode(['success' => false]); }
+  return true;
+}
+
+if ($uri === '/api/auth/login' && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+  if (!headers_sent()) header('Content-Type: application/json');
+  $raw = file_get_contents('php://input');
+  $json = json_decode($raw ?: 'null', true) ?: [];
+  $email = trim((string)($json['email'] ?? ''));
+  $password = (string)($json['password'] ?? '');
+  require_once $ADMIN_APP_PATH . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'db.php';
+  $pdo = get_db();
+  try {
+    $stmt = $pdo->prepare('SELECT id, password, role FROM users WHERE email = ? LIMIT 1');
+    $stmt->execute([$email]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    $ok = $row && password_verify($password, (string)$row['password']);
+    if ($ok) { echo json_encode(['success' => true, 'token' => 'dev-'.bin2hex(random_bytes(16)), 'role' => (string)($row['role'] ?? '')]); }
+    else { echo json_encode(['success' => false]); }
+  } catch (Throwable $e) { echo json_encode(['success' => false]); }
+  return true;
+}
+
+if ($uri === '/api/auth/password/reset' && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+  if (!headers_sent()) header('Content-Type: application/json');
+  $raw = file_get_contents('php://input');
+  $json = json_decode($raw ?: 'null', true) ?: [];
+  $email = trim((string)($json['email'] ?? ''));
+  $password = (string)($json['password'] ?? '');
+  require_once $ADMIN_APP_PATH . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'db.php';
+  $pdo = get_db();
+  try {
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+    $stmt = $pdo->prepare('UPDATE users SET password = ?, updated_at = NOW() WHERE email = ?');
+    $stmt->execute([$hash, $email]);
+    echo json_encode(['success' => true]);
+  } catch (Throwable $e) { echo json_encode(['success' => false]); }
+  return true;
+}
+
+if (preg_match('#^/api/chat/(\d+)/messages$#', $uri, $m)) {
+  if (!headers_sent()) header('Content-Type: application/json');
+  $bookingId = (int)$m[1];
+  $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+  require_once $ADMIN_APP_PATH . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'db.php';
+  $pdo = get_db();
+  try {
+    if ($method === 'GET') {
+      $stmt = $pdo->prepare('SELECT sender_id, message, ts FROM chat_messages WHERE room_id = ? ORDER BY id ASC');
+      $stmt->execute([$bookingId]);
+      $rows = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+      echo json_encode(['success' => true, 'messages' => $rows]);
+      return true;
+    }
+    if ($method === 'POST') {
+      $raw = file_get_contents('php://input');
+      $json = json_decode($raw ?: 'null', true) ?: [];
+      $sender = (int)($json['sender_id'] ?? 0);
+      $msg = trim((string)($json['message'] ?? ''));
+      if ($msg === '') { echo json_encode(['success' => false]); return true; }
+      $stmt = $pdo->prepare('INSERT INTO chat_messages (room_id, sender_id, message, ts) VALUES (?, ?, ?, CURRENT_TIMESTAMP)');
+      $stmt->execute([$bookingId, $sender, $msg]);
+      echo json_encode(['success' => true]);
+      return true;
+    }
+  } catch (Throwable $e) { echo json_encode(['success' => false]); return true; }
+  return true;
+}
+
+if ($uri === '/api/admin/providers/approve' && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+  if (!headers_sent()) header('Content-Type: application/json');
+  $raw = file_get_contents('php://input');
+  $json = json_decode($raw ?: 'null', true) ?: [];
+  $email = trim((string)($json['email'] ?? ''));
+  if ($email === '') { echo json_encode(['success' => false, 'message' => 'missing email']); return true; }
+  $dbFile = $ADMIN_APP_PATH . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'db.php';
+  if (is_file($dbFile)) {
+    require_once $dbFile;
+    try {
+      $pdo = get_db();
+      $stmt = $pdo->prepare('UPDATE providers SET verified = 1, status = ? WHERE email = ?');
+      $stmt->execute(['verified', $email]);
+      $stmt2 = $pdo->prepare('UPDATE users SET role = ? WHERE email = ?');
+      $stmt2->execute(['provider', $email]);
+      echo json_encode(['success' => true]);
+      return true;
+    } catch (Throwable $e) { echo json_encode(['success' => false, 'message' => 'db_error']); return true; }
+  }
+  echo json_encode(['success' => false, 'message' => 'db_unavailable']);
+  return true;
+}
+
+if ($uri === '/api/admin/providers/revoke' && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+  if (!headers_sent()) header('Content-Type: application/json');
+  $raw = file_get_contents('php://input');
+  $json = json_decode($raw ?: 'null', true) ?: [];
+  $email = trim((string)($json['email'] ?? ''));
+  $removeRole = (bool)($json['remove_role'] ?? false);
+  if ($email === '') { echo json_encode(['success' => false, 'message' => 'missing email']); return true; }
+  $dbFile = $ADMIN_APP_PATH . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'db.php';
+  if (is_file($dbFile)) {
+    require_once $dbFile;
+    try {
+      $pdo = get_db();
+      $stmt = $pdo->prepare('UPDATE providers SET verified = 0, status = ? WHERE email = ?');
+      $stmt->execute(['revoked', $email]);
+      if ($removeRole) {
+        $stmt2 = $pdo->prepare('UPDATE users SET role = NULL WHERE email = ?');
+        $stmt2->execute([$email]);
+      }
+      echo json_encode(['success' => true]);
+      return true;
+    } catch (Throwable $e) { echo json_encode(['success' => false, 'message' => 'db_error']); return true; }
+  }
+  echo json_encode(['success' => false, 'message' => 'db_unavailable']);
+  return true;
+}
+
 // Friendly routes for Services (guest-facing)
 if ($uri === '/services/cleaning') {
   ensureUtf8HtmlHeader();

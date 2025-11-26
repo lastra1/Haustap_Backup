@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
     Platform,
     ScrollView,
@@ -53,6 +53,28 @@ export default function ScheduleBooking() {
     if (!isAvailable) setSelectedTime("");
   };
 
+  const timesWeb = useMemo(() => [
+    '08:00 AM','09:00 AM','10:00 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:00 PM','04:00 PM','05:00 PM'
+  ], []);
+
+  const [calendarMonth, setCalendarMonth] = useState(() => {
+    const d = new Date();
+    return new Date(d.getFullYear(), d.getMonth(), 1);
+  });
+
+  const monthDays = useMemo(() => {
+    const year = calendarMonth.getFullYear();
+    const month = calendarMonth.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const startOffset = firstDay.getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const grid: Array<Date | null> = [];
+    for (let i = 0; i < startOffset; i++) grid.push(null);
+    for (let d = 1; d <= daysInMonth; d++) grid.push(new Date(year, month, d));
+    while (grid.length % 7 !== 0) grid.push(null);
+    return grid;
+  }, [calendarMonth]);
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {/* Header */}
@@ -70,38 +92,92 @@ export default function ScheduleBooking() {
         <Text style={{ color: selectedDate ? '#000' : '#888' }}>{selectedDate ?? 'Choose a date'}</Text>
       </TouchableOpacity>
       {showDatePicker && (
-        <DateTimePicker
-          value={new Date()}
-          minimumDate={minDate}
-          mode="date"
-          display={Platform.OS === 'ios' ? 'spinner' : 'calendar'}
-          onChange={(_e: any, d: Date | undefined) => {
-            if (Platform.OS !== 'ios') setShowDatePicker(false);
-            if (d) handleDateSelect(d);
-          }}
-        />
+        Platform.OS === 'web' ? (
+          <View style={styles.webCalendar}>
+            <View style={styles.webCalHeader}>
+              <TouchableOpacity onPress={() => setCalendarMonth(new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() - 1, 1))}>
+                <Ionicons name="chevron-back" size={20} color="#000" />
+              </TouchableOpacity>
+              <Text style={styles.webCalTitle}>
+                {calendarMonth.toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}
+              </Text>
+              <TouchableOpacity onPress={() => setCalendarMonth(new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 1))}>
+                <Ionicons name="chevron-forward" size={20} color="#000" />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.webCalWeek}>
+              {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((d) => (
+                <Text key={d} style={styles.webCalWeekDay}>{d}</Text>
+              ))}
+            </View>
+            <View style={styles.webCalGrid}>
+              {monthDays.map((d, i) => {
+                const disabled = !d || d < minDate;
+                const fully = !!d && !checkAvailability(d);
+                return (
+                  <TouchableOpacity
+                    key={i}
+                    style={[styles.webCalCell, disabled && styles.webCalCellDisabled, fully && styles.webCalCellFully]}
+                    disabled={disabled}
+                    onPress={() => {
+                      if (!d) return;
+                      handleDateSelect(d);
+                      setShowDatePicker(false);
+                    }}
+                  >
+                    <Text style={styles.webCalCellText}>{d ? d.getDate() : ''}</Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </View>
+        ) : (
+          <DateTimePicker
+            value={new Date()}
+            minimumDate={minDate}
+            mode="date"
+            display={Platform.OS === 'ios' ? 'spinner' : 'calendar'}
+            onChange={(_e: any, d: Date | undefined) => {
+              if (Platform.OS !== 'ios') setShowDatePicker(false);
+              if (d) handleDateSelect(d);
+            }}
+          />
+        )
       )}
 
       {/* Time Selection (native time picker trigger) */}
       {selectedDate && !isFullyBooked && (
-        <>
-          <Text style={styles.label}>Time</Text>
-          <TouchableOpacity style={styles.calendarPicker} onPress={() => setShowTimePicker(true)}>
-            <Text style={{ color: selectedTime ? '#000' : '#888' }}>{selectedTime ?? 'Choose a time'}</Text>
-          </TouchableOpacity>
-          {showTimePicker && (
-            <DateTimePicker
-              value={new Date()}
-              mode="time"
-              is24Hour={false}
-              display={Platform.OS === 'ios' ? 'spinner' : 'clock'}
-              onChange={(_e: any, d: Date | undefined) => {
-                if (Platform.OS !== 'ios') setShowTimePicker(false);
-                if (d) setSelectedTime(formatTime(d));
-              }}
-            />
-          )}
-        </>
+        Platform.OS === 'web' ? (
+          <View>
+            <Text style={styles.label}>Time</Text>
+            <View style={styles.timeGrid}>
+              {timesWeb.map((t) => (
+                <TouchableOpacity key={t} style={[styles.timeChip, selectedTime === t && styles.timeChipSelected]} onPress={() => setSelectedTime(t)}>
+                  <Text style={[styles.timeChipText, selectedTime === t && styles.timeChipTextSelected]}>{t}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        ) : (
+          <>
+            <Text style={styles.label}>Time</Text>
+            <TouchableOpacity style={styles.calendarPicker} onPress={() => setShowTimePicker(true)}>
+              <Text style={{ color: selectedTime ? '#000' : '#888' }}>{selectedTime ?? 'Choose a time'}</Text>
+            </TouchableOpacity>
+            {showTimePicker && (
+              <DateTimePicker
+                value={new Date()}
+                mode="time"
+                is24Hour={false}
+                display={Platform.OS === 'ios' ? 'spinner' : 'clock'}
+                onChange={(_e: any, d: Date | undefined) => {
+                  if (Platform.OS !== 'ios') setShowTimePicker(false);
+                  if (d) setSelectedTime(formatTime(d));
+                }}
+              />
+            )}
+          </>
+        )
       )}
 
       {/* Fully Booked Warning */}
@@ -207,6 +283,78 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     marginBottom: 24,
     alignItems: 'center',
+  },
+  webCalendar: {
+    backgroundColor: '#F5F5F5',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 24,
+  },
+  webCalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  webCalTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  webCalWeek: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 4,
+  },
+  webCalWeekDay: {
+    width: `${100/7}%`,
+    textAlign: 'center',
+    fontSize: 12,
+    color: '#666',
+  },
+  webCalGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  webCalCell: {
+    width: `${100/7}%`,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  webCalCellDisabled: {
+    opacity: 0.3,
+  },
+  webCalCellFully: {
+    backgroundColor: '#FDECEC',
+  },
+  webCalCellText: {
+    fontSize: 14,
+  },
+  timeGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  timeChip: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    backgroundColor: '#fff',
+    marginBottom: 8,
+    marginRight: 8,
+  },
+  timeChipSelected: {
+    borderColor: '#00ADB5',
+    backgroundColor: '#E6F7F8',
+  },
+  timeChipText: {
+    fontSize: 14,
+    color: '#222',
+  },
+  timeChipTextSelected: {
+    color: '#00ADB5',
+    fontWeight: '600',
   },
   label: {
     fontSize: 14,

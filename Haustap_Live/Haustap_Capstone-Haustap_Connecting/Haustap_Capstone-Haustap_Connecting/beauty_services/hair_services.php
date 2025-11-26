@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -35,7 +35,7 @@
         <h2>Haircuts</h2>
         <div class="service-grid">
           <label class="service-card">
-            <input type="radio" name="haircut" checked />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Basic Haircut (Men)</h3>
               <p class="price">Starts at â‚±200</p>
@@ -48,7 +48,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="haircut" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Kiddie Haircut (Men)</h3>
               <p class="price">Starts at â‚±100</p>
@@ -61,7 +61,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="haircut" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Basic Haircut (Women)</h3>
               <p class="price">Starts at â‚±300</p>
@@ -74,7 +74,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="haircut" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Kiddie Haircut (Women)</h3>
               <p class="price">Starts at â‚±200</p>
@@ -93,7 +93,7 @@
         <h2>Hair Coloring</h2>
         <div class="service-grid">
           <label class="service-card">
-            <input type="radio" name="haircolor" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
             <h3>L&rsquo;Oreal Full Hair Color (Short)</h3>
             <p class="price">Starts at â‚±2,000&ndash;â‚±2,500</p>
@@ -107,7 +107,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="haircolor" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Highlights / Low Lights</h3>
             <p class="price">Starts at â‚±2,500&ndash;â‚±3,200</p>
@@ -120,7 +120,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="haircolor" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
             <h3>L&rsquo;Oreal Full Hair Color (Medium)</h3>
             <p class="price">Starts at â‚±2,500&ndash;â‚±3,000</p>
@@ -134,7 +134,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="haircolor" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Balayage / Ombre</h3>
             <p class="price">Starts at â‚±3,000&ndash;â‚±3,800</p>
@@ -148,7 +148,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="haircolor" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
             <h3>L&rsquo;Oreal Full Hair Color (Long)</h3>
             <p class="price">Starts at â‚±3,000&ndash;â‚±3,500</p>
@@ -168,7 +168,7 @@
         <h2>Straightening</h2>
         <div class="service-grid">
           <label class="service-card">
-            <input type="radio" name="straightening" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
             <h3>L&rsquo;Oreal Hair Straightening (Short)</h3>
             <p class="price">Starts at â‚±2,000&ndash;â‚±3,000</p>
@@ -182,7 +182,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="straightening" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
             <h3>L&rsquo;Oreal Hair Straightening (Medium)</h3>
             <p class="price">Starts at â‚±3,000&ndash;â‚±4,000</p>
@@ -196,7 +196,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="straightening" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
             <h3>L&rsquo;Oreal Hair Straightening (Long)</h3>
             <p class="price">Starts at â‚±4,000&ndash;â‚±5,500</p>
@@ -216,7 +216,7 @@
         <h2>Hair Styling</h2>
         <div class="service-grid">
           <label class="service-card">
-            <input type="radio" name="hairstyling" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Blow-Dry (Straight)</h3>
               <p class="price">â‚±300 per head</p>
@@ -228,7 +228,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="hairstyling" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Blow-Dry (Curls/Waves)</h3>
               <p class="price">â‚±400 per head</p>
@@ -241,7 +241,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="hairstyling" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Event Hairstyling</h3>
               <p class="price">â‚±500 per head</p>
@@ -254,7 +254,7 @@
           </label>
 
           <label class="service-card">
-            <input type="radio" name="hairstyling" />
+            <input type="checkbox" class="service-check" />
             <div class="service-content">
               <h3>Hair Accessories Styling</h3>
               <p class="price">â‚±400 per head</p>
@@ -274,7 +274,7 @@
   <?php include dirname(__DIR__) . "/client/includes/footer.php"; ?>
   <script>
     document.addEventListener('DOMContentLoaded', function(){
-      var radios = Array.prototype.slice.call(document.querySelectorAll('.service-card input[type="radio"]'));
+      var checks = Array.prototype.slice.call(document.querySelectorAll('.service-card input.service-check'));
       var activeSubcat = document.querySelector('.subcategory-nav li.active');
       function normalizeLabel(txt){ return String(txt||'').replace(/\s+/g,' ').trim(); }
       function buildLabel(card){
@@ -288,10 +288,22 @@
         try { localStorage.setItem('selected_service_name', label); } catch(e){}
         window.location.href = '/booking_process/booking_location.php?service=' + encodeURIComponent(label);
       }
-      radios.forEach(function(r){
-        r.addEventListener('change', function(){ proceed(r.closest('.service-card')); });
-        r.addEventListener('click', function(){ if (r.checked) proceed(r.closest('.service-card')); });
+      checks.forEach(function(c){
+        c.addEventListener('click', function(){
+          var card = c.closest('.service-card');
+          checks.forEach(function(x){ if (x !== c) x.checked = false; });
+          if (c.checked) proceed(card);
+        });
       });
+      var items = Array.prototype.slice.call(document.querySelectorAll('.subcategory-nav li'));
+      var map = {
+        'Hair Services': '/beauty_services/hair_services.php',
+        'Nail Care': '/beauty_services/nail_services.php',
+        'Make-up': '/beauty_services/makeup_services.php',
+        'Lashes': '/beauty_services/lash_services.php',
+        'Packages': '/beauty_services/packages_services.php'
+      };
+      items.forEach(function(li){ li.addEventListener('click', function(){ var t = String(li.textContent||'').replace(/\s+/g,' ').trim(); var href = map[t] || ''; if (href) window.location.href = href; }); });
     });
   </script>
 </body>

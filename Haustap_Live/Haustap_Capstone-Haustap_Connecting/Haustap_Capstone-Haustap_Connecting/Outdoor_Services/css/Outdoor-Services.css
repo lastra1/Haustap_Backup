@@ -120,23 +120,28 @@
             font-weight: 600;
         }
 
-        .garden-options {
+.garden-options {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
-            max-width: 400px;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 24px;
+            max-width: 970px;
+            margin: 0 auto 22px auto;
         }
 
-        .garden-card {
-            background: linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%);
-            border-radius: 20px;
-            padding: 20px 25px;
+.garden-card {
+            background: #e2e3e2;
+            border-radius: 10px;
+            padding: 18px 24px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            flex-direction: column;
+            box-shadow: 2px 4px 8px rgba(0,0,0,0.08);
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.2s, background 0.2s;
+            width: 380px;
+            min-height: 192px;
+            position: relative;
+            text-align: left;
         }
 
         .garden-card:hover {
@@ -164,17 +169,19 @@
             line-height: 1.4;
         }
 
-        .radio-btn {
-            width: 24px;
-            height: 24px;
-            flex-shrink: 0;
+.radio-btn {
+            position: absolute;
+            top: 18px;
+            right: 24px;
+            width: 22px;
+            height: 22px;
         }
 
-        .radio-btn input[type="radio"] {
-            width: 24px;
-            height: 24px;
+.radio-btn input.garden-check {
+            width: 22px;
+            height: 22px;
             cursor: pointer;
-            accent-color: #333;
+            accent-color: #009999;
         }
 
        /* ===== FOOTER ===== */

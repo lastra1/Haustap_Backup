@@ -171,6 +171,31 @@ body {
   margin-bottom: 30px;
 }
 
+.calendar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.calendar-label { font-weight: 600; }
+.calendar-input {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+/* Big Calendar */
+.bigcal-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.bigcal-title{ font-weight:700; font-size:1.1rem; }
+.bigcal-nav{ background:#f5f5f5; border:1px solid #ccc; border-radius:6px; padding:6px 10px; cursor:pointer; }
+.bigcal-days{ display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-bottom:8px; color:#666; text-align:center; }
+.bigcal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-bottom:24px; }
+.bigcal-cell{ aspect-ratio:1; background:#f5f5f5; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:1rem; cursor:pointer; }
+.bigcal-cell.disabled{ opacity:.35; cursor:not-allowed; }
+.bigcal-cell.selected{ background:#00ADB5; color:#fff; }
+.bigcal-num{ pointer-events:none; }
+
 .date-box {
   position: relative;
   display: flex;

@@ -112,16 +112,13 @@
   }
 
   function init(){
-    // Only act on pages that show service cards
-    var hasCards = !!document.querySelector('.service-card input[type="radio"], .cleaning-package input[type="radio"], label.service-card input[type="radio"], .card input[type="radio"], .garden-card input[type="radio"]');
-    if (!hasCards) return;
-    var converted = convertRadiosToCheckboxes();
-    if (!converted) return;
+    var hasRadios = !!document.querySelector('.service-card input[type="radio"], .cleaning-package input[type="radio"], label.service-card input[type="radio"], .card input[type="radio"], .garden-card input[type="radio"]');
+    var hasCheckboxes = !!document.querySelector('.service-card input[type="checkbox"], .cleaning-package input[type="checkbox"], label.service-card input[type="checkbox"], .card input[type="checkbox"], .garden-card input[type="checkbox"]');
+    if (!hasRadios && !hasCheckboxes) return;
+    if (hasRadios) convertRadiosToCheckboxes();
     ensureActions();
     renderTotal();
     renderPreview();
-    // Update total when users select/deselect
-    // Intercept click/change on service checkboxes to suppress legacy single-select handlers
     document.addEventListener('click', function(ev){
       var t = ev.target;
       if (t && t.tagName === 'INPUT' && String(t.type).toLowerCase() === 'checkbox' && t.closest('.service-card, .cleaning-package, .card, label.service-card, .garden-card')) {

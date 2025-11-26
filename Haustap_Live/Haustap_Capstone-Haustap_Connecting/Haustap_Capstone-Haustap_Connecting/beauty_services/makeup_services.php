@@ -34,7 +34,7 @@
       <div class="service-grid">
         <!-- Card 1 -->
         <label class="service-card">
-          <input type="radio" name="makeup" checked>
+          <input type="checkbox" class="service-check">
           <div class="service-content">
             <h3>Basic/Day Make-Up</h3>
             <p class="price">â‚±1,000</p>
@@ -48,7 +48,7 @@
 
         <!-- Card 2 -->
         <label class="service-card">
-          <input type="radio" name="makeup">
+          <input type="checkbox" class="service-check">
           <div class="service-content">
             <h3>Evening/Party Make-Up</h3>
             <p class="price">â‚±1,200</p>
@@ -63,7 +63,7 @@
 
         <!-- Card 3 -->
         <label class="service-card">
-          <input type="radio" name="makeup">
+          <input type="checkbox" class="service-check">
           <div class="service-content">
             <h3>Bridal Make-Up (Trial + Wedding Day)</h3>
             <p class="price">â‚±5,000</p>
@@ -79,7 +79,7 @@
 
         <!-- Card 4 -->
         <label class="service-card">
-          <input type="radio" name="makeup">
+          <input type="checkbox" class="service-check">
           <div class="service-content">
             <h3>Debut/Prom Make-Up</h3>
             <p class="price">â‚±1,000</p>
@@ -100,7 +100,7 @@
   <?php include dirname(__DIR__) . "/client/includes/footer.php"; ?>
   <script>
     document.addEventListener('DOMContentLoaded', function(){
-      var radios = Array.prototype.slice.call(document.querySelectorAll('.service-card input[type="radio"]'));
+      var checks = Array.prototype.slice.call(document.querySelectorAll('.service-card input.service-check'));
       var activeSubcat = document.querySelector('.subcategory-nav li.active');
       function normalizeLabel(txt){ return String(txt||'').replace(/\s+/g,' ').trim(); }
       function buildLabel(card){
@@ -116,24 +116,34 @@
       }
       function proceed(card){
         var label = buildLabel(card);
+        var priceEl = card ? card.querySelector('.price') : null;
+        var price = priceEl ? parsePriceText(priceEl.textContent) : null;
         try {
           localStorage.setItem('selected_service_name', label);
-          var pEl = card ? card.querySelector('.service-price') : null;
-          var price = pEl ? parsePriceText(pEl.textContent) : null;
           if (price != null && !isNaN(price)) {
             localStorage.setItem('selected_service_price', String(price));
           }
         } catch(e){}
         var nextUrl = '/booking_process/booking_location.php?service=' + encodeURIComponent(label);
-        var pEl2 = card ? card.querySelector('.service-price') : null;
-        var price2 = pEl2 ? parsePriceText(pEl2.textContent) : null;
-        if (price2 != null && !isNaN(price2)) { nextUrl += '&price=' + encodeURIComponent(String(price2)); }
+        if (price != null && !isNaN(price)) { nextUrl += '&price=' + encodeURIComponent(String(price)); }
         window.location.href = nextUrl;
       }
-      radios.forEach(function(r){
-        r.addEventListener('change', function(){ proceed(r.closest('.service-card')); });
-        r.addEventListener('click', function(){ if (r.checked) proceed(r.closest('.service-card')); });
+      checks.forEach(function(c){
+        c.addEventListener('click', function(){
+          var card = c.closest('.service-card');
+          checks.forEach(function(x){ if (x !== c) x.checked = false; });
+          if (c.checked) proceed(card);
+        });
       });
+      var items = Array.prototype.slice.call(document.querySelectorAll('.subcategory-nav li'));
+      var map = {
+        'Hair Services': '/beauty_services/hair_services.php',
+        'Nail Care': '/beauty_services/nail_services.php',
+        'Make-up': '/beauty_services/makeup_services.php',
+        'Lashes': '/beauty_services/lash_services.php',
+        'Packages': '/beauty_services/packages_services.php'
+      };
+      items.forEach(function(li){ li.addEventListener('click', function(){ var t = String(li.textContent||'').replace(/\s+/g,' ').trim(); var href = map[t] || ''; if (href) window.location.href = href; }); });
     });
   </script>
 </body>

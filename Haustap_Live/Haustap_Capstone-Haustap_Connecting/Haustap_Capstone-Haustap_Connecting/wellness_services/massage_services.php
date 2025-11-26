@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -31,7 +31,7 @@
     <section class="service-section">
       <div class="service-grid">
         <label class="service-card">
-          <input type="radio" name="massage" checked />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>Full Body Massage (Swedish)</h3>
             <p class="price">â‚±800 / 60 mins</p>
@@ -42,7 +42,7 @@
         </label>
 
         <label class="service-card">
-          <input type="radio" name="massage" />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>Full Body Massage (Deep Tissue)</h3>
             <p class="price">â‚±1,000 / 60 mins</p>
@@ -53,7 +53,7 @@
         </label>
 
         <label class="service-card">
-          <input type="radio" name="massage" />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>Aromatherapy Massage</h3>
             <p class="price">â‚±1,200 / 60 mins</p>
@@ -64,7 +64,7 @@
         </label>
 
         <label class="service-card">
-          <input type="radio" name="massage" />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>Reflexology (Foot Massage)</h3>
             <p class="price">â‚±600 / 45 mins</p>
@@ -75,7 +75,7 @@
         </label>
 
         <label class="service-card">
-          <input type="radio" name="massage" />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>Scalp & Head Massage</h3>
             <p class="price">â‚±500 / 30 mins</p>
@@ -86,7 +86,7 @@
         </label>
 
         <label class="service-card">
-          <input type="radio" name="massage" />
+          <input type="checkbox" class="service-check" />
           <div class="service-content">
             <h3>Back & Shoulder Massage</h3>
             <p class="price">â‚±500 / 30 mins</p>
@@ -102,25 +102,17 @@
 
   <!-- FOOTER -->
   <?php include dirname(__DIR__) . "/client/includes/footer.php"; ?>
+  <script src="/client/js/multi-select-services.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function(){
-      var radios = Array.prototype.slice.call(document.querySelectorAll('.service-card input[type="radio"]'));
-      var activeSubcat = document.querySelector('.subcategory-nav li.active');
+      var items = Array.prototype.slice.call(document.querySelectorAll('.subcategory-nav li'));
       function normalizeLabel(txt){ return String(txt||'').replace(/\s+/g,' ').trim(); }
-      function buildLabel(card){
-        var titleEl = card ? card.querySelector('.service-content h3') : null;
-        var subcat = activeSubcat ? normalizeLabel(activeSubcat.textContent) : 'Wellness Services';
-        var serviceTitle = titleEl ? normalizeLabel(titleEl.textContent) : '';
-        return subcat + ' - ' + serviceTitle;
-      }
-      function proceed(card){
-        var label = buildLabel(card);
-        try { localStorage.setItem('selected_service_name', label); } catch(e){}
-        window.location.href = '/booking_process/booking_location.php?service=' + encodeURIComponent(label);
-      }
-      radios.forEach(function(r){
-        r.addEventListener('change', function(){ proceed(r.closest('.service-card')); });
-        r.addEventListener('click', function(){ if (r.checked) proceed(r.closest('.service-card')); });
+      items.forEach(function(li){
+        li.addEventListener('click', function(){
+          var name = normalizeLabel(li.textContent);
+          var href = (name==='Massage')?'/wellness_services/massage_services.php':(name==='Packages'?'/wellness_services/packages.php':'');
+          if (href) window.location.href = href;
+        });
       });
     });
   </script>

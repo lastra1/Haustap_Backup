@@ -22,10 +22,10 @@
   <!-- Subcategory Navigation -->
   <nav class="subcategory-nav">
     <ul>
-      <li class="active">Mobile Phone</li>
-      <li>Laptop & Desktop PC</li>
-      <li>Tablet & iPad</li>
-      <li>Game & Console</li>
+      <li class="active"><a href="/tech_gadget/mobile_phone.php">Mobile Phone</a></li>
+      <li><a href="/tech_gadget/laptop_desktop.php">Laptop & Desktop PC</a></li>
+      <li><a href="/tech_gadget/tablet_ipad.php">Tablet & iPad</a></li>
+      <li><a href="/tech_gadget/game_console.php">Game & Console</a></li>
     </ul>
   </nav>
 

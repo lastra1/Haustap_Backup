@@ -12,6 +12,7 @@ services:
       - ./docker/web/apache.conf:/etc/apache2/sites-available/000-default.conf:ro
     environment:
       - TZ=Asia/Manila
+      - GOOGLE_APPLICATION_CREDENTIALS=/var/www/backend/api/storage/app/firebase/service-account.json
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 10s
@@ -61,8 +62,9 @@ services:
     environment:
       - TZ=Asia/Manila
       - COMPOSER_MEMORY_LIMIT=-1
+      - GOOGLE_APPLICATION_CREDENTIALS=/var/www/storage/app/firebase/service-account.json
     volumes:
-      - ./backend/api:/var/www
+      - ./backend:/var/www
       - composer_cache:/root/.composer/cache
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8001/api/health"]

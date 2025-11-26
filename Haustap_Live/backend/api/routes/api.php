@@ -179,5 +179,7 @@ Route::prefix('v2')->group(function () {
             Route::post('/geocode', [LocationPinController::class, 'geocode']);
             Route::post('/reverse-geocode', [LocationPinController::class, 'reverseGeocode']);
         });
+
+        Route::post('/payments/subscribe', [\App\Http\Controllers\Api\PaymentsController::class, 'subscribe']);
     });
 });
